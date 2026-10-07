@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+:root {
+  /* Paleta oficial WeNow (guía de imagen): magenta #A51959, carbón #383838, gris #A3A2A2. */
+  --navy: #383838;        /* carbón: títulos y superficies oscuras */
+  --blue: #a51959;        /* magenta de marca: acciones principales */
+  --blue-bright: #c71f70; /* magenta vivo: acentos y estados activos */
+  --blue-soft: #fbeef4;   /* tinte de magenta para fondos suaves */
+  --red: #d93025;         /* alertas (separado del magenta de marca) */
+  --green: #19b96f;
+  --whatsapp: #20c96b;
+  --silver: #a3a2a2;      /* gris de marca */
+  --line: #e6e0e3;
+  --bg: #faf7f8;
+  --ink: #2b2b2b;
+  --muted: #6f6a6c;
+}
+
+@theme inline {
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+/* Nada puede ensanchar la página más que la pantalla (halos animados, carruseles, textos largos).
+   "clip" no crea una zona de scroll, así que no rompe los encabezados fijos. */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+.press {
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+.press:active {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+.prose-privacy h1 { margin-top: 6px; font-size: 28px; font-weight: 800; letter-spacing: -0.015em; color: var(--navy); }
+.prose-privacy section { margin-top: 28px; }
+.prose-privacy h2 { font-size: 17px; font-weight: 800; color: var(--navy); }
+.prose-privacy section p, .prose-privacy li { margin-top: 8px; font-size: 14px; line-height: 1.65; color: #3d4a5c; }
+.prose-privacy ul { margin-top: 4px; padding-left: 20px; list-style: disc; }
+.prose-privacy a { color: var(--blue); text-decoration: underline; }
+
+@keyframes sheen {
+  0% { transform: translateX(0) skewX(-20deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateX(520%) skewX(-20deg); opacity: 0; }
+}
+
+@keyframes orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes sheet {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes halo {
+  0% { transform: scale(1); opacity: 0.35; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+@keyframes marquee {
+  to { transform: translateX(calc(-50% - 0.5rem)); }
+}
+
+/* Escaneo facial: línea que recorre el óvalo y halo que respira. */
+@keyframes scanline {
+  0% { top: -18%; }
+  50% { top: 100%; }
+  100% { top: -18%; }
+}
+
+@keyframes halo-soft {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+
+/* Botón de continuar: invita a tocarlo cuando la persona se queda en el acto. */
+@keyframes cta-ring {
+  0% { transform: scale(1); opacity: 0.45; }
+  100% { transform: scale(1.12, 1.6); opacity: 0; }
+}
+
+@keyframes cta-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
+@keyframes cta-shine {
+  0% { left: -35%; }
+  60%, 100% { left: 120%; }
+}
+
+@keyframes cta-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+/* Sección rPPG: barrido sobre la malla del rostro, nodos que titilan, zonas que laten y onda de pulso. */
+@keyframes scan-sweep {
+  0% { transform: translateY(40px); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translateY(470px); opacity: 0; }
+}
+
+@keyframes node-blink {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+@keyframes roi-pulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes pulse-scroll {
+  to { transform: translateX(-50%); }
+}

@@ -1,0 +1,5482 @@
+{
+ "active-burn": {
+  "name": "Active Burn+",
+  "family": "NUTRIDAY PLUS",
+  "category": "CAFÉ TERMOGÉNICO",
+  "tagline": "Fórmula termogénica con hongos funcionales, cacao y L-carnitina para energía, enfoque y metabolismo de grasa.",
+  "about": "Es el café termogénico de NutriDay Plus. Une la energía del café y la cocoa con L-carnitina, que lleva los ácidos grasos a la mitocondria, y con cinco hongos funcionales —reishi, chaga, shiitake, maitake y melena de león— para acompañar el enfoque, las defensas y el metabolismo de grasa.",
+  "facts": [
+   [
+    "8",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "1",
+    "TOMA AL DÍA"
+   ],
+   [
+    "30",
+    "DÍAS POR EMPAQUE"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · CAFÉ TERMOGÉNICO",
+  "ben_title": "Cinco beneficios en una taza",
+  "benefits": [
+   [
+    "bolt",
+    "Energía y enfoque",
+    [
+     "Estimulante natural, lipólisis, aumento de energía y enfoque"
+    ],
+    [
+     "Café",
+     "Cocoa",
+     "L-carnitina"
+    ],
+    "Estimulantes naturales para el arranque del día."
+   ],
+   [
+    "flame",
+    "Metabolismo de grasa",
+    [
+     "Control de apetito y metabolismo de grasa"
+    ],
+    [
+     "L-carnitina",
+     "Café",
+     "Cocoa"
+    ],
+    "Aminoácido que lleva ácidos grasos a la mitocondria."
+   ],
+   [
+    "brain",
+    "Función cognitiva",
+    [
+     "Neurotrófico natural (estimulación cognitiva, enfoque, memoria)"
+    ],
+    [
+     "Melena de león",
+     "Café",
+     "Reishi"
+    ],
+    "Hongo estudiado por su efecto sobre el NGF."
+   ],
+   [
+    "shield",
+    "Adaptógenos",
+    [
+     "Adaptógenos e inmunomoduladores"
+    ],
+    [
+     "Reishi",
+     "Maitake",
+     "Chaga"
+    ],
+    "Hongos con betaglucanos y triterpenos."
+   ],
+   [
+    "spark",
+    "Defensas y estrés oxidativo",
+    [
+     "Apoyo al sistema inmune y reducción del estrés oxidativo"
+    ],
+    [
+     "Shiitake",
+     "Maitake",
+     "Chaga"
+    ],
+    "Betaglucanos que modulan la respuesta inmune."
+   ],
+   [
+    "heart",
+    "Antioxidantes y ánimo",
+    [
+     "Antioxidantes y mejora del estado de ánimo"
+    ],
+    [
+     "Cocoa",
+     "Reishi",
+     "Chaga"
+    ],
+    "Flavonoides del cacao y polifenoles de hongos."
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Energía y termogénesis",
+   "intro": "La termogénesis es el calor que produce el cuerpo al gastar energía. Active Burn+ la acompaña de forma natural.",
+   "steps": [
+    [
+     "Estimulantes",
+     "Cafeína y teobromina estimulan el sistema nervioso."
+    ],
+    [
+     "Transporte",
+     "La L-carnitina lleva ácidos grasos a la mitocondria."
+    ],
+    [
+     "Soporte",
+     "Hongos funcionales para el estrés y el enfoque."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "cafe",
+    "tag": "GRANO DE CAFÉ",
+    "name": "Café",
+    "sub": "Coffea arabica",
+    "desc": "Fuente de cafeína natural, que estimula el sistema nervioso central, y de ácidos clorogénicos, polifenoles antioxidantes.",
+    "comp": [
+     "Cafeína",
+     "Ácido clorogénico"
+    ],
+    "ben": [
+     "Energía y enfoque",
+     "Estimulante natural",
+     "Lipólisis"
+    ],
+    "dato": "La cafeína bloquea los receptores de adenosina, lo que reduce la sensación de cansancio."
+   },
+   {
+    "key": "cocoa",
+    "tag": "SEMILLA DE CACAO",
+    "name": "Cocoa",
+    "sub": "Theobroma cacao",
+    "desc": "Semilla del cacao, rica en flavanoles y en teobromina, un estimulante suave.",
+    "comp": [
+     "Epicatequina",
+     "Teobromina"
+    ],
+    "ben": [
+     "Estado de ánimo",
+     "Antioxidante",
+     "Energía suave"
+    ],
+    "dato": "La epicatequina es el flavanol más abundante del cacao; la teobromina es un alcaloide emparentado con la cafeína."
+   },
+   {
+    "key": "carnitina",
+    "tag": "AMINOÁCIDO",
+    "name": "L-carnitina",
+    "sub": "Derivado de lisina y metionina",
+    "desc": "Compuesto que el cuerpo sintetiza a partir de lisina y metionina, y que también se obtiene de la carne y los lácteos.",
+    "comp": [
+     "L-carnitina"
+    ],
+    "ben": [
+     "Metabolismo de grasa",
+     "Energía celular",
+     "Lipólisis"
+    ],
+    "dato": "Transporta ácidos grasos de cadena larga al interior de la mitocondria, donde se oxidan para producir energía."
+   },
+   {
+    "key": "melena",
+    "tag": "HONGO NEUROTRÓFICO",
+    "name": "Melena de león",
+    "sub": "Hericium erinaceus",
+    "desc": "Hongo de aspecto de melena blanca, estudiado por su efecto sobre la función cognitiva.",
+    "comp": [
+     "Hericenonas",
+     "Erinacinas"
+    ],
+    "ben": [
+     "Neurotrófico natural",
+     "Memoria y enfoque",
+     "Estado de ánimo"
+    ],
+    "dato": "Sus hericenonas y erinacinas estimulan, en estudios, la síntesis del factor de crecimiento nervioso (NGF)."
+   },
+   {
+    "key": "reishi",
+    "tag": "HONGO ADAPTÓGENO",
+    "name": "Hongo reishi",
+    "sub": "Ganoderma lucidum",
+    "desc": "Hongo de la medicina tradicional asiática, estudiado como adaptógeno e inmunomodulador.",
+    "comp": [
+     "Triterpenos",
+     "Betaglucanos"
+    ],
+    "ben": [
+     "Adaptógeno",
+     "Inmunomodulador",
+     "Antioxidante"
+    ],
+    "dato": "Sus triterpenos, los ácidos ganodéricos, y sus betaglucanos son los compuestos bioactivos más estudiados."
+   },
+   {
+    "key": "chaga",
+    "tag": "HONGO DEL ABEDUL",
+    "name": "Hongo chaga",
+    "sub": "Inonotus obliquus",
+    "desc": "Hongo de los abedules de climas fríos, con polifenoles antioxidantes y melanina.",
+    "comp": [
+     "Betaglucanos",
+     "Melanina",
+     "Polifenoles"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Adaptógeno",
+     "Defensas"
+    ],
+    "dato": "Acumula betulina y ácido betulínico, triterpenos que proceden de la corteza del abedul donde crece."
+   },
+   {
+    "key": "shiitake",
+    "tag": "HONGO CULINARIO",
+    "name": "Shiitake",
+    "sub": "Lentinula edodes",
+    "desc": "Hongo culinario de Asia oriental, rico en betaglucanos y en ergotioneína.",
+    "comp": [
+     "Lentinano",
+     "Ergotioneína"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Antioxidante",
+     "Energía y vitalidad"
+    ],
+    "dato": "El lentinano, un betaglucano aislado del shiitake, es de los polisacáridos de hongo más estudiados en inmunología."
+   },
+   {
+    "key": "maitake",
+    "tag": "HONGO FUNCIONAL",
+    "name": "Maitake",
+    "sub": "Grifola frondosa",
+    "desc": "Hongo conocido como «gallina del bosque», con un betaglucano característico llamado fracción D.",
+    "comp": [
+     "Fracción D",
+     "Betaglucanos"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Antioxidante",
+     "Adaptógeno"
+    ],
+    "dato": "Su betaglucano, la fracción D, es de los más investigados por su efecto sobre la respuesta inmune."
+   }
+  ],
+  "synergies": [
+   [
+    "Energía y enfoque",
+    [
+     "cafe",
+     "cocoa",
+     "melena"
+    ],
+    "Café · Cocoa · Melena de león",
+    "Cafeína y teobromina para activarte, junto a un hongo estudiado por su efecto sobre la función cognitiva."
+   ],
+   [
+    "Metabolismo de grasa",
+    [
+     "carnitina",
+     "cafe"
+    ],
+    "L-carnitina · Café",
+    "La carnitina lleva los ácidos grasos a la mitocondria y la cafeína favorece su movilización."
+   ],
+   [
+    "Hongos adaptógenos",
+    [
+     "reishi",
+     "chaga",
+     "maitake"
+    ],
+    "Reishi · Chaga · Maitake",
+    "Hongos funcionales ricos en betaglucanos y triterpenos que acompañan a las defensas y al estrés."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 cucharada dosificadora."
+   ],
+   [
+    "Disuelve",
+    "En 250 ml de agua caliente."
+   ],
+   [
+    "Disfruta",
+    "Por la mañana o media mañana."
+   ]
+  ],
+  "ritual_note": "1 vez al día. Puede combinarse con leche vegetal o agua.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Preparación",
+    "250 ml de agua caliente"
+   ],
+   [
+    "Toma",
+    "1 vez al día"
+   ],
+   [
+    "Momento",
+    "Mañana o media mañana"
+   ],
+   [
+    "Ingredientes activos",
+    "8"
+   ]
+  ],
+  "combo": [
+   [
+    "PureBody",
+    "Cápsulas depurativas con tejocote y alcachofa."
+   ],
+   [
+    "Green Plus",
+    "Jugo verde con espirulina, chlorella y noni."
+   ],
+   [
+    "NutriDay Red",
+    "Proteína de fresa con probióticos."
+   ],
+   [
+    "NutriDay Brown",
+    "Proteína de avellana con probióticos."
+   ]
+  ],
+  "reco": [
+   "Contiene cafeína del café y teobromina del cacao.",
+   "No exceder la porción recomendada.",
+   "En embarazo o lactancia, consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "antiox": {
+  "name": "AntiOX",
+  "family": "NUTRIDAY PLUS",
+  "category": "JUGO ANTIOXIDANTE",
+  "tagline": "Complejo antioxidante de frutos y botánicos para radicales libres, circulación y longevidad celular.",
+  "about": "Es el jugo antioxidante de NutriDay Plus: nueve frutos y botánicos de distintas partes del mundo que reúnen carotenoides, polifenoles y vitamina C. Combina betacaroteno, licopeno, semilla de uva, amalaki, borojó, mangostán, noni, goji y açaí para proteger tus células del estrés oxidativo.",
+  "facts": [
+   [
+    "9",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "10 g",
+    "PORCIÓN DIARIA"
+   ],
+   [
+    "30",
+    "PORCIONES POR BOLSA"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · 300 g",
+  "ben_title": "Siete beneficios en un solo vaso",
+  "benefits": [
+   [
+    "spark",
+    "Antioxidante profundo",
+    [
+     "Antioxidante profundo y antiinflamatorio celular"
+    ],
+    [
+     "Mangostán",
+     "Semilla de uva",
+     "Betacaroteno"
+    ],
+    "Polifenoles y carotenoides que protegen la célula."
+   ],
+   [
+    "flame",
+    "Protección mitocondrial",
+    [
+     "Rescate mitocondrial y reducción de radicales libres"
+    ],
+    [
+     "Licopeno",
+     "Açaí",
+     "Noni"
+    ],
+    null
+   ],
+   [
+    "heart",
+    "Corazón y circulación",
+    [
+     "Soporte cardiovascular",
+     "Mejora la circulación"
+    ],
+    [
+     "Semilla de uva",
+     "Licopeno",
+     "Açaí"
+    ],
+    null
+   ],
+   [
+    "shield",
+    "Defensas",
+    [
+     "Inmunomodulador natural"
+    ],
+    [
+     "Goji",
+     "Amalaki",
+     "Noni"
+    ],
+    "Polisacáridos y vitamina C que apoyan las defensas."
+   ],
+   [
+    "bolt",
+    "Energía vital",
+    [
+     "Energía vital y recuperación metabólica"
+    ],
+    [
+     "Borojó",
+     "Goji",
+     "Amalaki"
+    ],
+    "Nutrientes que respaldan la energía diaria."
+   ],
+   [
+    "drop",
+    "Longevidad",
+    [
+     "Longevidad y salud antienvejecimiento"
+    ],
+    [
+     "Amalaki",
+     "Semilla de uva",
+     "Açaí"
+    ],
+    "Antioxidantes que cuidan la célula a largo plazo."
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "¿Cómo protege un antioxidante?",
+   "intro": "Los radicales libres son moléculas inestables que se generan en el metabolismo normal. Los antioxidantes las neutralizan antes de que dañen lípidos, proteínas y ADN.",
+   "steps": [
+    [
+     "Radicales libres",
+     "Se producen de forma natural en las mitocondrias al generar energía."
+    ],
+    [
+     "Antioxidantes",
+     "Polifenoles, carotenoides y vitamina C ceden electrones y los neutralizan."
+    ],
+    [
+     "Protección celular",
+     "Así se reduce el estrés oxidativo asociado al envejecimiento celular."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "betacaroteno",
+    "tag": "CAROTENOIDE",
+    "name": "Betacaroteno",
+    "sub": "Provitamina A",
+    "desc": "Pigmento naranja de la zanahoria y de los frutos rojos. El cuerpo lo convierte en vitamina A según lo necesita.",
+    "comp": [
+     "β-caroteno"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Provitamina A",
+     "Piel y defensas"
+    ],
+    "dato": "Es de los carotenoides más estudiados: al ser liposoluble, actúa en las membranas de la célula."
+   },
+   {
+    "key": "semillauva",
+    "tag": "POLIFENOLES",
+    "name": "Semilla de uva",
+    "sub": "Vitis vinifera",
+    "desc": "Semilla de la uva, que concentra proantocianidinas: polifenoles de reconocida acción antioxidante.",
+    "comp": [
+     "Proantocianidinas"
+    ],
+    "ben": [
+     "Cardiovascular",
+     "Circulación",
+     "Antioxidante"
+    ],
+    "dato": "Las proantocianidinas oligoméricas (OPC) se estudian por neutralizar radicales libres y por su efecto vascular."
+   },
+   {
+    "key": "licopeno",
+    "tag": "CAROTENOIDE",
+    "name": "Licopeno",
+    "sub": "Pigmento del tomate",
+    "desc": "Pigmento rojo del tomate, la sandía y la guayaba. Su absorción mejora cuando se consume junto con grasas.",
+    "comp": [
+     "Licopeno"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Cardiovascular",
+     "Protección celular"
+    ],
+    "dato": "En laboratorio neutraliza el oxígeno singlete cerca del doble de rápido que el betacaroteno."
+   },
+   {
+    "key": "amalaki",
+    "tag": "AYURVEDA",
+    "name": "Amalaki",
+    "sub": "Phyllanthus emblica",
+    "desc": "Fruto de la grosella india, base del Chyawanprash ayurvédico. Es de las fuentes vegetales más ricas en vitamina C.",
+    "comp": [
+     "Vitamina C",
+     "Taninos",
+     "Ácido gálico"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Antioxidante",
+     "Longevidad"
+    ],
+    "dato": "Contiene taninos hidrolizables, como las emblicaninas, que se estudian por su actividad antioxidante."
+   },
+   {
+    "key": "borojo",
+    "tag": "FRUTO TROPICAL",
+    "name": "Borojó",
+    "sub": "Borojoa patinoi",
+    "desc": "Fruto de la selva húmeda del Pacífico colombiano, de pulpa espesa y sabor ácido. Aporta polifenoles, aminoácidos y minerales.",
+    "comp": [
+     "Polifenoles",
+     "Aminoácidos"
+    ],
+    "ben": [
+     "Energía vital",
+     "Recuperación",
+     "Antioxidante"
+    ],
+    "dato": "Pertenece a la familia Rubiaceae, la del café y el noni; se estudia por su perfil de polifenoles."
+   },
+   {
+    "key": "mangostan",
+    "tag": "FRUTA TROPICAL",
+    "name": "Mangostán",
+    "sub": "Garcinia mangostana",
+    "desc": "Fruta del sudeste asiático. Su cáscara concentra xantonas, pigmentos polifenólicos con actividad antioxidante.",
+    "comp": [
+     "α-mangostina",
+     "Xantonas"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Antiinflamatorio",
+     "Defensas"
+    ],
+    "dato": "La α-mangostina es la xantona más abundante de la cáscara y una de las más estudiadas del fruto."
+   },
+   {
+    "key": "noni",
+    "tag": "FRUTO TROPICAL",
+    "name": "Noni",
+    "sub": "Morinda citrifolia",
+    "desc": "Fruto de la Polinesia, usado en la medicina tradicional del Pacífico. Concentra iridoides, polifenoles y vitamina C.",
+    "comp": [
+     "Iridoides",
+     "Escopoletina"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Inmunológico",
+     "Bienestar"
+    ],
+    "dato": "Sus iridoides, como el ácido asperulosídico, y la escopoletina son los compuestos más estudiados."
+   },
+   {
+    "key": "goji",
+    "tag": "BAYA ASIÁTICA",
+    "name": "Goji berry",
+    "sub": "Lycium barbarum",
+    "desc": "Baya roja de Asia central, base de la medicina china. Rica en carotenoides, polisacáridos y vitaminas.",
+    "comp": [
+     "Zeaxantina",
+     "Polisacáridos"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Salud ocular",
+     "Antioxidante"
+    ],
+    "dato": "Su carotenoide principal es el dipalmitato de zeaxantina, forma de un pigmento presente en la mácula."
+   },
+   {
+    "key": "acai",
+    "tag": "BAYA AMAZÓNICA",
+    "name": "Açaí berry",
+    "sub": "Euterpe oleracea",
+    "desc": "Fruto de una palmera del Amazonas, de pulpa morada oscura por su alto contenido de antocianinas.",
+    "comp": [
+     "Antocianinas",
+     "Cianidinas"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Cardiovascular",
+     "Longevidad"
+    ],
+    "dato": "Sus antocianinas principales son la cianidina-3-glucósido y la cianidina-3-rutinósido."
+   }
+  ],
+  "synergies": [
+   [
+    "Defensa celular",
+    [
+     "licopeno",
+     "betacaroteno",
+     "goji"
+    ],
+    "Licopeno · Betacaroteno · Goji",
+    "Carotenoides que actúan en las membranas de la célula, donde la grasa es más vulnerable al daño oxidativo."
+   ],
+   [
+    "Color y polifenoles",
+    [
+     "acai",
+     "semillauva",
+     "mangostan"
+    ],
+    "Açaí · Semilla de uva · Mangostán",
+    "Antocianinas, proantocianidinas y xantonas: tres familias de polifenoles que se complementan."
+   ],
+   [
+    "Vitalidad celular",
+    [
+     "amalaki",
+     "borojo",
+     "noni"
+    ],
+    "Amalaki · Borojó · Noni",
+    "Vitamina C, polifenoles y aminoácidos para la energía y la recuperación diaria."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 porción de 10 g."
+   ],
+   [
+    "Disuelve",
+    "En 250 ml de agua."
+   ],
+   [
+    "Disfruta",
+    "En ayunas o antes del desayuno."
+   ]
+  ],
+  "ritual_note": "Adultos: 1 porción al día. La bolsa de 300 g rinde 30 días.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Contenido",
+    "300 g"
+   ],
+   [
+    "Porción",
+    "10 g"
+   ],
+   [
+    "Porciones",
+    "30"
+   ],
+   [
+    "Ingredientes activos",
+    "9"
+   ]
+  ],
+  "combo": [
+   [
+    "ResNAD",
+    "Precursores de NAD+ con resveratrol."
+   ],
+   [
+    "TransFactor",
+    "Factor de transferencia con calostro."
+   ],
+   [
+    "NK+",
+    "Adaptógeno para el descanso y el sistema nervioso."
+   ],
+   [
+    "RegeneREX",
+    "Café funcional con colágeno y cordyceps."
+   ]
+  ],
+  "reco": [
+   "No exceder la porción recomendada.",
+   "En embarazo o lactancia, consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "collagen-man": {
+  "name": "Collagen Man",
+  "family": "NUTRIDAY PLUS",
+  "category": "COLÁGENO",
+  "tagline": "Colágeno hidrolizado tipo I y II sabor mora azul para músculo, piel, energía y rendimiento.",
+  "about": "Es el colágeno de NutriDay Plus pensado para él. Une colágeno hidrolizado tipo I y II con coenzima Q10, resveratrol y curcumina, más maca negra, semilla de calabaza, licopeno, L-teanina y frutos azules, para el rendimiento físico, la piel, las articulaciones y el equilibrio hormonal masculino.",
+  "facts": [
+   [
+    "10",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "1",
+    "SCOOP AL DÍA"
+   ],
+   [
+    "30",
+    "DÍAS POR BOLSA"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · SABOR MORA AZUL",
+  "ben_title": "Diez beneficios para tu rendimiento",
+  "benefits": [
+   [
+    "bolt",
+    "Energía y rendimiento",
+    [
+     "Aumenta la energía, vitalidad y rendimiento físico"
+    ],
+    [
+     "CoQ10",
+     "Maca negra",
+     "Colágeno"
+    ],
+    "Coenzima y adaptógeno para el esfuerzo diario."
+   ],
+   [
+    "muscle",
+    "Músculo y fuerza",
+    [
+     "Favorece el aumento de masa muscular y fuerza"
+    ],
+    [
+     "Colágeno",
+     "Maca negra",
+     "Sem. de calabaza"
+    ],
+    null
+   ],
+   [
+    "spark",
+    "Piel firme",
+    [
+     "Reduce líneas de expresión y mejora la firmeza de la piel"
+    ],
+    [
+     "Colágeno",
+     "Resveratrol",
+     "Arándano"
+    ],
+    null
+   ],
+   [
+    "heart",
+    "Deseo y equilibrio hormonal",
+    [
+     "Mejora el deseo y desempeño sexual",
+     "Contribuye al equilibrio hormonal y bienestar general"
+    ],
+    [
+     "Maca negra",
+     "Sem. de calabaza",
+     "Licopeno"
+    ],
+    null
+   ],
+   [
+    "shield",
+    "Defensas y antioxidantes",
+    [
+     "Potencia el sistema inmunológico",
+     "Brinda acción antioxidante avanzada y protección celular",
+     "Mejora la salud cardiovascular y la circulación"
+    ],
+    [
+     "Resveratrol",
+     "Licopeno",
+     "Mora azul"
+    ],
+    null
+   ],
+   [
+    "brain",
+    "Mente y articulaciones",
+    [
+     "Incrementa el enfoque, la claridad mental y el estado de ánimo",
+     "Reduce la inflamación y mejora el bienestar articular"
+    ],
+    [
+     "L-teanina",
+     "Curcumina",
+     "Colágeno"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Colágeno y rendimiento",
+   "intro": "El colágeno es la proteína estructural de tendones, cartílago y piel.",
+   "steps": [
+    [
+     "Tipo I y II",
+     "El I, piel y tendón; el II, cartílago."
+    ],
+    [
+     "Energía celular",
+     "CoQ10 en la cadena respiratoria."
+    ],
+    [
+     "Antioxidantes",
+     "Polifenoles y licopeno protegen."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "colageno",
+    "tag": "PÉPTIDOS DE COLÁGENO",
+    "name": "Colágeno tipo I y II",
+    "sub": "Colágeno hidrolizado",
+    "desc": "El tipo I forma piel, tendones y hueso; el tipo II, el cartílago. Hidrolizado, se absorbe mejor.",
+    "comp": [
+     "Glicina",
+     "Prolina",
+     "Hidroxiprolina"
+    ],
+    "ben": [
+     "Firmeza de la piel",
+     "Articulaciones",
+     "Músculo y tendón"
+    ],
+    "dato": "El cartílago contiene principalmente colágeno tipo II, y los tendones, sobre todo tipo I."
+   },
+   {
+    "key": "coq10",
+    "tag": "COENZIMA",
+    "name": "Coenzima Q10",
+    "sub": "Ubiquinona",
+    "desc": "Molécula presente en todas las células, que participa en la cadena respiratoria de la mitocondria.",
+    "comp": [
+     "Ubiquinona",
+     "Ubiquinol"
+    ],
+    "ben": [
+     "Energía celular",
+     "Rendimiento",
+     "Corazón"
+    ],
+    "dato": "Su forma reducida, el ubiquinol, es un antioxidante liposoluble."
+   },
+   {
+    "key": "resveratrol",
+    "tag": "POLIFENOL",
+    "name": "Resveratrol",
+    "sub": "De uva roja y frutos rojos",
+    "desc": "Polifenol de la piel de la uva roja, estudiado por su relación con las sirtuinas.",
+    "comp": [
+     "Trans-resveratrol"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Salud cardiovascular",
+     "Longevidad celular"
+    ],
+    "dato": "Se identificó como activador de la sirtuina SIRT1 en estudios in vitro."
+   },
+   {
+    "key": "curcumina",
+    "tag": "CURCUMINOIDE",
+    "name": "Curcumina",
+    "sub": "Curcuma longa",
+    "desc": "Pigmento dorado de la cúrcuma, estudiado por su acción antiinflamatoria y antioxidante.",
+    "comp": [
+     "Curcuminoides"
+    ],
+    "ben": [
+     "Antiinflamatorio",
+     "Bienestar articular",
+     "Antioxidante"
+    ],
+    "dato": "Por sí sola se absorbe poco; su biodisponibilidad mejora con compuestos como la piperina."
+   },
+   {
+    "key": "te",
+    "tag": "AMINOÁCIDO",
+    "name": "L-teanina",
+    "sub": "Aminoácido del té",
+    "desc": "Aminoácido propio del té que atraviesa la barrera hematoencefálica.",
+    "comp": [
+     "L-teanina"
+    ],
+    "ben": [
+     "Calma sin somnolencia",
+     "Enfoque",
+     "Estado de ánimo"
+    ],
+    "dato": "En estudios con electroencefalograma aumenta la actividad de ondas alfa, asociada con relajación en estado de alerta."
+   },
+   {
+    "key": "maca",
+    "tag": "RAÍZ ANDINA",
+    "name": "Maca negra",
+    "sub": "Lepidium meyenii",
+    "desc": "Raíz de los Andes peruanos, de la familia de las crucíferas, usada desde hace siglos como alimento.",
+    "comp": [
+     "Macamidas",
+     "Macaenos"
+    ],
+    "ben": [
+     "Energía y vitalidad",
+     "Deseo sexual",
+     "Resistencia física"
+    ],
+    "dato": "Las macamidas y los macaenos son alcamidas propias de la maca."
+   },
+   {
+    "key": "semillacalabaza",
+    "tag": "SEMILLA",
+    "name": "Semilla de calabaza",
+    "sub": "Cucurbita pepo",
+    "desc": "Semilla rica en zinc, magnesio, fitoesteroles y proteína.",
+    "comp": [
+     "Zinc",
+     "Fitoesteroles",
+     "Cucurbitina"
+    ],
+    "ben": [
+     "Equilibrio hormonal",
+     "Bienestar masculino",
+     "Músculo"
+    ],
+    "dato": "El zinc participa en la síntesis de testosterona y en la función de más de 300 enzimas."
+   },
+   {
+    "key": "licopeno",
+    "tag": "CAROTENOIDE",
+    "name": "Licopeno",
+    "sub": "Pigmento del tomate",
+    "desc": "Pigmento rojo del tomate, la sandía y la guayaba. Se absorbe mejor junto con grasas.",
+    "comp": [
+     "Licopeno"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Salud cardiovascular",
+     "Protección celular"
+    ],
+    "dato": "En laboratorio neutraliza el oxígeno singlete cerca del doble de rápido que el betacaroteno."
+   },
+   {
+    "key": "arandano",
+    "tag": "BAYA",
+    "name": "Bayas de arándano",
+    "sub": "Vaccinium",
+    "desc": "Pequeña baya azul oscura, rica en antocianinas y en proantocianidinas.",
+    "comp": [
+     "Antocianinas",
+     "Proantocianidinas"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Circulación",
+     "Defensas"
+    ],
+    "dato": "Sus proantocianidinas de tipo A se estudian, en laboratorio, por impedir la adhesión de bacterias a las células."
+   },
+   {
+    "key": "morazul",
+    "tag": "BAYA",
+    "name": "Mora azul",
+    "sub": "Vaccinium corymbosum",
+    "desc": "Fruto azul oscuro de la misma familia que el arándano; su color viene de las antocianinas.",
+    "comp": [
+     "Antocianinas",
+     "Vitamina C"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Protección celular",
+     "Sabor"
+    ],
+    "dato": "Sus antocianinas, como la malvidina y la delfinidina, dan el color azul a la piel del fruto."
+   }
+  ],
+  "synergies": [
+   [
+    "Estructura y movimiento",
+    [
+     "colageno",
+     "curcumina",
+     "semillacalabaza"
+    ],
+    "Colágeno · Curcumina · Semilla de calabaza",
+    "Colágeno para tendón y cartílago, curcumina para la inflamación y zinc para el músculo."
+   ],
+   [
+    "Energía y vitalidad",
+    [
+     "coq10",
+     "maca",
+     "te"
+    ],
+    "CoQ10 · Maca negra · L-teanina",
+    "Una coenzima de la energía celular, una raíz energizante y L-teanina para el enfoque."
+   ],
+   [
+    "Escudo antioxidante",
+    [
+     "resveratrol",
+     "licopeno",
+     "morazul"
+    ],
+    "Resveratrol · Licopeno · Mora azul",
+    "Polifenoles, carotenoides y antocianinas: tres familias antioxidantes distintas."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 scoop dosificador."
+   ],
+   [
+    "Disuelve",
+    "En 250 ml de agua."
+   ],
+   [
+    "Disfruta",
+    "Una vez al día."
+   ]
+  ],
+  "ritual_note": "Cada bolsa cubre 30 días de uso.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Sabor",
+    "Mora azul"
+   ],
+   [
+    "Preparación",
+    "250 ml de agua"
+   ],
+   [
+    "Toma",
+    "1 scoop al día"
+   ],
+   [
+    "Ingredientes activos",
+    "10"
+   ]
+  ],
+  "combo": [
+   [
+    "Collagen Woman",
+    "Colágeno tipo I y III para ella."
+   ],
+   [
+    "Synergy",
+    "Bebida de guaraná y ginseng."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos."
+   ],
+   [
+    "Neuro CHAI",
+    "Chai funcional para la mente."
+   ]
+  ],
+  "reco": [
+   "No exceder la porción recomendada.",
+   "Embarazo, lactancia o medicamentos: consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "collagen-woman": {
+  "name": "Collagen Woman",
+  "family": "NUTRIDAY PLUS",
+  "category": "COLÁGENO",
+  "tagline": "Colágeno hidrolizado tipo I y III sabor mora azul para piel, cabello, uñas y equilibrio hormonal femenino.",
+  "about": "Es el colágeno de NutriDay Plus pensado para ella. Une colágeno hidrolizado tipo I y III con ácido hialurónico, biotina, coenzima Q10, astaxantina, resveratrol y granada, además de inositol e isoflavonas de soya, para cuidar la piel, el cabello, las uñas y el equilibrio hormonal femenino.",
+  "facts": [
+   [
+    "9",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "1",
+    "SCOOP AL DÍA"
+   ],
+   [
+    "30",
+    "DÍAS POR BOLSA"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · SABOR MORA AZUL",
+  "ben_title": "Diez beneficios desde adentro",
+  "benefits": [
+   [
+    "spark",
+    "Piel firme y joven",
+    [
+     "Disminuye líneas de expresión, arrugas y flacidez",
+     "Aumenta la firmeza y densidad de la piel"
+    ],
+    [
+     "Colágeno",
+     "Ác. hialurónico",
+     "Astaxantina"
+    ],
+    null
+   ],
+   [
+    "drop",
+    "Hidratación y elasticidad",
+    [
+     "Mejora la hidratación y elasticidad de la piel"
+    ],
+    [
+     "Ác. hialurónico",
+     "Colágeno",
+     "Granada"
+    ],
+    "Retención de agua y estructura de la piel."
+   ],
+   [
+    "flame",
+    "Cabello y uñas",
+    [
+     "Fortalece cabello y uñas"
+    ],
+    [
+     "Biotina",
+     "Colágeno"
+    ],
+    "La biotina participa en la queratina."
+   ],
+   [
+    "shield",
+    "Antioxidante antiedad",
+    [
+     "Aporta potente acción antioxidante antiedad"
+    ],
+    [
+     "Astaxantina",
+     "Resveratrol",
+     "Granada",
+     "CoQ10"
+    ],
+    null
+   ],
+   [
+    "heart",
+    "Equilibrio hormonal",
+    [
+     "Ayuda al equilibrio hormonal femenino",
+     "Contribuye al bienestar integral y a la belleza desde dentro"
+    ],
+    [
+     "Isoflavonas",
+     "Inositol"
+    ],
+    null
+   ],
+   [
+    "body",
+    "Huesos, digestión y energía",
+    [
+     "Fortalece huesos y articulaciones",
+     "Mejora la digestión y el equilibrio intestinal",
+     "Incrementa la energía y la vitalidad diaria"
+    ],
+    [
+     "Colágeno",
+     "CoQ10",
+     "Inositol"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Colágeno desde adentro",
+   "intro": "El colágeno es la proteína estructural de la piel y disminuye con la edad.",
+   "steps": [
+    [
+     "Hidrolizado",
+     "Péptidos pequeños, fáciles de absorber."
+    ],
+    [
+     "Hialurónico",
+     "Retiene agua en la piel."
+    ],
+    [
+     "Antioxidantes",
+     "Protegen las fibras de colágeno."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "colageno",
+    "tag": "PÉPTIDOS DE COLÁGENO",
+    "name": "Colágeno tipo I y III",
+    "sub": "Colágeno hidrolizado",
+    "desc": "Las proteínas más abundantes de la piel. El tipo I da firmeza y el III, elasticidad; hidrolizado, se absorbe mejor.",
+    "comp": [
+     "Glicina",
+     "Prolina",
+     "Hidroxiprolina"
+    ],
+    "ben": [
+     "Firmeza de la piel",
+     "Cabello y uñas",
+     "Huesos y articulaciones"
+    ],
+    "dato": "Su estructura es una triple hélice, rica en glicina, prolina e hidroxiprolina."
+   },
+   {
+    "key": "hialuronico",
+    "tag": "HIDRATANTE",
+    "name": "Ácido hialurónico",
+    "sub": "Hialuronato",
+    "desc": "Molécula presente en piel, articulaciones y ojos, capaz de retener grandes cantidades de agua.",
+    "comp": [
+     "Ácido hialurónico"
+    ],
+    "ben": [
+     "Hidratación",
+     "Elasticidad",
+     "Articulaciones"
+    ],
+    "dato": "La piel contiene más de la mitad del ácido hialurónico del cuerpo, y su cantidad disminuye con la edad."
+   },
+   {
+    "key": "biotina",
+    "tag": "VITAMINA B7",
+    "name": "Biotina",
+    "sub": "Vitamina B7",
+    "desc": "Vitamina hidrosoluble del grupo B, necesaria para metabolizar grasas, carbohidratos y proteínas.",
+    "comp": [
+     "Biotina"
+    ],
+    "ben": [
+     "Cabello",
+     "Uñas",
+     "Metabolismo energético"
+    ],
+    "dato": "Es cofactor de las carboxilasas, enzimas del metabolismo, y participa en la síntesis de queratina."
+   },
+   {
+    "key": "coq10",
+    "tag": "COENZIMA",
+    "name": "Coenzima Q10",
+    "sub": "Ubiquinona",
+    "desc": "Molécula presente en todas las células, que participa en la cadena respiratoria de la mitocondria.",
+    "comp": [
+     "Ubiquinona",
+     "Ubiquinol"
+    ],
+    "ben": [
+     "Energía celular",
+     "Antioxidante",
+     "Vitalidad"
+    ],
+    "dato": "Su forma reducida, el ubiquinol, es un antioxidante liposoluble."
+   },
+   {
+    "key": "astaxantina",
+    "tag": "CAROTENOIDE",
+    "name": "Astaxantina",
+    "sub": "Xantofila",
+    "desc": "Pigmento rojo anaranjado que produce la microalga Haematococcus pluvialis.",
+    "comp": [
+     "Astaxantina"
+    ],
+    "ben": [
+     "Antioxidante potente",
+     "Protección de la piel",
+     "Antiedad"
+    ],
+    "dato": "Es un carotenoide xantofila: al tener grupos oxigenados, se ubica atravesando la membrana de la célula."
+   },
+   {
+    "key": "resveratrol",
+    "tag": "POLIFENOL",
+    "name": "Resveratrol",
+    "sub": "De uva roja y frutos rojos",
+    "desc": "Polifenol de la piel de la uva roja, estudiado por su relación con las sirtuinas.",
+    "comp": [
+     "Trans-resveratrol"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Longevidad celular",
+     "Salud cardiovascular"
+    ],
+    "dato": "Se identificó como activador de la sirtuina SIRT1 en estudios in vitro."
+   },
+   {
+    "key": "granada",
+    "tag": "FRUTO",
+    "name": "Extracto de granada",
+    "sub": "Punica granatum",
+    "desc": "Fruto del Mediterráneo, rico en polifenoles, sobre todo punicalaginas y ácido elágico.",
+    "comp": [
+     "Punicalaginas",
+     "Ácido elágico"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Piel",
+     "Bienestar"
+    ],
+    "dato": "Las punicalaginas son de los taninos más grandes que se conocen y se hidrolizan a ácido elágico."
+   },
+   {
+    "key": "soya",
+    "tag": "FITOESTRÓGENO",
+    "name": "Isoflavonas de soya",
+    "sub": "Glycine max",
+    "desc": "Compuestos de la soya con estructura parecida al estrógeno, por lo que se llaman fitoestrógenos.",
+    "comp": [
+     "Genisteína",
+     "Daidzeína"
+    ],
+    "ben": [
+     "Equilibrio hormonal",
+     "Bienestar femenino",
+     "Huesos"
+    ],
+    "dato": "Se unen preferentemente a los receptores de estrógeno beta, según estudios de laboratorio."
+   },
+   {
+    "key": "inositol",
+    "tag": "POLIOL",
+    "name": "Inositol",
+    "sub": "Mio-inositol",
+    "desc": "Compuesto parecido a un azúcar que el cuerpo produce y que también está en cereales y frutas.",
+    "comp": [
+     "Mio-inositol"
+    ],
+    "ben": [
+     "Equilibrio hormonal",
+     "Señal celular",
+     "Energía"
+    ],
+    "dato": "Forma parte de los fosfoinosítidos, que transmiten señales dentro de la célula."
+   }
+  ],
+  "synergies": [
+   [
+    "Piel firme e hidratada",
+    [
+     "colageno",
+     "hialuronico",
+     "granada"
+    ],
+    "Colágeno · Hialurónico · Granada",
+    "El colágeno aporta la estructura, el hialurónico la hidratación y la granada polifenoles protectores."
+   ],
+   [
+    "Escudo antioxidante",
+    [
+     "astaxantina",
+     "coq10",
+     "resveratrol"
+    ],
+    "Astaxantina · CoQ10 · Resveratrol",
+    "Tres antioxidantes de distinta naturaleza que protegen a la célula."
+   ],
+   [
+    "Equilibrio femenino",
+    [
+     "soya",
+     "inositol",
+     "biotina"
+    ],
+    "Isoflavonas · Inositol · Biotina",
+    "Fitoestrógenos y un compuesto de señal celular, junto a una vitamina de cabello y uñas."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 scoop dosificador."
+   ],
+   [
+    "Disuelve",
+    "En 250 ml de agua."
+   ],
+   [
+    "Disfruta",
+    "Una vez al día."
+   ]
+  ],
+  "ritual_note": "Cada bolsa cubre 30 días de uso.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Sabor",
+    "Mora azul"
+   ],
+   [
+    "Preparación",
+    "250 ml de agua"
+   ],
+   [
+    "Toma",
+    "1 scoop al día"
+   ],
+   [
+    "Ingredientes activos",
+    "9"
+   ]
+  ],
+  "combo": [
+   [
+    "Collagen Man",
+    "Colágeno tipo I y II para él."
+   ],
+   [
+    "ResNAD",
+    "Precursores de NAD+ con resveratrol."
+   ],
+   [
+    "PureBody",
+    "Cápsulas depurativas con tejocote."
+   ],
+   [
+    "Green Plus",
+    "Jugo verde con espirulina y chlorella."
+   ]
+  ],
+  "reco": [
+   "Contiene derivados de soya.",
+   "No exceder la porción recomendada.",
+   "Embarazo, lactancia o medicamentos: consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "endo": {
+  "name": "ENDO",
+  "family": "NUTRIDAY PLUS",
+  "category": "CBD OIL · SABOR MENTA",
+  "badge": "CBD OIL",
+  "hero_pack": "left: 60px; top: 30px; width: 160px; height: 350px",
+  "cover_pack": "left: 258px; top: 0px; width: 300px; height: 400px",
+  "tagline": "Extracto de cáñamo de espectro completo, formulado para favorecer el equilibrio y el bienestar integral.",
+  "about": "Es el aceite de cáñamo de espectro completo de WeNow, con sabor a menta. Un extracto de espectro completo conserva, además del cannabidiol (CBD), otros cannabinoides, terpenos y flavonoides de la planta. Así acompaña la relajación, el descanso y el equilibrio del sistema nervioso.",
+  "facts": [
+   [
+    "30",
+    "MILILITROS POR ENVASE"
+   ],
+   [
+    "1",
+    "MILILITRO POR PORCIÓN"
+   ],
+   [
+    "30",
+    "PORCIONES POR ENVASE"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · CBD OIL · SABOR MENTA · 30 ml",
+  "ben_title": "Cinco beneficios para tu equilibrio",
+  "benefits": [
+   [
+    "heart",
+    "Relajación y estrés",
+    [
+     "Favorece la relajación y el manejo del estrés"
+    ],
+    [
+     "CBD",
+     "Terpenos"
+    ],
+    "Cannabinoides y terpenos de la planta."
+   ],
+   [
+    "moon",
+    "Descanso",
+    [
+     "Apoya un descanso de mayor calidad"
+    ],
+    [
+     "CBD",
+     "Terpenos"
+    ],
+    "Acompaña la rutina de sueño."
+   ],
+   [
+    "muscle",
+    "Confort físico",
+    [
+     "Contribuye al confort físico y la recuperación muscular"
+    ],
+    [
+     "CBD",
+     "Otros cannabinoides"
+    ],
+    null
+   ],
+   [
+    "brain",
+    "Sistema nervioso",
+    [
+     "Favorece el equilibrio del sistema nervioso"
+    ],
+    [
+     "CBD",
+     "Otros cannabinoides"
+    ],
+    null
+   ],
+   [
+    "shield",
+    "Antioxidante y digestivo",
+    [
+     "Brinda apoyo antioxidante y al bienestar digestivo"
+    ],
+    [
+     "Flavonoides",
+     "Terpenos"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "El sistema endocannabinoide",
+   "intro": "El nombre ENDO alude a un sistema de señales que el cuerpo ya tiene.",
+   "steps": [
+    [
+     "Receptores",
+     "CB1 y CB2 están en el cerebro y otros tejidos."
+    ],
+    [
+     "Propios del cuerpo",
+     "Produce endocannabinoides, como la anandamida."
+    ],
+    [
+     "Del cáñamo",
+     "La planta aporta fitocannabinoides afines."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "cbd",
+    "tag": "CANNABINOIDE",
+    "name": "Cannabidiol (CBD)",
+    "sub": "Cannabis sativa · cáñamo",
+    "desc": "El cannabinoide más estudiado del cáñamo. No es psicoactivo, a diferencia del THC.",
+    "comp": [
+     "Cannabidiol"
+    ],
+    "ben": [
+     "Relajación",
+     "Equilibrio del sistema nervioso",
+     "Descanso"
+    ],
+    "dato": "El CBD no se une con fuerza a los receptores CB1 y CB2; se estudia su acción por otras vías, como el receptor de serotonina 5-HT1A."
+   },
+   {
+    "key": "cbg",
+    "tag": "MENORES",
+    "name": "Otros cannabinoides",
+    "sub": "CBG · CBC · CBDV",
+    "desc": "Presentes en menor cantidad. Solo permanecen en los extractos de espectro completo.",
+    "comp": [
+     "CBG",
+     "CBC",
+     "CBDV"
+    ],
+    "ben": [
+     "Complemento del CBD",
+     "Confort físico",
+     "Bienestar general"
+    ],
+    "dato": "El CBG se conoce como el «cannabinoide madre»: su forma ácida es precursora del CBD."
+   },
+   {
+    "key": "terpenos",
+    "tag": "AROMÁTICOS",
+    "name": "Terpenos",
+    "sub": "Mirceno · limoneno · linalool",
+    "desc": "Compuestos aromáticos que dan su olor a la planta y a muchas otras, como la lavanda y los cítricos.",
+    "comp": [
+     "Mirceno",
+     "Limoneno",
+     "Linalool"
+    ],
+    "ben": [
+     "Aroma",
+     "Relajación",
+     "Acción antioxidante"
+    ],
+    "dato": "El linalool también está en la lavanda y el limoneno en los cítricos."
+   },
+   {
+    "key": "flavonoides",
+    "tag": "POLIFENOLES",
+    "name": "Flavonoides",
+    "sub": "Cannflavinas A, B y C",
+    "desc": "Pigmentos vegetales con acción antioxidante. El cáñamo tiene algunos propios.",
+    "comp": [
+     "Cannflavina A",
+     "Cannflavina B"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Bienestar digestivo",
+     "Protección celular"
+    ],
+    "dato": "Las cannflavinas A y B son flavonoides exclusivos del cannabis: no se encuentran en otras plantas."
+   }
+  ],
+  "slot_pack": "right: 44px; top: 10px; width: 80px; height: 150px",
+  "synergies": [
+   [
+    "Espectro completo",
+    [
+     "cbd",
+     "cbg",
+     "terpenos"
+    ],
+    "CBD · Otros cannabinoides · Terpenos",
+    "Un extracto de espectro completo conserva los compuestos de la planta, no solo el CBD."
+   ],
+   [
+    "Aroma y relajación",
+    [
+     "terpenos",
+     "flavonoides"
+    ],
+    "Terpenos · Flavonoides",
+    "Los compuestos aromáticos y los pigmentos que acompañan al cannabidiol."
+   ],
+   [
+    "Efecto séquito",
+    [
+     "cbd",
+     "terpenos",
+     "flavonoides"
+    ],
+    "CBD · Terpenos · Flavonoides",
+    "Hipótesis que propone que los compuestos del extracto actúan mejor juntos que por separado."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 ml por porción."
+   ],
+   [
+    "Porciones",
+    "30 por envase de 30 ml."
+   ],
+   [
+    "Modo de empleo",
+    "[Por confirmar con la marca]"
+   ]
+  ],
+  "ritual_note": "Cada envase aporta 30 porciones.",
+  "quick": [
+   [
+    "Presentación",
+    "Aceite"
+   ],
+   [
+    "Contenido",
+    "30 ml"
+   ],
+   [
+    "Sabor",
+    "Menta"
+   ],
+   [
+    "Porción",
+    "1 ml"
+   ],
+   [
+    "Porciones",
+    "30"
+   ]
+  ],
+  "combo": [
+   [
+    "NK+",
+    "Adaptógeno para el descanso y el sistema nervioso."
+   ],
+   [
+    "Neuro CHAI",
+    "Chai funcional para la mente."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos."
+   ],
+   [
+    "Collagen Man",
+    "Colágeno tipo I y II."
+   ]
+  ],
+  "reco": [
+   "Contiene extracto de cáñamo.",
+   "No exceder la porción recomendada.",
+   "Embarazo, lactancia o medicamentos: consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "green-plus": {
+  "name": "Green Plus",
+  "family": "NUTRIDAY PLUS",
+  "category": "JUGO VERDE",
+  "tagline": "Jugo verde con espirulina, chlorella y noni para desintoxicación y alcalinidad.",
+  "about": "Es el jugo verde de NutriDay Plus: una mezcla de algas, vegetales y frutas que concentra en un solo vaso clorofila, fibra y antioxidantes. Une espirulina, chlorella y clorofila cúprica con noni, perejil, apio y chía molida para acompañar la depuración de tu cuerpo y el equilibrio alcalino de tu organismo.",
+  "facts": [
+   [
+    "7",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "10 g",
+    "PORCIÓN DIARIA"
+   ],
+   [
+    "30",
+    "PORCIONES POR BOLSA"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · 300 g",
+  "ben_title": "Ocho beneficios en un solo vaso",
+  "benefits": [
+   [
+    "leaf",
+    "Desintoxicación",
+    [
+     "Desintoxicación hepática y renal"
+    ],
+    [
+     "Chlorella",
+     "Clorofila cúprica",
+     "Perejil"
+    ],
+    "Clorofila que acompaña la depuración natural."
+   ],
+   [
+    "gut",
+    "Digestión",
+    [
+     "Estimulación digestiva y regulación intestinal"
+    ],
+    [
+     "Chía",
+     "Apio",
+     "Perejil"
+    ],
+    "Fibra y vegetales para un tránsito regular."
+   ],
+   [
+    "shield",
+    "Antioxidantes y defensas",
+    [
+     "Poder antioxidante y antienvejecimiento",
+     "Apoyo inmunológico y reducción del estrés oxidativo"
+    ],
+    [
+     "Noni",
+     "Espirulina",
+     "Clorofila cúprica"
+    ],
+    null
+   ],
+   [
+    "bolt",
+    "Energía celular",
+    [
+     "Energía celular y desmineralización",
+     "Oxigenador celular"
+    ],
+    [
+     "Chlorella",
+     "Espirulina",
+     "Clorofila cúprica"
+    ],
+    null
+   ],
+   [
+    "heart",
+    "Colesterol y triglicéridos",
+    [
+     "Reduce colesterol y triglicéridos"
+    ],
+    [
+     "Chía",
+     "Apio",
+     "Espirulina"
+    ],
+    "Fibra y vegetales que suman al cuidado del corazón."
+   ],
+   [
+    "drop",
+    "Equilibrio alcalino",
+    [
+     "Alcalinización del medio interno"
+    ],
+    [
+     "Apio",
+     "Perejil",
+     "Chlorella"
+    ],
+    "Vegetales verdes que equilibran el medio interno."
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "¿Por qué un jugo verde?",
+   "intro": "La clorofila es el pigmento verde de las plantas. Green Plus la combina con algas, vegetales y frutas en un solo vaso.",
+   "steps": [
+    [
+     "Verdes concentrados",
+     "Chlorella, espirulina y clorofila cúprica aportan pigmentos verdes."
+    ],
+    [
+     "Fibra y depuración",
+     "Chía, apio y perejil acompañan la digestión y la depuración."
+    ],
+    [
+     "Equilibrio",
+     "El conjunto contribuye a la alcalinización del medio interno."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "noni",
+    "tag": "FRUTO TROPICAL",
+    "name": "Noni",
+    "sub": "Morinda citrifolia",
+    "desc": "Fruto tropical del Pacífico sur, usado desde hace siglos en la medicina tradicional polinesia. Concentra polifenoles, vitamina C e iridoides.",
+    "comp": [
+     "Iridoides",
+     "Polifenoles",
+     "Vitamina C"
+    ],
+    "ben": [
+     "Poder antioxidante",
+     "Apoyo inmunológico",
+     "Bienestar general"
+    ],
+    "dato": "Los navegantes polinesios lo llevaron en sus viajes por el Pacífico. Por su aroma intenso se le conoce como «la fruta del queso»."
+   },
+   {
+    "key": "chlorella",
+    "tag": "MICROALGA VERDE",
+    "name": "Alga chlorella",
+    "sub": "Chlorella vulgaris",
+    "desc": "Microalga unicelular de agua dulce, de las más ricas en clorofila. Aporta proteína, vitaminas del grupo B y hierro.",
+    "comp": [
+     "Clorofila",
+     "Proteína",
+     "Vitaminas B"
+    ],
+    "ben": [
+     "Apoyo a la depuración",
+     "Energía celular",
+     "Aporte nutricional"
+    ],
+    "dato": "Es de los organismos vegetales más antiguos del planeta: existe desde hace más de 2,000 millones de años."
+   },
+   {
+    "key": "clorofila",
+    "tag": "PIGMENTO VERDE",
+    "name": "Clorofila cúprica",
+    "sub": "Clorofilina cúprica",
+    "desc": "Versión estable de la clorofila, el pigmento que da su color verde a las plantas. Es más fácil de conservar y de absorber.",
+    "comp": [
+     "Clorofilina",
+     "Cobre"
+    ],
+    "ben": [
+     "Oxigenador celular",
+     "Acción antioxidante",
+     "Apoyo a la depuración"
+    ],
+    "dato": "La clorofila se parece a la hemoglobina de la sangre, pero con magnesio en el centro en lugar de hierro. En la cúprica, ese átomo es de cobre."
+   },
+   {
+    "key": "perejil",
+    "tag": "HIERBA FRESCA",
+    "name": "Perejil deshidratado",
+    "sub": "Petroselinum crispum",
+    "desc": "Hierba del Mediterráneo, muy usada en la cocina y en la herbolaria. Aporta clorofila, vitamina K, vitamina C y flavonoides.",
+    "comp": [
+     "Apigenina",
+     "Vitamina K",
+     "Clorofila"
+    ],
+    "ben": [
+     "Depuración natural",
+     "Acción antioxidante",
+     "Apoyo digestivo"
+    ],
+    "dato": "Los antiguos griegos lo asociaban con la victoria: coronaban con él a los ganadores de los juegos nemeos."
+   },
+   {
+    "key": "apio",
+    "tag": "TALLO VERDE",
+    "name": "Apio en polvo",
+    "sub": "Apium graveolens",
+    "desc": "Tallo fresco y ligero, muy hidratante, que aporta potasio, flavonoides y compuestos aromáticos propios del apio.",
+    "comp": [
+     "Luteolina",
+     "Potasio",
+     "Ftálidos"
+    ],
+    "ben": [
+     "Hidratación y depuración",
+     "Apoyo digestivo",
+     "Alcalinidad"
+    ],
+    "dato": "Más del 90 % de un tallo de apio es agua, y su cultivo se remonta a la antigüedad mediterránea."
+   },
+   {
+    "key": "chia",
+    "tag": "SEMILLA ANCESTRAL",
+    "name": "Chía molida",
+    "sub": "Salvia hispanica",
+    "desc": "Semilla originaria de Mesoamérica, alimento básico de aztecas y mayas. Molida, aporta fibra, omega-3 de origen vegetal y proteína.",
+    "comp": [
+     "Fibra",
+     "Omega-3 (ALA)",
+     "Proteína"
+    ],
+    "ben": [
+     "Regulación intestinal",
+     "Salud cardiovascular",
+     "Saciedad y energía"
+    ],
+    "dato": "Su nombre viene del náhuatl chian, «aceitoso». Los aztecas la usaban como alimento y también como tributo."
+   },
+   {
+    "key": "espirulina",
+    "tag": "MICROALGA AZUL-VERDE",
+    "name": "Alga espirulina",
+    "sub": "Arthrospira platensis",
+    "desc": "Una de las fuentes de nutrientes más densas del planeta: proteína completa, hierro, vitaminas del grupo B y ficocianina, su pigmento azul antioxidante.",
+    "comp": [
+     "Ficocianina",
+     "Proteína",
+     "Hierro"
+    ],
+    "ben": [
+     "Aporte nutricional completo",
+     "Vitalidad y energía",
+     "Apoyo a las defensas"
+    ],
+    "dato": "Los mexicas la cosechaban en el lago de Texcoco y la llamaban tecuitlatl."
+   }
+  ],
+  "synergies": [
+   [
+    "Depuración",
+    [
+     "chlorella",
+     "clorofila",
+     "perejil"
+    ],
+    "Chlorella · Clorofila · Perejil",
+    "Los verdes más ricos en clorofila acompañan la depuración natural del hígado y los riñones."
+   ],
+   [
+    "Digestión y tránsito",
+    [
+     "chia",
+     "apio",
+     "perejil"
+    ],
+    "Chía · Apio · Perejil",
+    "Fibra e hidratación para una digestión ligera y un intestino más regular."
+   ],
+   [
+    "Energía y defensas",
+    [
+     "noni",
+     "espirulina",
+     "chlorella"
+    ],
+    "Noni · Espirulina · Chlorella",
+    "Nutrientes y antioxidantes que apoyan la energía celular y las defensas."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 porción de 10 g."
+   ],
+   [
+    "Disuelve",
+    "En 250 ml de agua."
+   ],
+   [
+    "Disfruta",
+    "En ayunas o entre comidas."
+   ]
+  ],
+  "ritual_note": "Detox intensivo: 2 veces al día por 7–10 días. Una bolsa rinde 30 días.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Contenido",
+    "300 g"
+   ],
+   [
+    "Porción",
+    "10 g"
+   ],
+   [
+    "Porciones",
+    "30"
+   ],
+   [
+    "Ingredientes activos",
+    "7"
+   ]
+  ],
+  "combo": [
+   [
+    "PureBody",
+    "Depurativo con tejocote y alcachofa."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos y botánicos."
+   ],
+   [
+    "RegeneREX",
+    "Café funcional con colágeno y cordyceps."
+   ],
+   [
+    "Active Burn+",
+    "Termogénico con hongos y cacao."
+   ]
+  ],
+  "reco": [
+   "No exceder la porción recomendada.",
+   "En embarazo o lactancia, consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "neuro-chai": {
+  "name": "Neuro CHAI",
+  "family": "NUTRIDAY PLUS",
+  "category": "CHAI FUNCIONAL",
+  "tagline": "Chai funcional con ashwagandha, L-teanina y hongos para claridad mental, descanso y regulación del ánimo.",
+  "about": "Es el chai funcional de NutriDay Plus. Reúne quince ingredientes: adaptógenos como la ashwagandha, aminoácidos y neurotransmisores como la L-teanina, el GABA y el L-triptófano, cinco hongos funcionales, hierbas calmantes y especias, para acompañar la claridad mental y el descanso.",
+  "facts": [
+   [
+    "15",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "1",
+    "SCOOP AL DÍA"
+   ],
+   [
+    "30",
+    "DÍAS POR BOLSA"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · CHAI FUNCIONAL",
+  "ben_title": "Once beneficios para tu mente",
+  "benefits": [
+   [
+    "brain",
+    "Rendimiento mental",
+    [
+     "Mejora del rendimiento intelectual",
+     "Mejora funciones cerebrales",
+     "Apoyo en condiciones neurodegenerativas"
+    ],
+    [
+     "L-teanina",
+     "Ashwagandha",
+     "Ganoderma"
+    ],
+    null
+   ],
+   [
+    "spark",
+    "Ánimo y ansiedad",
+    [
+     "Precursor de la serotonina, clave para el estado de ánimo y el sueño",
+     "Coadyuvante en ansiedad y depresión"
+    ],
+    [
+     "L-triptófano",
+     "GABA",
+     "Ashwagandha"
+    ],
+    null
+   ],
+   [
+    "moon",
+    "Descanso",
+    [
+     "Favorece el descanso y reduce el insomnio"
+    ],
+    [
+     "Valeriana",
+     "GABA",
+     "Magnesio"
+    ],
+    "Calmantes y minerales para el sueño nocturno."
+   ],
+   [
+    "shield",
+    "Cortisol y estrés",
+    [
+     "Reduce cortisol",
+     "Adaptógeno e inmunomodulador"
+    ],
+    [
+     "Ashwagandha",
+     "Ganoderma",
+     "Chaga"
+    ],
+    null
+   ],
+   [
+    "drop",
+    "Glucosa y antioxidantes",
+    [
+     "Regula los niveles de glucosa en sangre y posee propiedades antioxidantes"
+    ],
+    [
+     "Maitake",
+     "Jengibre",
+     "Chaga"
+    ],
+    null
+   ],
+   [
+    "flame",
+    "Dolor e inflamación",
+    [
+     "Ayuda en dolores de cabeza y migrañas",
+     "Antiinflamatorio y antiviral"
+    ],
+    [
+     "Jengibre",
+     "Magnesio",
+     "Cola de pavo"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Estrés, cortisol y descanso",
+   "intro": "El estrés prolongado eleva el cortisol y altera el sueño.",
+   "steps": [
+    [
+     "Estrés",
+     "Mantiene alto el cortisol."
+    ],
+    [
+     "Adaptógenos",
+     "Se estudian por modular esa respuesta."
+    ],
+    [
+     "Calma",
+     "L-teanina, GABA y valeriana ayudan al descanso."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "ashwagandha",
+    "tag": "ADAPTÓGENO",
+    "name": "Ashwagandha",
+    "sub": "Withania somnifera",
+    "desc": "Raíz de la medicina ayurvédica, la más estudiada entre los adaptógenos.",
+    "comp": [
+     "Withanólidos"
+    ],
+    "ben": [
+     "Adaptógeno",
+     "Reduce cortisol",
+     "Antiestrés"
+    ],
+    "dato": "Sus withanólidos son lactonas esteroidales; en algunos ensayos clínicos se asoció con menor cortisol en personas con estrés."
+   },
+   {
+    "key": "te",
+    "tag": "AMINOÁCIDO",
+    "name": "L-teanina",
+    "sub": "Aminoácido del té",
+    "desc": "Aminoácido propio del té que atraviesa la barrera hematoencefálica.",
+    "comp": [
+     "L-teanina"
+    ],
+    "ben": [
+     "Calma sin somnolencia",
+     "Enfoque",
+     "Antiestrés"
+    ],
+    "dato": "En estudios con electroencefalograma aumenta la actividad de ondas alfa, asociada con relajación en estado de alerta."
+   },
+   {
+    "key": "gaba",
+    "tag": "INHIBIDOR",
+    "name": "GABA",
+    "sub": "Ácido γ-aminobutírico",
+    "desc": "El principal neurotransmisor inhibidor del sistema nervioso central.",
+    "comp": [
+     "Ácido γ-aminobutírico"
+    ],
+    "ben": [
+     "Reduce ansiedad",
+     "Relajante natural",
+     "Descanso"
+    ],
+    "dato": "El cerebro lo sintetiza a partir del glutamato, el principal neurotransmisor excitador, con la enzima glutamato descarboxilasa."
+   },
+   {
+    "key": "valeriana",
+    "tag": "RAÍZ",
+    "name": "Valeriana",
+    "sub": "Valeriana officinalis",
+    "desc": "Raíz de una planta europea, usada como relajante en la herbolaria.",
+    "comp": [
+     "Ácido valerénico"
+    ],
+    "ben": [
+     "Relajante natural",
+     "Apoyo al sueño",
+     "Reduce ansiedad"
+    ],
+    "dato": "El ácido valerénico modula los receptores GABA-A, según estudios de laboratorio."
+   },
+   {
+    "key": "toronjil",
+    "tag": "HOJA",
+    "name": "Toronjil",
+    "sub": "Melissa officinalis",
+    "desc": "Hierba aromática de la familia de la menta, usada como calmante suave.",
+    "comp": [
+     "Ácido rosmarínico"
+    ],
+    "ben": [
+     "Relajante natural",
+     "Calma digestiva",
+     "Antioxidante"
+    ],
+    "dato": "El ácido rosmarínico, abundante en la familia Lamiaceae, es uno de sus polifenoles antioxidantes más estudiados."
+   },
+   {
+    "key": "reishi",
+    "tag": "HONGO ADAPTÓGENO",
+    "name": "Hongo Ganoderma",
+    "sub": "Ganoderma lucidum",
+    "desc": "Hongo reishi de la medicina tradicional asiática, estudiado como adaptógeno.",
+    "comp": [
+     "Triterpenos",
+     "Betaglucanos"
+    ],
+    "ben": [
+     "Adaptógeno",
+     "Inmunomodulador",
+     "Antioxidante"
+    ],
+    "dato": "Sus ácidos ganodéricos son triterpenos característicos del género Ganoderma."
+   },
+   {
+    "key": "chaga",
+    "tag": "HONGO DEL ABEDUL",
+    "name": "Hongo chaga",
+    "sub": "Inonotus obliquus",
+    "desc": "Hongo de los abedules de climas fríos, con polifenoles antioxidantes.",
+    "comp": [
+     "Betaglucanos",
+     "Melanina"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Adaptógeno",
+     "Antiinflamatorio"
+    ],
+    "dato": "Acumula betulina y ácido betulínico, triterpenos que provienen de la corteza del abedul."
+   },
+   {
+    "key": "colapavo",
+    "tag": "HONGO FUNCIONAL",
+    "name": "Hongo cola de pavo",
+    "sub": "Trametes versicolor",
+    "desc": "Hongo en forma de abanico con bandas de colores, como la cola de un pavo.",
+    "comp": [
+     "PSK",
+     "PSP"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Antioxidante",
+     "Salud intestinal"
+    ],
+    "dato": "Sus polisacáridos PSK y PSP se estudian desde hace décadas en Japón y China."
+   },
+   {
+    "key": "shiitake",
+    "tag": "HONGO CULINARIO",
+    "name": "Hongo shiitake",
+    "sub": "Lentinula edodes",
+    "desc": "Hongo culinario de Asia oriental, rico en betaglucanos y ergotioneína.",
+    "comp": [
+     "Lentinano",
+     "Ergotioneína"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Antioxidante",
+     "Energía"
+    ],
+    "dato": "El lentinano, un betaglucano del shiitake, es de los polisacáridos de hongo más estudiados en inmunología."
+   },
+   {
+    "key": "maitake",
+    "tag": "HONGO FUNCIONAL",
+    "name": "Hongo maitake",
+    "sub": "Grifola frondosa",
+    "desc": "«Gallina del bosque», con un betaglucano característico llamado fracción D.",
+    "comp": [
+     "Fracción D"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Antioxidante",
+     "Glucosa"
+    ],
+    "dato": "En modelos animales se ha explorado el efecto de su extracto sobre la glucosa en sangre."
+   },
+   {
+    "key": "magnesio",
+    "tag": "MINERAL",
+    "name": "Citrato de magnesio",
+    "sub": "Magnesio + ácido cítrico",
+    "desc": "Sal de magnesio unida a ácido cítrico, de buena biodisponibilidad.",
+    "comp": [
+     "Magnesio",
+     "Citrato"
+    ],
+    "ben": [
+     "Relajación muscular",
+     "Función nerviosa",
+     "Descanso"
+    ],
+    "dato": "El magnesio es cofactor de más de 300 enzimas y regula la excitabilidad nerviosa y muscular."
+   },
+   {
+    "key": "triptofano",
+    "tag": "AMINOÁCIDO ESENCIAL",
+    "name": "L-triptófano",
+    "sub": "Precursor de serotonina",
+    "desc": "Aminoácido esencial que se obtiene de la dieta, precursor de serotonina y melatonina.",
+    "comp": [
+     "L-triptófano"
+    ],
+    "ben": [
+     "Precursor de serotonina",
+     "Precursor de melatonina",
+     "Ánimo y sueño"
+    ],
+    "dato": "Es el único precursor de la serotonina, que a su vez es precursora de la melatonina."
+   },
+   {
+    "key": "jengibre",
+    "tag": "RIZOMA",
+    "name": "Jengibre",
+    "sub": "Zingiber officinale",
+    "desc": "Rizoma tropical usado como especia y en la herbolaria asiática.",
+    "comp": [
+     "Gingeroles",
+     "Shogaoles"
+    ],
+    "ben": [
+     "Antiinflamatorio",
+     "Calma digestiva",
+     "Antioxidante"
+    ],
+    "dato": "Al secarse, los gingeroles se transforman en shogaoles, de mayor pungencia."
+   },
+   {
+    "key": "cardamomo",
+    "tag": "ESPECIA",
+    "name": "Cardamomo",
+    "sub": "Elettaria cardamomum",
+    "desc": "Semilla aromática de la India, una de las especias más antiguas.",
+    "comp": [
+     "1,8-cineol",
+     "Acetato de terpinilo"
+    ],
+    "ben": [
+     "Calma digestiva",
+     "Antioxidante",
+     "Aroma"
+    ],
+    "dato": "Su aroma proviene de aceites esenciales ricos en 1,8-cineol y acetato de α-terpinilo."
+   },
+   {
+    "key": "coco",
+    "tag": "GRASA VEGETAL",
+    "name": "Aceite de coco",
+    "sub": "Cocos nucifera",
+    "desc": "Grasa vegetal rica en ácidos grasos de cadena media.",
+    "comp": [
+     "Ácido láurico",
+     "MCT"
+    ],
+    "ben": [
+     "Energía rápida",
+     "Absorción",
+     "Base cremosa"
+    ],
+    "dato": "Sus ácidos grasos de cadena media se absorben rápido y pueden usarse como fuente de energía."
+   }
+  ],
+  "synergies": [
+   [
+    "Calma sin sueño",
+    [
+     "te",
+     "gaba",
+     "valeriana"
+    ],
+    "L-teanina · GABA · Valeriana",
+    "Tres ingredientes que se relacionan con el sistema GABA, el principal inhibidor del cerebro."
+   ],
+   [
+    "Respuesta al estrés",
+    [
+     "ashwagandha",
+     "reishi",
+     "chaga"
+    ],
+    "Ashwagandha · Ganoderma · Chaga",
+    "Un adaptógeno de raíz y dos hongos que acompañan la respuesta al estrés."
+   ],
+   [
+    "Sueño reparador",
+    [
+     "triptofano",
+     "magnesio",
+     "valeriana"
+    ],
+    "L-triptófano · Magnesio · Valeriana",
+    "Un precursor de melatonina, un mineral de la relajación y una planta calmante."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 scoop dosificador."
+   ],
+   [
+    "Disuelve",
+    "En 250 ml de agua caliente."
+   ],
+   [
+    "Disfruta",
+    "Una vez al día."
+   ]
+  ],
+  "ritual_note": "Se bebe caliente. Cada bolsa cubre 30 días.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Preparación",
+    "250 ml de agua caliente"
+   ],
+   [
+    "Toma",
+    "1 scoop al día"
+   ],
+   [
+    "Duración",
+    "30 días"
+   ],
+   [
+    "Ingredientes activos",
+    "15"
+   ]
+  ],
+  "combo": [
+   [
+    "NK+",
+    "Adaptógeno para el descanso y el sistema nervioso."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos y botánicos."
+   ],
+   [
+    "RegeneREX",
+    "Café funcional con colágeno y cordyceps."
+   ],
+   [
+    "TransFactor",
+    "Factor de transferencia con calostro."
+   ]
+  ],
+  "reco": [
+   "No exceder la porción recomendada.",
+   "Embarazo, lactancia o medicamentos: consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "nk-plus": {
+  "name": "NK+",
+  "family": "NUTRIDAY PLUS",
+  "category": "ADAPTÓGENO",
+  "tagline": "Adaptógeno para regular el cortisol, mejorar el sueño y apoyar el sistema nervioso.",
+  "about": "Es la cápsula nocturna de NutriDay Plus. Combina L-triptófano, precursor de serotonina y melatonina, con valeriana, vitamina D, té verde y guanábana, junto a los hongos shiitake y maitake, para acompañar la respuesta al estrés, el descanso y el equilibrio del sistema nervioso.",
+  "facts": [
+   [
+    "7",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "1–2",
+    "CÁPSULAS AL DÍA"
+   ],
+   [
+    "60",
+    "CÁPSULAS POR FRASCO"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · 60 CÁPSULAS",
+  "ben_title": "Nueve beneficios para tu descanso",
+  "benefits": [
+   [
+    "shield",
+    "Cortisol y estrés",
+    [
+     "Adaptógeno potente, regulador de cortisol",
+     "Relajante natural (antiestrés)"
+    ],
+    [
+     "Shiitake",
+     "Maitake",
+     "Té verde"
+    ],
+    null
+   ],
+   [
+    "brain",
+    "Ansiedad y calma",
+    [
+     "Neurotransmisor inhibidor: reduce ansiedad"
+    ],
+    [
+     "Valeriana",
+     "Té verde"
+    ],
+    "Plantas que actúan sobre el sistema GABA."
+   ],
+   [
+    "spark",
+    "Serotonina y melatonina",
+    [
+     "Precursor de serotonina y melatonina"
+    ],
+    [
+     "L-triptófano",
+     "Vitamina D"
+    ],
+    "Un aminoácido esencial que el cuerpo no produce."
+   ],
+   [
+    "moon",
+    "Sueño",
+    [
+     "Mejora el sueño"
+    ],
+    [
+     "L-triptófano",
+     "Valeriana"
+    ],
+    "Precursores y plantas para el descanso nocturno."
+   ],
+   [
+    "bolt",
+    "Energía y glucosa",
+    [
+     "Energizante natural",
+     "Estabilizador de glucosa"
+    ],
+    [
+     "Té verde",
+     "Maitake",
+     "Vitamina D"
+    ],
+    null
+   ],
+   [
+    "drop",
+    "Sistema nervioso",
+    [
+     "Soporte neuroendocrino",
+     "Coadyuvante en el sistema nervioso"
+    ],
+    [
+     "Vitamina D",
+     "L-triptófano",
+     "Valeriana"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Serotonina, melatonina y sueño",
+   "intro": "El sueño se regula con señales químicas del cerebro. NK+ aporta algunos de sus precursores.",
+   "steps": [
+    [
+     "L-triptófano",
+     "Aminoácido esencial que el cuerpo convierte en serotonina."
+    ],
+    [
+     "Serotonina",
+     "Es precursora de la melatonina."
+    ],
+    [
+     "Melatonina",
+     "Hormona que marca el ciclo sueño-vigilia."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "triptofano",
+    "tag": "AMINOÁCIDO ESENCIAL",
+    "name": "L-triptófano",
+    "sub": "Precursor de serotonina",
+    "desc": "Aminoácido que se obtiene de la dieta, presente en proteínas como el huevo, el pavo y los lácteos.",
+    "comp": [
+     "L-triptófano"
+    ],
+    "ben": [
+     "Precursor de serotonina",
+     "Precursor de melatonina",
+     "Estado de ánimo y sueño"
+    ],
+    "dato": "Es un aminoácido esencial y el único precursor de la serotonina, que a su vez es precursora de la melatonina."
+   },
+   {
+    "key": "valeriana",
+    "tag": "RAÍZ",
+    "name": "Valeriana",
+    "sub": "Valeriana officinalis",
+    "desc": "Planta europea cuya raíz se usa desde hace siglos como relajante en la herbolaria.",
+    "comp": [
+     "Ácido valerénico",
+     "Valepotriatos"
+    ],
+    "ben": [
+     "Relajante natural",
+     "Apoyo al sueño",
+     "Reduce ansiedad"
+    ],
+    "dato": "El ácido valerénico modula los receptores GABA-A, el principal sistema inhibidor del cerebro, según estudios en laboratorio."
+   },
+   {
+    "key": "te",
+    "tag": "HOJA",
+    "name": "Té verde",
+    "sub": "Camellia sinensis",
+    "desc": "Hoja sin fermentar del té, rica en polifenoles antioxidantes y en un aminoácido propio, la L-teanina.",
+    "comp": [
+     "EGCG",
+     "L-teanina"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Calma sin somnolencia",
+     "Energía suave"
+    ],
+    "dato": "Es de las pocas fuentes alimentarias de L-teanina, un aminoácido que atraviesa la barrera hematoencefálica."
+   },
+   {
+    "key": "vitamind",
+    "tag": "VITAMINA",
+    "name": "Vitamina D",
+    "sub": "Calciferol",
+    "desc": "Vitamina liposoluble que actúa también como hormona. Participa en la absorción del calcio y en el sistema inmune.",
+    "comp": [
+     "Calciferol"
+    ],
+    "ben": [
+     "Sistema inmune",
+     "Soporte neuroendocrino",
+     "Salud ósea"
+    ],
+    "dato": "Se sintetiza en la piel con luz solar UVB, y sus receptores están presentes en distintas regiones del cerebro."
+   },
+   {
+    "key": "shiitake",
+    "tag": "HONGO CULINARIO",
+    "name": "Shiitake",
+    "sub": "Lentinula edodes",
+    "desc": "Hongo culinario de Asia oriental, rico en betaglucanos y en ergotioneína.",
+    "comp": [
+     "Lentinano",
+     "Ergotioneína"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Adaptógeno",
+     "Antioxidante"
+    ],
+    "dato": "Es de las mayores fuentes alimentarias de ergotioneína, un aminoácido antioxidante que el cuerpo capta con un transportador específico."
+   },
+   {
+    "key": "maitake",
+    "tag": "HONGO FUNCIONAL",
+    "name": "Maitake",
+    "sub": "Grifola frondosa",
+    "desc": "Hongo conocido como «gallina del bosque», con un betaglucano característico llamado fracción D.",
+    "comp": [
+     "Fracción D",
+     "Betaglucanos"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Estabilizador de glucosa",
+     "Adaptógeno"
+    ],
+    "dato": "Su fracción D es un betaglucano ramificado; en modelos animales se ha explorado su efecto sobre la glucosa en sangre."
+   },
+   {
+    "key": "guanabana",
+    "tag": "FRUTO TROPICAL",
+    "name": "Guanábana",
+    "sub": "Annona muricata",
+    "desc": "Fruto tropical de América, de pulpa blanca y aromática, que aporta vitamina C, fibra y polifenoles.",
+    "comp": [
+     "Flavonoides",
+     "Vitamina C"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Bienestar general",
+     "Defensas"
+    ],
+    "dato": "Pertenece a la familia Annonaceae, una de las más abundantes en frutos de los trópicos de América."
+   }
+  ],
+  "synergies": [
+   [
+    "Descanso nocturno",
+    [
+     "triptofano",
+     "valeriana",
+     "te"
+    ],
+    "L-triptófano · Valeriana · Té verde",
+    "Un precursor de melatonina, una planta que modula el sistema GABA y la L-teanina del té."
+   ],
+   [
+    "Respuesta al estrés",
+    [
+     "shiitake",
+     "maitake",
+     "te"
+    ],
+    "Shiitake · Maitake · Té verde",
+    "Betaglucanos de hongos y polifenoles del té que acompañan al organismo frente al estrés."
+   ],
+   [
+    "Sistema nervioso",
+    [
+     "vitamind",
+     "triptofano",
+     "valeriana"
+    ],
+    "Vitamina D · L-triptófano · Valeriana",
+    "Una vitamina con receptores en el cerebro, un precursor de neurotransmisores y una planta calmante."
+   ]
+  ],
+  "ritual": [
+   [
+    "Toma",
+    "1 a 2 cápsulas, según tolerancia."
+   ],
+   [
+    "Cuándo",
+    "Por la tarde o noche."
+   ],
+   [
+    "Constancia",
+    "Uso cíclico: 8 semanas mínimo."
+   ]
+  ],
+  "ritual_note": "Con 2 cápsulas al día, el frasco cubre 30 días.",
+  "quick": [
+   [
+    "Presentación",
+    "Cápsulas"
+   ],
+   [
+    "Contenido",
+    "60 cápsulas"
+   ],
+   [
+    "Dosis diaria",
+    "1 a 2 cápsulas"
+   ],
+   [
+    "Ciclo mínimo",
+    "8 semanas"
+   ],
+   [
+    "Ingredientes activos",
+    "7"
+   ]
+  ],
+  "combo": [
+   [
+    "TransFactor",
+    "Factor de transferencia con calostro."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos y botánicos."
+   ],
+   [
+    "ResNAD",
+    "Precursores de NAD+ con resveratrol."
+   ],
+   [
+    "RegeneREX",
+    "Café funcional con colágeno y cordyceps."
+   ]
+  ],
+  "reco": [
+   "No exceder la porción recomendada.",
+   "Embarazo, lactancia o medicamentos: consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "nutriday-red": {
+  "name": "NutriDay Red y Brown",
+  "family": "NUTRIDAY PLUS",
+  "category": "PROTEÍNA CON PROBIÓTICOS",
+  "cover_pack": "left: 218px; top: 40px; width: 380px; height: 300px",
+  "hero_pack": "left: 22px; top: 110px; width: 270px; height: 190px",
+  "tagline": "Proteína de fresa o de avellana con 4 cepas probióticas y aminoácidos para recuperación muscular y saciedad.",
+  "about": "Es la proteína de NutriDay Plus, en dos sabores: Red, de fresa, y Brown, de avellana, con la misma fórmula. Reúne proteína de suero, avena y fibra con L-arginina, L-cisteína, vitamina K y complejo B, además de cuatro cepas probióticas, para la recuperación, la saciedad y el equilibrio intestinal.",
+  "facts": [
+   [
+    "12",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "20 g",
+    "PORCIÓN"
+   ],
+   [
+    "4",
+    "CEPAS PROBIÓTICAS"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · 500 g · FRESA Y AVELLANA",
+  "ben_title": "Seis beneficios, dos sabores",
+  "benefits": [
+   [
+    "muscle",
+    "Músculo y recuperación",
+    [
+     "Aporte proteico y de aminoácidos esenciales para síntesis muscular y recuperación"
+    ],
+    [
+     "Proteína de suero",
+     "L-arginina",
+     "L-cisteína"
+    ],
+    null
+   ],
+   [
+    "body",
+    "Nutrición completa",
+    [
+     "Apoyo en déficits nutricionales o alimentación incompleta"
+    ],
+    [
+     "Proteína de suero",
+     "Complejo B",
+     "Vitamina K"
+    ],
+    "Proteína, vitaminas y fibra en una toma."
+   ],
+   [
+    "flame",
+    "Dietas hipocalóricas",
+    [
+     "Complemento en dietas de bajo contenido calórico o hipocalóricas"
+    ],
+    [
+     "Proteína de suero",
+     "Goma guar",
+     "Avena"
+    ],
+    "Proteína y fibra que dan saciedad."
+   ],
+   [
+    "shield",
+    "Defensas",
+    [
+     "Fortalecimiento del sistema inmunológico"
+    ],
+    [
+     "Probióticos",
+     "L-cisteína",
+     "Proteína de suero"
+    ],
+    null
+   ],
+   [
+    "heart",
+    "Adultos mayores y deportistas",
+    [
+     "Soporte para adultos mayores y deportistas"
+    ],
+    [
+     "Proteína de suero",
+     "Vitamina K",
+     "L-arginina"
+    ],
+    null
+   ],
+   [
+    "gut",
+    "Probióticos",
+    [
+     "4 cepas probióticas, 14 mil millones de UFC en cada cepa"
+    ],
+    [
+     "L. acidophilus",
+     "B. lactis",
+     "L. rhamnosus",
+     "L. plantarum"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Proteína y probióticos",
+   "intro": "La proteína repara el músculo; los probióticos acompañan a la microbiota.",
+   "steps": [
+    [
+     "Proteína de suero",
+     "Se digiere rápido y aporta leucina."
+    ],
+    [
+     "Fibra",
+     "Avena y goma guar dan saciedad."
+    ],
+    [
+     "Probióticos",
+     "Cuatro cepas vivas por porción."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "suero",
+    "tag": "PROTEÍNA DE LECHE",
+    "name": "Proteína de suero de leche",
+    "sub": "Whey",
+    "desc": "Proteína de alto valor biológico que se obtiene del suero de la leche, con todos los aminoácidos esenciales.",
+    "comp": [
+     "Leucina",
+     "Lactoalbúmina",
+     "Betalactoglobulina"
+    ],
+    "ben": [
+     "Síntesis muscular",
+     "Recuperación",
+     "Aminoácidos esenciales"
+    ],
+    "dato": "Es rica en leucina, el aminoácido que más activa la vía mTOR de síntesis de proteína muscular."
+   },
+   {
+    "key": "avena",
+    "tag": "CEREAL",
+    "name": "Avena",
+    "sub": "Avena sativa",
+    "desc": "Cereal rico en fibra soluble y en betaglucanos, además de carbohidratos de absorción lenta.",
+    "comp": [
+     "Betaglucanos",
+     "Fibra soluble"
+    ],
+    "ben": [
+     "Saciedad",
+     "Energía sostenida",
+     "Tránsito intestinal"
+    ],
+    "dato": "Los betaglucanos de la avena forman un gel viscoso en el intestino que ralentiza la absorción de glucosa."
+   },
+   {
+    "key": "guar",
+    "tag": "FIBRA",
+    "name": "Goma guar",
+    "sub": "Cyamopsis tetragonoloba",
+    "desc": "Fibra soluble que se extrae de la semilla del guar, una leguminosa de la India.",
+    "comp": [
+     "Galactomananos"
+    ],
+    "ben": [
+     "Saciedad",
+     "Textura",
+     "Tránsito intestinal"
+    ],
+    "dato": "Sus galactomananos retienen agua y forman geles de alta viscosidad, de ahí su uso como espesante."
+   },
+   {
+    "key": "estevia",
+    "tag": "ENDULZANTE",
+    "name": "Estevia",
+    "sub": "Stevia rebaudiana",
+    "desc": "Endulzante natural de origen vegetal que no aporta calorías.",
+    "comp": [
+     "Esteviósido",
+     "Rebaudiósido A"
+    ],
+    "ben": [
+     "Sin calorías",
+     "Sabor dulce",
+     "Sin azúcar"
+    ],
+    "dato": "Los glucósidos de esteviol son hasta 300 veces más dulces que la sacarosa."
+   },
+   {
+    "key": "vitk",
+    "tag": "VITAMINA",
+    "name": "Vitamina K",
+    "sub": "Filoquinona / menaquinonas",
+    "desc": "Vitamina liposoluble esencial para la coagulación de la sangre y para la salud de los huesos.",
+    "comp": [
+     "K1",
+     "K2"
+    ],
+    "ben": [
+     "Salud ósea",
+     "Coagulación",
+     "Adultos mayores"
+    ],
+    "dato": "Es cofactor de la enzima γ-glutamil carboxilasa, que activa proteínas de la coagulación y del hueso, como la osteocalcina."
+   },
+   {
+    "key": "vitaminab",
+    "tag": "VITAMINAS",
+    "name": "Complejo B",
+    "sub": "Vitaminas del grupo B",
+    "desc": "Grupo de vitaminas hidrosolubles que participan en la obtención de energía a partir de los alimentos.",
+    "comp": [
+     "B6",
+     "B12",
+     "Ácido fólico"
+    ],
+    "ben": [
+     "Energía celular",
+     "Sistema nervioso",
+     "Metabolismo"
+    ],
+    "dato": "Funcionan como coenzimas en el metabolismo de carbohidratos, grasas y proteínas."
+   },
+   {
+    "key": "arginina",
+    "tag": "AMINOÁCIDO",
+    "name": "L-arginina",
+    "sub": "Aminoácido condicionalmente esencial",
+    "desc": "Aminoácido que el cuerpo produce, pero que se necesita más durante el esfuerzo físico o la recuperación.",
+    "comp": [
+     "L-arginina"
+    ],
+    "ben": [
+     "Recuperación",
+     "Circulación",
+     "Músculo"
+    ],
+    "dato": "Es el sustrato con el que las enzimas NO sintasa producen óxido nítrico, un vasodilatador."
+   },
+   {
+    "key": "cisteina",
+    "tag": "AMINOÁCIDO",
+    "name": "L-cisteína",
+    "sub": "Aminoácido azufrado",
+    "desc": "Aminoácido con azufre, necesario para formar proteínas y glutatión.",
+    "comp": [
+     "Grupo tiol (–SH)"
+    ],
+    "ben": [
+     "Precursor de glutatión",
+     "Antioxidante",
+     "Defensas"
+    ],
+    "dato": "Es el aminoácido limitante para que la célula sintetice glutatión."
+   },
+   {
+    "key": "probiotico",
+    "tag": "PROBIÓTICO",
+    "name": "Lactobacillus acidophilus",
+    "sub": "Cepa probiótica",
+    "desc": "Bacteria láctica que habita el intestino delgado y la boca, y que fermenta la lactosa.",
+    "comp": [
+     "Ácido láctico"
+    ],
+    "ben": [
+     "Equilibrio intestinal",
+     "Digestión",
+     "Defensas"
+    ],
+    "dato": "Produce ácido láctico, que baja el pH del medio intestinal."
+   },
+   {
+    "key": "probiotico",
+    "tag": "PROBIÓTICO",
+    "name": "Bifidobacterium lactis",
+    "sub": "Cepa probiótica",
+    "desc": "Bacteria anaerobia que forma parte de la microbiota del colon.",
+    "comp": [
+     "Acetato",
+     "Lactato"
+    ],
+    "ben": [
+     "Tránsito intestinal",
+     "Digestión",
+     "Defensas"
+    ],
+    "dato": "Las bifidobacterias fermentan fibras y producen ácidos grasos de cadena corta."
+   },
+   {
+    "key": "probiotico",
+    "tag": "PROBIÓTICO",
+    "name": "Lactobacillus rhamnosus",
+    "sub": "Cepa probiótica",
+    "desc": "Bacteria láctica resistente al ácido gástrico y a la bilis, de las más estudiadas como probiótico.",
+    "comp": [
+     "Ácido láctico"
+    ],
+    "ben": [
+     "Equilibrio intestinal",
+     "Defensas",
+     "Digestión"
+    ],
+    "dato": "Su resistencia al ácido gástrico y a la bilis le permite llegar viva al intestino."
+   },
+   {
+    "key": "probiotico",
+    "tag": "PROBIÓTICO",
+    "name": "Lactobacillus plantarum",
+    "sub": "Cepa probiótica",
+    "desc": "Bacteria láctica presente en alimentos fermentados, como el chucrut y los encurtidos.",
+    "comp": [
+     "Ácido láctico",
+     "Bacteriocinas"
+    ],
+    "ben": [
+     "Equilibrio intestinal",
+     "Digestión",
+     "Defensas"
+    ],
+    "dato": "Produce bacteriocinas, péptidos que inhiben a otras bacterias."
+   }
+  ],
+  "synergies": [
+   [
+    "Recuperación muscular",
+    [
+     "suero",
+     "arginina",
+     "cisteina"
+    ],
+    "Proteína de suero · L-arginina · L-cisteína",
+    "Proteína completa y dos aminoácidos que apoyan la reparación del músculo."
+   ],
+   [
+    "Saciedad",
+    [
+     "avena",
+     "guar",
+     "suero"
+    ],
+    "Avena · Goma guar · Proteína",
+    "Fibra soluble y proteína, dos nutrientes que alargan la sensación de saciedad."
+   ],
+   [
+    "Equilibrio intestinal",
+    [
+     "probiotico",
+     "avena",
+     "guar"
+    ],
+    "Probióticos · Avena · Goma guar",
+    "Cuatro cepas vivas junto a fibras que sirven de alimento a la microbiota."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 porción de 20 g."
+   ],
+   [
+    "Mezcla",
+    "En 250–300 ml de agua o bebida vegetal."
+   ],
+   [
+    "Disfruta",
+    "1 a 2 veces al día."
+   ]
+  ],
+  "ritual_note": "Ideal después del ejercicio o como desayuno o cena funcional.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Contenido",
+    "500 g"
+   ],
+   [
+    "Sabores",
+    "Fresa y avellana"
+   ],
+   [
+    "Porción",
+    "20 g"
+   ],
+   [
+    "Tomas al día",
+    "1 a 2"
+   ]
+  ],
+  "combo": [
+   [
+    "Green Plus",
+    "Jugo verde con espirulina y chlorella."
+   ],
+   [
+    "PureBody",
+    "Cápsulas depurativas con tejocote."
+   ],
+   [
+    "Active Burn+",
+    "Termogénico con hongos y cacao."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos."
+   ]
+  ],
+  "reco": [
+   "Contiene derivados de leche. Brown contiene avellana.",
+   "Si tomas anticoagulantes, consulta a tu médico (vitamina K).",
+   "No exceder la porción recomendada.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "nutriday-brown": {
+  "name": "NutriDay Red y Brown",
+  "family": "NUTRIDAY PLUS",
+  "category": "PROTEÍNA CON PROBIÓTICOS",
+  "cover_pack": "left: 218px; top: 40px; width: 380px; height: 300px",
+  "hero_pack": "left: 22px; top: 110px; width: 270px; height: 190px",
+  "tagline": "Proteína de fresa o de avellana con 4 cepas probióticas y aminoácidos para recuperación muscular y saciedad.",
+  "about": "Es la proteína de NutriDay Plus, en dos sabores: Red, de fresa, y Brown, de avellana, con la misma fórmula. Reúne proteína de suero, avena y fibra con L-arginina, L-cisteína, vitamina K y complejo B, además de cuatro cepas probióticas, para la recuperación, la saciedad y el equilibrio intestinal.",
+  "facts": [
+   [
+    "12",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "20 g",
+    "PORCIÓN"
+   ],
+   [
+    "4",
+    "CEPAS PROBIÓTICAS"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · 500 g · FRESA Y AVELLANA",
+  "ben_title": "Seis beneficios, dos sabores",
+  "benefits": [
+   [
+    "muscle",
+    "Músculo y recuperación",
+    [
+     "Aporte proteico y de aminoácidos esenciales para síntesis muscular y recuperación"
+    ],
+    [
+     "Proteína de suero",
+     "L-arginina",
+     "L-cisteína"
+    ],
+    null
+   ],
+   [
+    "body",
+    "Nutrición completa",
+    [
+     "Apoyo en déficits nutricionales o alimentación incompleta"
+    ],
+    [
+     "Proteína de suero",
+     "Complejo B",
+     "Vitamina K"
+    ],
+    "Proteína, vitaminas y fibra en una toma."
+   ],
+   [
+    "flame",
+    "Dietas hipocalóricas",
+    [
+     "Complemento en dietas de bajo contenido calórico o hipocalóricas"
+    ],
+    [
+     "Proteína de suero",
+     "Goma guar",
+     "Avena"
+    ],
+    "Proteína y fibra que dan saciedad."
+   ],
+   [
+    "shield",
+    "Defensas",
+    [
+     "Fortalecimiento del sistema inmunológico"
+    ],
+    [
+     "Probióticos",
+     "L-cisteína",
+     "Proteína de suero"
+    ],
+    null
+   ],
+   [
+    "heart",
+    "Adultos mayores y deportistas",
+    [
+     "Soporte para adultos mayores y deportistas"
+    ],
+    [
+     "Proteína de suero",
+     "Vitamina K",
+     "L-arginina"
+    ],
+    null
+   ],
+   [
+    "gut",
+    "Probióticos",
+    [
+     "4 cepas probióticas, 14 mil millones de UFC en cada cepa"
+    ],
+    [
+     "L. acidophilus",
+     "B. lactis",
+     "L. rhamnosus",
+     "L. plantarum"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Proteína y probióticos",
+   "intro": "La proteína repara el músculo; los probióticos acompañan a la microbiota.",
+   "steps": [
+    [
+     "Proteína de suero",
+     "Se digiere rápido y aporta leucina."
+    ],
+    [
+     "Fibra",
+     "Avena y goma guar dan saciedad."
+    ],
+    [
+     "Probióticos",
+     "Cuatro cepas vivas por porción."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "suero",
+    "tag": "PROTEÍNA DE LECHE",
+    "name": "Proteína de suero de leche",
+    "sub": "Whey",
+    "desc": "Proteína de alto valor biológico que se obtiene del suero de la leche, con todos los aminoácidos esenciales.",
+    "comp": [
+     "Leucina",
+     "Lactoalbúmina",
+     "Betalactoglobulina"
+    ],
+    "ben": [
+     "Síntesis muscular",
+     "Recuperación",
+     "Aminoácidos esenciales"
+    ],
+    "dato": "Es rica en leucina, el aminoácido que más activa la vía mTOR de síntesis de proteína muscular."
+   },
+   {
+    "key": "avena",
+    "tag": "CEREAL",
+    "name": "Avena",
+    "sub": "Avena sativa",
+    "desc": "Cereal rico en fibra soluble y en betaglucanos, además de carbohidratos de absorción lenta.",
+    "comp": [
+     "Betaglucanos",
+     "Fibra soluble"
+    ],
+    "ben": [
+     "Saciedad",
+     "Energía sostenida",
+     "Tránsito intestinal"
+    ],
+    "dato": "Los betaglucanos de la avena forman un gel viscoso en el intestino que ralentiza la absorción de glucosa."
+   },
+   {
+    "key": "guar",
+    "tag": "FIBRA",
+    "name": "Goma guar",
+    "sub": "Cyamopsis tetragonoloba",
+    "desc": "Fibra soluble que se extrae de la semilla del guar, una leguminosa de la India.",
+    "comp": [
+     "Galactomananos"
+    ],
+    "ben": [
+     "Saciedad",
+     "Textura",
+     "Tránsito intestinal"
+    ],
+    "dato": "Sus galactomananos retienen agua y forman geles de alta viscosidad, de ahí su uso como espesante."
+   },
+   {
+    "key": "estevia",
+    "tag": "ENDULZANTE",
+    "name": "Estevia",
+    "sub": "Stevia rebaudiana",
+    "desc": "Endulzante natural de origen vegetal que no aporta calorías.",
+    "comp": [
+     "Esteviósido",
+     "Rebaudiósido A"
+    ],
+    "ben": [
+     "Sin calorías",
+     "Sabor dulce",
+     "Sin azúcar"
+    ],
+    "dato": "Los glucósidos de esteviol son hasta 300 veces más dulces que la sacarosa."
+   },
+   {
+    "key": "vitk",
+    "tag": "VITAMINA",
+    "name": "Vitamina K",
+    "sub": "Filoquinona / menaquinonas",
+    "desc": "Vitamina liposoluble esencial para la coagulación de la sangre y para la salud de los huesos.",
+    "comp": [
+     "K1",
+     "K2"
+    ],
+    "ben": [
+     "Salud ósea",
+     "Coagulación",
+     "Adultos mayores"
+    ],
+    "dato": "Es cofactor de la enzima γ-glutamil carboxilasa, que activa proteínas de la coagulación y del hueso, como la osteocalcina."
+   },
+   {
+    "key": "vitaminab",
+    "tag": "VITAMINAS",
+    "name": "Complejo B",
+    "sub": "Vitaminas del grupo B",
+    "desc": "Grupo de vitaminas hidrosolubles que participan en la obtención de energía a partir de los alimentos.",
+    "comp": [
+     "B6",
+     "B12",
+     "Ácido fólico"
+    ],
+    "ben": [
+     "Energía celular",
+     "Sistema nervioso",
+     "Metabolismo"
+    ],
+    "dato": "Funcionan como coenzimas en el metabolismo de carbohidratos, grasas y proteínas."
+   },
+   {
+    "key": "arginina",
+    "tag": "AMINOÁCIDO",
+    "name": "L-arginina",
+    "sub": "Aminoácido condicionalmente esencial",
+    "desc": "Aminoácido que el cuerpo produce, pero que se necesita más durante el esfuerzo físico o la recuperación.",
+    "comp": [
+     "L-arginina"
+    ],
+    "ben": [
+     "Recuperación",
+     "Circulación",
+     "Músculo"
+    ],
+    "dato": "Es el sustrato con el que las enzimas NO sintasa producen óxido nítrico, un vasodilatador."
+   },
+   {
+    "key": "cisteina",
+    "tag": "AMINOÁCIDO",
+    "name": "L-cisteína",
+    "sub": "Aminoácido azufrado",
+    "desc": "Aminoácido con azufre, necesario para formar proteínas y glutatión.",
+    "comp": [
+     "Grupo tiol (–SH)"
+    ],
+    "ben": [
+     "Precursor de glutatión",
+     "Antioxidante",
+     "Defensas"
+    ],
+    "dato": "Es el aminoácido limitante para que la célula sintetice glutatión."
+   },
+   {
+    "key": "probiotico",
+    "tag": "PROBIÓTICO",
+    "name": "Lactobacillus acidophilus",
+    "sub": "Cepa probiótica",
+    "desc": "Bacteria láctica que habita el intestino delgado y la boca, y que fermenta la lactosa.",
+    "comp": [
+     "Ácido láctico"
+    ],
+    "ben": [
+     "Equilibrio intestinal",
+     "Digestión",
+     "Defensas"
+    ],
+    "dato": "Produce ácido láctico, que baja el pH del medio intestinal."
+   },
+   {
+    "key": "probiotico",
+    "tag": "PROBIÓTICO",
+    "name": "Bifidobacterium lactis",
+    "sub": "Cepa probiótica",
+    "desc": "Bacteria anaerobia que forma parte de la microbiota del colon.",
+    "comp": [
+     "Acetato",
+     "Lactato"
+    ],
+    "ben": [
+     "Tránsito intestinal",
+     "Digestión",
+     "Defensas"
+    ],
+    "dato": "Las bifidobacterias fermentan fibras y producen ácidos grasos de cadena corta."
+   },
+   {
+    "key": "probiotico",
+    "tag": "PROBIÓTICO",
+    "name": "Lactobacillus rhamnosus",
+    "sub": "Cepa probiótica",
+    "desc": "Bacteria láctica resistente al ácido gástrico y a la bilis, de las más estudiadas como probiótico.",
+    "comp": [
+     "Ácido láctico"
+    ],
+    "ben": [
+     "Equilibrio intestinal",
+     "Defensas",
+     "Digestión"
+    ],
+    "dato": "Su resistencia al ácido gástrico y a la bilis le permite llegar viva al intestino."
+   },
+   {
+    "key": "probiotico",
+    "tag": "PROBIÓTICO",
+    "name": "Lactobacillus plantarum",
+    "sub": "Cepa probiótica",
+    "desc": "Bacteria láctica presente en alimentos fermentados, como el chucrut y los encurtidos.",
+    "comp": [
+     "Ácido láctico",
+     "Bacteriocinas"
+    ],
+    "ben": [
+     "Equilibrio intestinal",
+     "Digestión",
+     "Defensas"
+    ],
+    "dato": "Produce bacteriocinas, péptidos que inhiben a otras bacterias."
+   }
+  ],
+  "synergies": [
+   [
+    "Recuperación muscular",
+    [
+     "suero",
+     "arginina",
+     "cisteina"
+    ],
+    "Proteína de suero · L-arginina · L-cisteína",
+    "Proteína completa y dos aminoácidos que apoyan la reparación del músculo."
+   ],
+   [
+    "Saciedad",
+    [
+     "avena",
+     "guar",
+     "suero"
+    ],
+    "Avena · Goma guar · Proteína",
+    "Fibra soluble y proteína, dos nutrientes que alargan la sensación de saciedad."
+   ],
+   [
+    "Equilibrio intestinal",
+    [
+     "probiotico",
+     "avena",
+     "guar"
+    ],
+    "Probióticos · Avena · Goma guar",
+    "Cuatro cepas vivas junto a fibras que sirven de alimento a la microbiota."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 porción de 20 g."
+   ],
+   [
+    "Mezcla",
+    "En 250–300 ml de agua o bebida vegetal."
+   ],
+   [
+    "Disfruta",
+    "1 a 2 veces al día."
+   ]
+  ],
+  "ritual_note": "Ideal después del ejercicio o como desayuno o cena funcional.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Contenido",
+    "500 g"
+   ],
+   [
+    "Sabores",
+    "Fresa y avellana"
+   ],
+   [
+    "Porción",
+    "20 g"
+   ],
+   [
+    "Tomas al día",
+    "1 a 2"
+   ]
+  ],
+  "combo": [
+   [
+    "Green Plus",
+    "Jugo verde con espirulina y chlorella."
+   ],
+   [
+    "PureBody",
+    "Cápsulas depurativas con tejocote."
+   ],
+   [
+    "Active Burn+",
+    "Termogénico con hongos y cacao."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos."
+   ]
+  ],
+  "reco": [
+   "Contiene derivados de leche. Brown contiene avellana.",
+   "Si tomas anticoagulantes, consulta a tu médico (vitamina K).",
+   "No exceder la porción recomendada.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "purebody": {
+  "name": "PureBody",
+  "family": "NUTRIDAY PLUS",
+  "category": "DEPURATIVO",
+  "tagline": "Cápsulas depurativas que apoyan el control del apetito, la lipólisis y la digestión.",
+  "about": "Es la cápsula depurativa de NutriDay Plus. Reúne L-carnitina, que lleva los ácidos grasos a la mitocondria, con mango africano, alcachofa, tejocote y semilla de papaya, plantas usadas para el apetito y la digestión, además de vitamina C y calcio como apoyo nutricional.",
+  "facts": [
+   [
+    "7",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "1",
+    "CÁPSULA AL DÍA"
+   ],
+   [
+    "30",
+    "CÁPSULAS POR FRASCO"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · 30 CÁPSULAS",
+  "ben_title": "Nueve beneficios en una cápsula",
+  "benefits": [
+   [
+    "drop",
+    "Apetito y metabolismo lipídico",
+    [
+     "Regula el apetito y apoya el control del metabolismo lipídico"
+    ],
+    [
+     "Mango africano",
+     "Tejocote",
+     "Alcachofa"
+    ],
+    null
+   ],
+   [
+    "spark",
+    "Reducción de peso",
+    [
+     "Coadyuvante en programas de reducción de peso"
+    ],
+    [
+     "Mango africano",
+     "L-carnitina",
+     "Alcachofa"
+    ],
+    null
+   ],
+   [
+    "flame",
+    "Energía y lipólisis",
+    [
+     "Favorece el transporte de ácidos grasos a la mitocondria",
+     "Participa en procesos de lipólisis"
+    ],
+    [
+     "L-carnitina",
+     "Vitamina C"
+    ],
+    null
+   ],
+   [
+    "body",
+    "Soporte óseo y neuromuscular",
+    [
+     "Brinda soporte al sistema óseo y neuromuscular"
+    ],
+    [
+     "Calcio",
+     "Vitamina C"
+    ],
+    "Mineral y vitamina para huesos y músculos."
+   ],
+   [
+    "gut",
+    "Digestión y depuración",
+    [
+     "Posee propiedades digestivas y antiparasitarias",
+     "Mejora la digestión y depuración natural"
+    ],
+    [
+     "Alcachofa",
+     "Semilla de papaya",
+     "Tejocote"
+    ],
+    null
+   ],
+   [
+    "leaf",
+    "Salud intestinal",
+    [
+     "Contribuye a una mejor salud intestinal",
+     "Tradicionalmente usada como laxante suave y eliminadora de grasa residual"
+    ],
+    [
+     "Semilla de papaya",
+     "Tejocote"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Grasa y mitocondria",
+   "intro": "La grasa es un combustible celular. Para usarla, las células necesitan llevarla hasta la mitocondria.",
+   "steps": [
+    [
+     "Ácidos grasos",
+     "Se liberan del tejido graso como fuente de energía."
+    ],
+    [
+     "L-carnitina",
+     "Transporta los ácidos grasos al interior de la mitocondria."
+    ],
+    [
+     "Energía",
+     "Ahí se oxidan para producir ATP."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "carnitina",
+    "tag": "AMINOÁCIDO",
+    "name": "L-carnitina",
+    "sub": "Derivado de lisina y metionina",
+    "desc": "Compuesto que el cuerpo sintetiza a partir de lisina y metionina, y que también se obtiene de la carne y los lácteos.",
+    "comp": [
+     "L-carnitina"
+    ],
+    "ben": [
+     "Metabolismo de grasa",
+     "Energía celular",
+     "Lipólisis"
+    ],
+    "dato": "Más del 95 % de la carnitina del cuerpo se concentra en el músculo esquelético y en el corazón."
+   },
+   {
+    "key": "mangoafricano",
+    "tag": "SEMILLA TROPICAL",
+    "name": "Mango africano",
+    "sub": "Irvingia gabonensis",
+    "desc": "Árbol de África occidental cuya semilla es rica en fibra soluble y grasa. Se estudia en programas de control de peso.",
+    "comp": [
+     "Fibra soluble",
+     "Ácido láurico"
+    ],
+    "ben": [
+     "Control del apetito",
+     "Metabolismo lipídico",
+     "Reducción de peso"
+    ],
+    "dato": "En ensayos clínicos pequeños, su extracto se asoció con cambios en el peso, los lípidos en sangre y la leptina."
+   },
+   {
+    "key": "alcachofa",
+    "tag": "HOJA DE ALCACHOFA",
+    "name": "Alcachofa",
+    "sub": "Cynara scolymus",
+    "desc": "Planta del Mediterráneo. Su hoja se usa desde hace siglos como apoyo para la digestión y el hígado.",
+    "comp": [
+     "Cinarina",
+     "Ácido clorogénico"
+    ],
+    "ben": [
+     "Digestión",
+     "Depuración natural",
+     "Metabolismo lipídico"
+    ],
+    "dato": "El extracto de hoja de alcachofa estimula la secreción de bilis (efecto colerético), que participa en la digestión de grasas."
+   },
+   {
+    "key": "tejocote",
+    "tag": "HOJA DE TEJOCOTE",
+    "name": "Tejocote",
+    "sub": "Crataegus mexicana",
+    "desc": "Árbol mexicano de la familia de los espinos. Su fruto y su hoja se usan en la herbolaria de México.",
+    "comp": [
+     "Vitexina",
+     "Procianidinas"
+    ],
+    "ben": [
+     "Apetito y peso",
+     "Digestión",
+     "Antioxidante"
+    ],
+    "dato": "Pertenece al género Crataegus, el del espino blanco, cuyas hojas contienen flavonoides como la vitexina."
+   },
+   {
+    "key": "papaya",
+    "tag": "SEMILLA",
+    "name": "Semilla de papaya",
+    "sub": "Carica papaya",
+    "desc": "La semilla de la papaya, de sabor picante, se usa en la herbolaria tropical como apoyo digestivo y antiparasitario.",
+    "comp": [
+     "Isotiocianato de bencilo"
+    ],
+    "ben": [
+     "Digestión",
+     "Salud intestinal",
+     "Antiparasitario"
+    ],
+    "dato": "Contiene isotiocianato de bencilo, un compuesto azufrado derivado de glucosinolatos que se estudia por su actividad antiparasitaria."
+   },
+   {
+    "key": "vitaminac",
+    "tag": "VITAMINA",
+    "name": "Vitamina C",
+    "sub": "Ácido ascórbico",
+    "desc": "Vitamina hidrosoluble esencial. Es antioxidante y participa en la formación de colágeno.",
+    "comp": [
+     "Ácido ascórbico"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Soporte nutricional",
+     "Colágeno y tejidos"
+    ],
+    "dato": "Es cofactor de las enzimas que sintetizan carnitina en el organismo, por lo que se relaciona con el metabolismo energético."
+   },
+   {
+    "key": "calcio",
+    "tag": "MINERAL",
+    "name": "Calcio",
+    "sub": "Mineral esencial",
+    "desc": "El mineral más abundante del cuerpo. Además de formar huesos y dientes, interviene en la contracción muscular y en la señal nerviosa.",
+    "comp": [
+     "Calcio elemental"
+    ],
+    "ben": [
+     "Soporte óseo",
+     "Función neuromuscular",
+     "Contracción muscular"
+    ],
+    "dato": "Cerca del 99 % del calcio del cuerpo está en huesos y dientes; el resto circula en la sangre y los tejidos."
+   }
+  ],
+  "synergies": [
+   [
+    "Energía desde la grasa",
+    [
+     "carnitina",
+     "vitaminac",
+     "mangoafricano"
+    ],
+    "L-carnitina · Vitamina C · Mango africano",
+    "La vitamina C participa en la síntesis de carnitina, que lleva la grasa a la mitocondria."
+   ],
+   [
+    "Digestión y depuración",
+    [
+     "alcachofa",
+     "papaya",
+     "tejocote"
+    ],
+    "Alcachofa · Semilla de papaya · Tejocote",
+    "Tres plantas de uso tradicional que acompañan la digestión y la salud intestinal."
+   ],
+   [
+    "Huesos y músculo",
+    [
+     "calcio",
+     "vitaminac",
+     "carnitina"
+    ],
+    "Calcio · Vitamina C · L-carnitina",
+    "El calcio aporta el mineral, la vitamina C participa en el colágeno y la carnitina en la energía del músculo."
+   ]
+  ],
+  "ritual": [
+   [
+    "Toma",
+    "1 cápsula."
+   ],
+   [
+    "Cuándo",
+    "En ayunas o antes de dormir."
+   ],
+   [
+    "Con agua",
+    "Con abundante agua."
+   ]
+  ],
+  "ritual_note": "1 cápsula al día. Cada frasco cubre 30 días de uso.",
+  "quick": [
+   [
+    "Presentación",
+    "Cápsulas"
+   ],
+   [
+    "Contenido",
+    "30 cápsulas"
+   ],
+   [
+    "Dosis diaria",
+    "1 cápsula"
+   ],
+   [
+    "Duración",
+    "30 días"
+   ],
+   [
+    "Ingredientes activos",
+    "7"
+   ]
+  ],
+  "combo": [
+   [
+    "Green Plus",
+    "Jugo verde con espirulina, chlorella y noni."
+   ],
+   [
+    "Active Burn+",
+    "Termogénico con hongos y cacao."
+   ],
+   [
+    "NutriDay Red",
+    "Proteína de fresa con probióticos."
+   ],
+   [
+    "NutriDay Brown",
+    "Proteína de avellana con probióticos."
+   ]
+  ],
+  "reco": [
+   "No exceder la porción recomendada.",
+   "En embarazo o lactancia, consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "resnad": {
+  "name": "ResNAD",
+  "family": "NUTRIDAY PLUS",
+  "category": "ANTIENVEJECIMIENTO",
+  "tagline": "Precursores de NAD+ con resveratrol y coenzima Q10 para energía mitocondrial y reparación celular.",
+  "about": "Es el complejo antienvejecimiento de NutriDay Plus. Reúne NAD, coenzima Q10, resveratrol, curcumina, piperina y verbascósido: coenzimas que participan en la energía de la mitocondria junto con polifenoles antioxidantes, y una piperina que ayuda a aprovechar mejor la fórmula.",
+  "facts": [
+   [
+    "6",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "1–2",
+    "CÁPSULAS AL DÍA"
+   ],
+   [
+    "60",
+    "CÁPSULAS POR FRASCO"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · 60 CÁPSULAS",
+  "ben_title": "Nueve beneficios en una fórmula",
+  "benefits": [
+   [
+    "bolt",
+    "Energía mitocondrial",
+    [
+     "Cofactor esencial en energía mitocondrial y reparación celular",
+     "Producción de ATP"
+    ],
+    [
+     "NAD+",
+     "Coenzima Q10"
+    ],
+    null
+   ],
+   [
+    "flame",
+    "Reacciones metabólicas",
+    [
+     "Cofactor esencial para las reacciones metabólicas que generan energía"
+    ],
+    [
+     "NAD+",
+     "Coenzima Q10"
+    ],
+    "Coenzimas que impulsan el metabolismo energético."
+   ],
+   [
+    "spark",
+    "Antioxidante universal",
+    [
+     "Antioxidante universal, regenerador de glutatión",
+     "Modulador del estrés oxidativo"
+    ],
+    [
+     "Coenzima Q10",
+     "Verbascósido",
+     "Resveratrol"
+    ],
+    null
+   ],
+   [
+    "drop",
+    "Sirtuinas y longevidad",
+    [
+     "Activación de sirtuinas, longevidad y acción antiinflamatoria"
+    ],
+    [
+     "Resveratrol",
+     "NAD+"
+    ],
+    null
+   ],
+   [
+    "brain",
+    "Neuroprotección",
+    [
+     "Potente antiinflamatorio y neuroprotector"
+    ],
+    [
+     "Curcumina",
+     "Verbascósido",
+     "Resveratrol"
+    ],
+    "Compuestos que protegen el tejido nervioso."
+   ],
+   [
+    "heart",
+    "Corazón y defensas",
+    [
+     "Salud cardiovascular",
+     "Apoyo inmunológico y celular"
+    ],
+    [
+     "Coenzima Q10",
+     "Resveratrol",
+     "Curcumina"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "NAD+ y mitocondrias",
+   "intro": "Las mitocondrias convierten los nutrientes en ATP con ayuda de coenzimas como el NAD+ y la CoQ10.",
+   "steps": [
+    [
+     "NAD+ y CoQ10",
+     "Transportan electrones para producir ATP."
+    ],
+    [
+     "Sirtuinas",
+     "Enzimas que usan NAD+ para regular el metabolismo."
+    ],
+    [
+     "Polifenoles",
+     "Polifenoles que modulan el estrés oxidativo."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "coq10",
+    "tag": "COENZIMA",
+    "name": "Coenzima Q10",
+    "sub": "Ubiquinona",
+    "desc": "Molécula presente en todas las células, sobre todo en las de mayor demanda de energía, como las del corazón. Participa en la cadena respiratoria de la mitocondria.",
+    "comp": [
+     "Ubiquinona",
+     "Ubiquinol"
+    ],
+    "ben": [
+     "Producción de ATP",
+     "Salud cardiovascular",
+     "Antioxidante liposoluble"
+    ],
+    "dato": "Transporta electrones entre los complejos de la cadena respiratoria; su forma reducida, el ubiquinol, es un antioxidante liposoluble."
+   },
+   {
+    "key": "nad",
+    "tag": "COENZIMA",
+    "name": "NAD+",
+    "sub": "Nicotinamida adenina dinucleótido",
+    "desc": "Coenzima presente en todas las células vivas. Interviene en cientos de reacciones que convierten los alimentos en energía.",
+    "comp": [
+     "NAD+",
+     "NADH"
+    ],
+    "ben": [
+     "Energía mitocondrial",
+     "Reparación celular",
+     "Longevidad"
+    ],
+    "dato": "Es el sustrato de las sirtuinas, enzimas que regulan el metabolismo y la reparación; en estudios, sus niveles disminuyen con la edad."
+   },
+   {
+    "key": "resveratrol",
+    "tag": "POLIFENOL",
+    "name": "Resveratrol",
+    "sub": "Estilbeno",
+    "desc": "Polifenol de la piel de la uva roja y de los frutos rojos. Es de los activadores de sirtuinas más estudiados.",
+    "comp": [
+     "Trans-resveratrol",
+     "Estilbenos"
+    ],
+    "ben": [
+     "Activación de sirtuinas",
+     "Salud cardiovascular",
+     "Antiinflamatorio"
+    ],
+    "dato": "Se identificó como activador de la sirtuina SIRT1 en estudios in vitro, lo que impulsó su investigación en longevidad."
+   },
+   {
+    "key": "piperina",
+    "tag": "ALCALOIDE",
+    "name": "Piperina",
+    "sub": "Piper nigrum",
+    "desc": "Compuesto picante de la pimienta negra. Se incorpora para que el organismo aproveche mejor otros ingredientes de la fórmula.",
+    "comp": [
+     "Piperina"
+    ],
+    "ben": [
+     "Mejora la absorción",
+     "Sinergia con curcumina",
+     "Antioxidante"
+    ],
+    "dato": "Inhibe enzimas de glucuronidación del hígado y del intestino, lo que frena la eliminación de la curcumina y eleva su biodisponibilidad."
+   },
+   {
+    "key": "curcumina",
+    "tag": "CURCUMINOIDE",
+    "name": "Curcumina",
+    "sub": "Curcuma longa",
+    "desc": "Pigmento dorado de la cúrcuma, estudiado por su acción antiinflamatoria y antioxidante.",
+    "comp": [
+     "Curcuminoides"
+    ],
+    "ben": [
+     "Antiinflamatorio",
+     "Neuroprotector",
+     "Modula el estrés oxidativo"
+    ],
+    "dato": "Por sí sola se absorbe poco; por eso se formula junto con piperina para mejorar su biodisponibilidad."
+   },
+   {
+    "key": "verbascosido",
+    "tag": "FENILETANOIDE",
+    "name": "Verbascósido",
+    "sub": "Acteósido",
+    "desc": "Glucósido fenólico presente en plantas como el gordolobo (Verbascum) y las hojas de olivo. Se estudia por su potente acción antioxidante.",
+    "comp": [
+     "Verbascósido",
+     "Fenilpropanoides"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Neuroprotector",
+     "Antiinflamatorio"
+    ],
+    "dato": "También llamado acteósido, es uno de los glucósidos feniletanoides más estudiados por su capacidad de neutralizar radicales libres."
+   }
+  ],
+  "synergies": [
+   [
+    "Energía mitocondrial",
+    [
+     "nad",
+     "coq10",
+     "resveratrol"
+    ],
+    "NAD+ · CoQ10 · Resveratrol",
+    "Coenzimas que participan en la producción de ATP, junto a un polifenol estudiado como activador de sirtuinas."
+   ],
+   [
+    "Mejor absorción",
+    [
+     "piperina",
+     "curcumina"
+    ],
+    "Piperina · Curcumina",
+    "La piperina ayuda a que el organismo aproveche la curcumina, que por sí sola se absorbe poco."
+   ],
+   [
+    "Escudo antioxidante",
+    [
+     "verbascosido",
+     "curcumina",
+     "coq10"
+    ],
+    "Verbascósido · Curcumina · CoQ10",
+    "Polifenoles y una coenzima liposoluble que protegen a la célula del estrés oxidativo."
+   ]
+  ],
+  "ritual": [
+   [
+    "Toma",
+    "1 a 2 cápsulas al día."
+   ],
+   [
+    "Por la mañana",
+    "Una toma matutina."
+   ],
+   [
+    "Con grasas",
+    "Con grasas saludables, para absorber mejor."
+   ]
+  ],
+  "ritual_note": "Ciclos de 3 a 6 meses. Cada frasco cubre 30 días de uso.",
+  "quick": [
+   [
+    "Presentación",
+    "Cápsulas"
+   ],
+   [
+    "Contenido",
+    "60 cápsulas"
+   ],
+   [
+    "Dosis diaria",
+    "1 a 2 cápsulas"
+   ],
+   [
+    "Ciclo de uso",
+    "3 a 6 meses"
+   ],
+   [
+    "Ingredientes activos",
+    "6"
+   ]
+  ],
+  "combo": [
+   [
+    "TransFactor",
+    "Factor de transferencia con calostro."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos y botánicos."
+   ],
+   [
+    "NK+",
+    "Adaptógeno para el descanso y el sistema nervioso."
+   ],
+   [
+    "RegeneREX",
+    "Café funcional con colágeno y cordyceps."
+   ]
+  ],
+  "reco": [
+   "No exceder la porción recomendada.",
+   "En embarazo o lactancia, consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "synergy": {
+  "name": "Synergy",
+  "family": "NUTRIDAY PLUS",
+  "category": "BEBIDA DE GUARANÁ",
+  "tagline": "Bebida de guaraná, ginseng y botánicos para energía, enfoque, metabolismo y rendimiento diario.",
+  "about": "Es la bebida energética de NutriDay Plus, con sabor a guaraná. Reúne guaraná, ginseng, té verde y damiana con jengibre, moringa, schisandra, kiwi, semilla de uva y complejo B: estimulantes naturales, adaptógenos y antioxidantes para el rendimiento del día.",
+  "facts": [
+   [
+    "10",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "1",
+    "SCOOP AL DÍA"
+   ],
+   [
+    "30",
+    "DÍAS POR BOLSA"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · SABOR GUARANÁ",
+  "ben_title": "Diez beneficios para tu día",
+  "benefits": [
+   [
+    "bolt",
+    "Energía y resistencia",
+    [
+     "Aumenta la energía y reduce el cansancio",
+     "Aumenta la resistencia física y el rendimiento diario"
+    ],
+    [
+     "Guaraná",
+     "Ginseng",
+     "Complejo B"
+    ],
+    null
+   ],
+   [
+    "brain",
+    "Enfoque y ánimo",
+    [
+     "Mejora el enfoque, la claridad mental y la concentración",
+     "Contribuye al equilibrio hormonal y al bienestar emocional"
+    ],
+    [
+     "Guaraná",
+     "Ginseng",
+     "Damiana",
+     "Schisandra"
+    ],
+    null
+   ],
+   [
+    "flame",
+    "Metabolismo y peso",
+    [
+     "Potencia el metabolismo y ayuda en el control de peso"
+    ],
+    [
+     "Té verde",
+     "Jengibre",
+     "Guaraná"
+    ],
+    "Compuestos que acompañan el gasto de energía."
+   ],
+   [
+    "shield",
+    "Defensas y antioxidantes",
+    [
+     "Refuerza el sistema inmunológico",
+     "Poderosa acción antioxidante y protección celular"
+    ],
+    [
+     "Semilla de uva",
+     "Kiwi",
+     "Moringa"
+    ],
+    null
+   ],
+   [
+    "heart",
+    "Corazón y circulación",
+    [
+     "Promueve la salud cardiovascular y la circulación"
+    ],
+    [
+     "Semilla de uva",
+     "Té verde",
+     "Ginseng"
+    ],
+    "Polifenoles que cuidan el sistema vascular."
+   ],
+   [
+    "gut",
+    "Digestión y bienestar",
+    [
+     "Mejora la digestión y el bienestar intestinal",
+     "Reduce la inflamación y favorece el bienestar general"
+    ],
+    [
+     "Jengibre",
+     "Kiwi",
+     "Moringa"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Cafeína y adaptógenos",
+   "intro": "La cafeína activa; los adaptógenos ayudan a sostener el rendimiento.",
+   "steps": [
+    [
+     "Cafeína",
+     "Bloquea la adenosina y reduce la fatiga."
+    ],
+    [
+     "Adaptógenos",
+     "Se estudian por la respuesta al estrés."
+    ],
+    [
+     "Antioxidantes",
+     "Polifenoles y vitamina C protegen."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "guarana",
+    "tag": "SEMILLA AMAZÓNICA",
+    "name": "Guaraná",
+    "sub": "Paullinia cupana",
+    "desc": "Semilla de una liana amazónica y fuente natural de cafeína, junto con teobromina y teofilina.",
+    "comp": [
+     "Cafeína",
+     "Taninos"
+    ],
+    "ben": [
+     "Energía",
+     "Enfoque",
+     "Reduce el cansancio"
+    ],
+    "dato": "Sus semillas concentran más cafeína por peso que el grano de café, según análisis de composición."
+   },
+   {
+    "key": "ginseng",
+    "tag": "RAÍZ ADAPTÓGENA",
+    "name": "Ginseng",
+    "sub": "Panax ginseng",
+    "desc": "Raíz de Asia oriental, una de las plantas adaptógenas más estudiadas.",
+    "comp": [
+     "Ginsenósidos"
+    ],
+    "ben": [
+     "Adaptógeno",
+     "Resistencia física",
+     "Claridad mental"
+    ],
+    "dato": "Sus ginsenósidos son saponinas triterpénicas y se clasifican en grupos como Rb1, Rg1 y Re."
+   },
+   {
+    "key": "te",
+    "tag": "HOJA",
+    "name": "Té verde",
+    "sub": "Camellia sinensis",
+    "desc": "Hoja sin fermentar del té, rica en catequinas y en L-teanina, además de cafeína.",
+    "comp": [
+     "EGCG",
+     "L-teanina",
+     "Cafeína"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Metabolismo",
+     "Enfoque suave"
+    ],
+    "dato": "El EGCG es la catequina más abundante del té verde y de las más estudiadas."
+   },
+   {
+    "key": "damiana",
+    "tag": "HOJA",
+    "name": "Damiana de California",
+    "sub": "Turnera diffusa",
+    "desc": "Arbusto de zonas áridas de México y América Central, usado en la herbolaria tradicional.",
+    "comp": [
+     "Flavonoides",
+     "Aceites esenciales"
+    ],
+    "ben": [
+     "Bienestar emocional",
+     "Equilibrio hormonal",
+     "Energía"
+    ],
+    "dato": "Contiene flavonoides, como la apigenina, y aceites esenciales que dan su aroma."
+   },
+   {
+    "key": "jengibre",
+    "tag": "RIZOMA",
+    "name": "Jengibre",
+    "sub": "Zingiber officinale",
+    "desc": "Rizoma tropical usado como especia y en la herbolaria asiática.",
+    "comp": [
+     "Gingeroles",
+     "Shogaoles"
+    ],
+    "ben": [
+     "Digestión",
+     "Antiinflamatorio",
+     "Metabolismo"
+    ],
+    "dato": "Los gingeroles, responsables de su picor, se transforman en shogaoles al secarse."
+   },
+   {
+    "key": "vitaminab",
+    "tag": "VITAMINAS",
+    "name": "Complejo B",
+    "sub": "Vitaminas del grupo B",
+    "desc": "Grupo de vitaminas hidrosolubles que participan en la obtención de energía a partir de los alimentos.",
+    "comp": [
+     "B6",
+     "B12",
+     "Ácido fólico"
+    ],
+    "ben": [
+     "Energía celular",
+     "Sistema nervioso",
+     "Reduce el cansancio"
+    ],
+    "dato": "Funcionan como coenzimas en el metabolismo de carbohidratos, grasas y proteínas."
+   },
+   {
+    "key": "moringa",
+    "tag": "HOJA",
+    "name": "Moringa",
+    "sub": "Moringa oleifera",
+    "desc": "Árbol tropical de la India cuyas hojas aportan proteína, hierro y vitaminas A y C.",
+    "comp": [
+     "Isotiocianatos",
+     "Quercetina"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Aporte nutricional",
+     "Bienestar"
+    ],
+    "dato": "Su isotiocianato propio, la moringina, deriva de glucosinolatos, igual que en las crucíferas."
+   },
+   {
+    "key": "schisandra",
+    "tag": "BAYA ADAPTÓGENA",
+    "name": "Schisandra",
+    "sub": "Schisandra chinensis",
+    "desc": "Baya de Asia oriental de cinco sabores, usada como adaptógeno en la medicina tradicional china.",
+    "comp": [
+     "Lignanos",
+     "Esquizandrinas"
+    ],
+    "ben": [
+     "Adaptógeno",
+     "Resistencia al estrés",
+     "Protección hepática"
+    ],
+    "dato": "Sus lignanos dibenzociclooctadiénicos, como la esquizandrina, son sus compuestos más estudiados."
+   },
+   {
+    "key": "kiwi",
+    "tag": "FRUTA",
+    "name": "Kiwi",
+    "sub": "Actinidia deliciosa",
+    "desc": "Fruta muy rica en vitamina C. Aporta además fibra y la enzima actinidina.",
+    "comp": [
+     "Vitamina C",
+     "Actinidina"
+    ],
+    "ben": [
+     "Antioxidante",
+     "Digestión",
+     "Defensas"
+    ],
+    "dato": "La actinidina es una proteasa que ayuda a descomponer proteínas durante la digestión."
+   },
+   {
+    "key": "semillauva",
+    "tag": "POLIFENOLES",
+    "name": "Semilla de uva",
+    "sub": "Vitis vinifera",
+    "desc": "Semilla de la uva, que concentra proantocianidinas de reconocida acción antioxidante.",
+    "comp": [
+     "Proantocianidinas"
+    ],
+    "ben": [
+     "Cardiovascular",
+     "Circulación",
+     "Antioxidante"
+    ],
+    "dato": "Las proantocianidinas oligoméricas (OPC) se estudian por neutralizar radicales libres y por su efecto vascular."
+   }
+  ],
+  "synergies": [
+   [
+    "Energía sostenida",
+    [
+     "guarana",
+     "ginseng",
+     "vitaminab"
+    ],
+    "Guaraná · Ginseng · Complejo B",
+    "Cafeína natural, un adaptógeno de raíz y vitaminas que intervienen en la energía celular."
+   ],
+   [
+    "Enfoque y calma",
+    [
+     "te",
+     "guarana",
+     "schisandra"
+    ],
+    "Té verde · Guaraná · Schisandra",
+    "La L-teanina del té suaviza el efecto de la cafeína, mientras la schisandra acompaña al estrés."
+   ],
+   [
+    "Defensa antioxidante",
+    [
+     "semillauva",
+     "kiwi",
+     "moringa"
+    ],
+    "Semilla de uva · Kiwi · Moringa",
+    "Proantocianidinas, vitamina C y polifenoles que protegen a la célula."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 scoop dosificador."
+   ],
+   [
+    "Disuelve",
+    "En 250 ml de agua caliente."
+   ],
+   [
+    "Disfruta",
+    "Una vez al día."
+   ]
+  ],
+  "ritual_note": "Se bebe caliente. Cada bolsa cubre 30 días.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Sabor",
+    "Guaraná"
+   ],
+   [
+    "Preparación",
+    "250 ml de agua caliente"
+   ],
+   [
+    "Toma",
+    "1 scoop al día"
+   ],
+   [
+    "Ingredientes activos",
+    "10"
+   ]
+  ],
+  "combo": [
+   [
+    "NK+",
+    "Adaptógeno para el descanso y el sistema nervioso."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos y botánicos."
+   ],
+   [
+    "RegeneREX",
+    "Café funcional con colágeno y cordyceps."
+   ],
+   [
+    "TransFactor",
+    "Factor de transferencia con calostro."
+   ]
+  ],
+  "reco": [
+   "Contiene cafeína natural del guaraná y el té verde.",
+   "No exceder la porción recomendada.",
+   "Embarazo, lactancia o medicamentos: consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "transfactor": {
+  "name": "TransFactor",
+  "family": "NUTRIDAY PLUS",
+  "category": "FACTOR DE TRANSFERENCIA",
+  "tagline": "Diseñado para modular y fortalecer el sistema inmunológico, con calostro, lactoferrina y yema de huevo.",
+  "about": "Es la cápsula inmunológica de NutriDay Plus. Reúne calostro bovino y caprino, lactoferrina y yema de huevo —fuentes naturales de proteínas de defensa— con glutatión y los aminoácidos L-cisteína y L-lisina, para apoyar tanto la respuesta inmune como la protección antioxidante de la célula.",
+  "facts": [
+   [
+    "7",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "2",
+    "CÁPSULAS AL DÍA"
+   ],
+   [
+    "60",
+    "CÁPSULAS POR FRASCO"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · 60 CÁPSULAS",
+  "ben_title": "Seis beneficios para tus defensas",
+  "benefits": [
+   [
+    "shield",
+    "Inmunomodulador",
+    [
+     "Estimula la respuesta inmune innata y adaptativa"
+    ],
+    [
+     "Calostro",
+     "Lactoferrina",
+     "Yema de huevo"
+    ],
+    "Proteínas de defensa de origen natural."
+   ],
+   [
+    "spark",
+    "Antioxidante celular",
+    [
+     "Antioxidante celular"
+    ],
+    [
+     "Glutatión",
+     "L-cisteína"
+    ],
+    "El glutatión y su aminoácido precursor."
+   ],
+   [
+    "brain",
+    "Neuroprotector y cognitivo",
+    [
+     "Neuroprotector y cognitivo"
+    ],
+    [
+     "Glutatión",
+     "Yema de huevo"
+    ],
+    "Antioxidante y colina para el tejido nervioso."
+   ],
+   [
+    "flame",
+    "Regeneración de tejidos",
+    [
+     "Regeneración celular y tejidos"
+    ],
+    [
+     "Calostro",
+     "L-lisina",
+     "L-cisteína"
+    ],
+    "Factores de crecimiento y aminoácidos de reparación."
+   ],
+   [
+    "body",
+    "Aminoácidos esenciales",
+    [
+     "Aminoácidos esenciales"
+    ],
+    [
+     "L-lisina",
+     "L-cisteína"
+    ],
+    "La lisina es esencial; la cisteína, condicionalmente esencial."
+   ],
+   [
+    "bolt",
+    "Energía y bienestar",
+    [
+     "Energía y bienestar general"
+    ],
+    [
+     "L-lisina",
+     "Glutatión",
+     "Yema de huevo"
+    ],
+    "Aminoácidos y nutrientes de apoyo al día a día."
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "Dos niveles de defensa",
+   "intro": "El sistema inmune responde en dos niveles. TransFactor aporta apoyo para ambos.",
+   "steps": [
+    [
+     "Innata",
+     "Primera barrera, rápida y sin memoria. Participa la lactoferrina."
+    ],
+    [
+     "Adaptativa",
+     "Respuesta específica con memoria: anticuerpos y linfocitos."
+    ],
+    [
+     "Protección",
+     "El glutatión cuida a las células inmunes."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "calostrob",
+    "tag": "PRIMERA LECHE",
+    "name": "Calostro bovino",
+    "sub": "Bos taurus",
+    "desc": "La primera leche de la vaca tras el parto. Concentra inmunoglobulinas, lactoferrina y factores de crecimiento en cantidades muy superiores a las de la leche madura.",
+    "comp": [
+     "IgG",
+     "Lactoferrina",
+     "Factores de crecimiento"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Factores de crecimiento",
+     "Regeneración de tejidos"
+    ],
+    "dato": "La mayor parte de sus inmunoglobulinas es IgG, el anticuerpo que la vaca transfiere al ternero a través del calostro."
+   },
+   {
+    "key": "calostroc",
+    "tag": "PRIMERA LECHE",
+    "name": "Calostro caprino",
+    "sub": "Capra hircus",
+    "desc": "La primera leche de la cabra tras el parto. Aporta inmunoglobulinas, lactoferrina y proteínas de suero, como el calostro bovino.",
+    "comp": [
+     "Inmunoglobulinas",
+     "Lactoferrina"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Aporte proteico",
+     "Bienestar general"
+    ],
+    "dato": "Sus proteínas de suero pertenecen a las mismas familias que las del calostro bovino, pero provienen de una especie distinta."
+   },
+   {
+    "key": "yema",
+    "tag": "HUEVO",
+    "name": "Yema de huevo",
+    "sub": "Gallus gallus",
+    "desc": "Parte nutritiva del huevo. Aporta proteína, colina, fosfolípidos e IgY, la inmunoglobulina de las aves.",
+    "comp": [
+     "IgY",
+     "Fosfolípidos",
+     "Colina"
+    ],
+    "ben": [
+     "Inmunomodulador",
+     "Colina para el cerebro",
+     "Nutrición celular"
+    ],
+    "dato": "La gallina transfiere IgY a la yema para proteger al embrión, igual que los mamíferos transfieren IgG por el calostro."
+   },
+   {
+    "key": "lactoferrina",
+    "tag": "PROTEÍNA",
+    "name": "Lactoferrina",
+    "sub": "Glicoproteína de la leche",
+    "desc": "Proteína de la leche que une hierro. También está presente en las lágrimas, la saliva y otras secreciones.",
+    "comp": [
+     "Glicoproteína",
+     "Unión a hierro"
+    ],
+    "ben": [
+     "Inmunidad innata",
+     "Defensa de mucosas",
+     "Antioxidante"
+    ],
+    "dato": "Forma parte de la inmunidad innata: al unir hierro, lo deja menos disponible para los microorganismos."
+   },
+   {
+    "key": "glutation",
+    "tag": "TRIPÉPTIDO",
+    "name": "Glutatión",
+    "sub": "GSH",
+    "desc": "Tripéptido formado por glutamato, cisteína y glicina. Es el principal antioxidante que produce la propia célula.",
+    "comp": [
+     "γ-Glu-Cys-Gly"
+    ],
+    "ben": [
+     "Antioxidante celular",
+     "Neuroprotector",
+     "Apoyo inmune"
+    ],
+    "dato": "En su forma reducida (GSH) neutraliza radicales libres, y se regenera con ayuda de la enzima glutatión reductasa."
+   },
+   {
+    "key": "cisteina",
+    "tag": "AMINOÁCIDO",
+    "name": "L-cisteína",
+    "sub": "Aminoácido azufrado",
+    "desc": "Aminoácido con azufre. Es el aminoácido limitante para que la célula sintetice glutatión.",
+    "comp": [
+     "Grupo tiol (–SH)"
+    ],
+    "ben": [
+     "Precursor de glutatión",
+     "Antioxidante",
+     "Regeneración de tejidos"
+    ],
+    "dato": "Su grupo tiol (–SH) es el sitio químico donde el glutatión neutraliza los radicales libres."
+   },
+   {
+    "key": "lisina",
+    "tag": "AMINOÁCIDO ESENCIAL",
+    "name": "L-lisina",
+    "sub": "Aminoácido esencial",
+    "desc": "Aminoácido esencial: el cuerpo no lo produce y debe obtenerlo de la dieta o de suplementos.",
+    "comp": [
+     "L-lisina"
+    ],
+    "ben": [
+     "Aminoácido esencial",
+     "Regeneración de tejidos",
+     "Energía y bienestar"
+    ],
+    "dato": "Junto con la metionina es precursora de la carnitina, y participa en la formación de colágeno."
+   }
+  ],
+  "synergies": [
+   [
+    "Defensa inmune",
+    [
+     "calostrob",
+     "calostroc",
+     "lactoferrina"
+    ],
+    "Calostros · Lactoferrina",
+    "Inmunoglobulinas y proteínas de la primera leche, junto a una glicoproteína de la inmunidad innata."
+   ],
+   [
+    "Red de glutatión",
+    [
+     "glutation",
+     "cisteina"
+    ],
+    "Glutatión · L-cisteína",
+    "El glutatión es el antioxidante; la cisteína, el aminoácido que limita su producción."
+   ],
+   [
+    "Nutrientes de apoyo",
+    [
+     "yema",
+     "lisina",
+     "cisteina"
+    ],
+    "Yema · L-lisina · L-cisteína",
+    "Proteína de la yema y aminoácidos para la reparación de tejidos."
+   ]
+  ],
+  "ritual": [
+   [
+    "Toma",
+    "2 cápsulas al día."
+   ],
+   [
+    "Cuándo",
+    "En ayunas o junto con alimentos."
+   ],
+   [
+    "Constancia",
+    "Cada frasco cubre 30 días."
+   ]
+  ],
+  "ritual_note": "Dosis para adultos.",
+  "quick": [
+   [
+    "Presentación",
+    "Cápsulas"
+   ],
+   [
+    "Contenido",
+    "60 cápsulas"
+   ],
+   [
+    "Dosis diaria",
+    "2 cápsulas"
+   ],
+   [
+    "Duración",
+    "30 días"
+   ],
+   [
+    "Ingredientes activos",
+    "7"
+   ]
+  ],
+  "combo": [
+   [
+    "ResNAD",
+    "Precursores de NAD+ con resveratrol."
+   ],
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos y botánicos."
+   ],
+   [
+    "NK+",
+    "Adaptógeno para el descanso y el sistema nervioso."
+   ],
+   [
+    "Synergy",
+    "Bebida de guaraná y ginseng."
+   ]
+  ],
+  "reco": [
+   "Contiene derivados de leche y huevo.",
+   "No exceder la porción recomendada.",
+   "Embarazo, lactancia o medicamentos: consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco, bien cerrado.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ },
+ "regenerex": {
+  "name": "RegeneREX",
+  "family": "NUTRIDAY PLUS",
+  "category": "CAFÉ EPIGENÉTICO",
+  "tagline": "Café funcional con colágeno hidrolizado, hongos adaptógenos y antioxidantes que activan tu regeneración desde la primera taza.",
+  "about": "Es el café funcional que convierte tu primera taza del día en un ritual de regeneración. Une la energía del café con colágeno hidrolizado, tres hongos funcionales —cordyceps, chaga y shiitake—, alga espirulina, curcumina y resveratrol: ingredientes que activan la vía NRF2, el sistema con el que tus células encienden sus propias defensas.",
+  "facts": [
+   [
+    "8",
+    "INGREDIENTES ACTIVOS"
+   ],
+   [
+    "10 g",
+    "PORCIÓN DIARIA"
+   ],
+   [
+    "30",
+    "PORCIONES POR BOLSA"
+   ]
+  ],
+  "strip": "SUPLEMENTO ALIMENTICIO · POLVO · 300 g",
+  "ben_title": "Diez beneficios en una sola taza",
+  "benefits": [
+   [
+    "bolt",
+    "Energía y rendimiento",
+    [
+     "Energía física y recuperación muscular",
+     "Adaptógeno natural"
+    ],
+    [
+     "Café",
+     "Cordyceps",
+     "Chaga"
+    ],
+    null
+   ],
+   [
+    "leaf",
+    "Regeneración y piel",
+    [
+     "Reparación de tejidos",
+     "Elasticidad y fortaleza de la piel"
+    ],
+    [
+     "Colágeno",
+     "Espirulina",
+     "Resveratrol"
+    ],
+    null
+   ],
+   [
+    "bone",
+    "Huesos y articulaciones",
+    [
+     "Salud osteoarticular",
+     "Estructura de cartílago y hueso"
+    ],
+    [
+     "Colágeno",
+     "Curcumina"
+    ],
+    null
+   ],
+   [
+    "heart",
+    "Corazón y circulación",
+    [
+     "Regula la presión alta",
+     "Previene trombosis"
+    ],
+    [
+     "Resveratrol",
+     "Curcumina",
+     "Shiitake"
+    ],
+    null
+   ],
+   [
+    "drop",
+    "Equilibrio metabólico",
+    [
+     "Regula niveles de glucosa",
+     "Energía estable durante el día"
+    ],
+    [
+     "Cordyceps",
+     "Curcumina",
+     "Resveratrol"
+    ],
+    null
+   ],
+   [
+    "shield",
+    "Ánimo y defensas",
+    [
+     "Antidepresivo",
+     "Coadyuvante en rinitis alérgica"
+    ],
+    [
+     "Shiitake",
+     "Chaga",
+     "Curcumina"
+    ],
+    null
+   ]
+  ],
+  "science": {
+   "eyebrow": "LA CIENCIA DETRÁS",
+   "title": "¿Qué es NRF2?",
+   "intro": "Una proteína que funciona como interruptor maestro de cada célula: al activarse, enciende cientos de genes de defensa antioxidante y reparación. Por eso hablamos de un café epigenético.",
+   "steps": [
+    [
+     "Activadores",
+     "Curcumina, resveratrol y hongos funcionales estimulan NRF2."
+    ],
+    [
+     "El interruptor",
+     "NRF2 viaja al núcleo y enciende los genes de protección."
+    ],
+    [
+     "Tu defensa",
+     "La célula produce sus propios antioxidantes, como el glutatión."
+    ]
+   ]
+  },
+  "ingredients": [
+   {
+    "key": "cafe",
+    "tag": "GRANO DE CAFÉ",
+    "name": "Café",
+    "sub": "Coffea arabica",
+    "desc": "La base de tu taza. Aporta cafeína natural para despertar cuerpo y mente, y ácido clorogénico, uno de los polifenoles más abundantes de la dieta.",
+    "comp": [
+     "Cafeína",
+     "Ácido clorogénico"
+    ],
+    "ben": [
+     "Energía y estado de alerta",
+     "Enfoque y concentración",
+     "Acción antioxidante"
+    ],
+    "dato": "El café es una de las mayores fuentes de antioxidantes en la dieta diaria de millones de personas."
+   },
+   {
+    "key": "colageno",
+    "tag": "PÉPTIDOS DE COLÁGENO",
+    "name": "Colágeno hidrolizado",
+    "sub": "Proteína estructural",
+    "desc": "La proteína más abundante del cuerpo: da forma a piel, tendones, cartílago y huesos. Hidrolizado significa dividido en péptidos pequeños, fáciles de absorber.",
+    "comp": [
+     "Glicina",
+     "Prolina",
+     "Hidroxiprolina"
+    ],
+    "ben": [
+     "Elasticidad y firmeza de la piel",
+     "Huesos y articulaciones",
+     "Reparación de tejidos"
+    ],
+    "dato": "Representa cerca del 30 % de la proteína del cuerpo, y su producción natural disminuye con la edad."
+   },
+   {
+    "key": "cordyceps",
+    "tag": "HONGO FUNCIONAL",
+    "name": "Cordyceps",
+    "sub": "Cordyceps spp. · Himalaya",
+    "desc": "Hongo de las alturas del Himalaya, valorado durante siglos por la medicina tradicional china y tibetana como revitalizante y tónico de la energía vital.",
+    "comp": [
+     "Cordicepina",
+     "Polisacáridos"
+    ],
+    "ben": [
+     "Energía física y resistencia",
+     "Recuperación muscular",
+     "Adaptógeno natural"
+    ],
+    "dato": "En el Tíbet se le llama yartsa gunbu: «hierba en verano, gusano en invierno», por su curioso ciclo de vida."
+   },
+   {
+    "key": "espirulina",
+    "tag": "MICROALGA",
+    "name": "Alga espirulina",
+    "sub": "Arthrospira platensis",
+    "desc": "Una de las fuentes de nutrientes más densas del planeta: proteína completa, hierro, vitaminas del grupo B y ficocianina, su pigmento azul antioxidante.",
+    "comp": [
+     "Ficocianina",
+     "Proteína",
+     "Hierro"
+    ],
+    "ben": [
+     "Aporte nutricional completo",
+     "Vitalidad y energía",
+     "Apoyo a las defensas"
+    ],
+    "dato": "Los mexicas la cosechaban en el lago de Texcoco y la llamaban tecuitlatl. Siglos después, la NASA la estudió como alimento espacial."
+   },
+   {
+    "key": "resveratrol",
+    "tag": "POLIFENOL",
+    "name": "Resveratrol",
+    "sub": "De uva roja y frutos rojos",
+    "desc": "Polifenol presente en la piel de la uva roja, las moras y los arándanos. Es de los compuestos más estudiados en longevidad por su relación con las sirtuinas.",
+    "comp": [
+     "Estilbenos",
+     "Polifenoles"
+    ],
+    "ben": [
+     "Salud cardiovascular",
+     "Mejor circulación",
+     "Longevidad celular"
+    ],
+    "dato": "Se le relaciona con la «paradoja francesa»: buena salud del corazón pese a una dieta rica en grasas."
+   },
+   {
+    "key": "curcumina",
+    "tag": "RAÍZ DORADA",
+    "name": "Curcumina",
+    "sub": "Curcuma longa · raíz",
+    "desc": "El pigmento dorado de la cúrcuma, pilar del ayurveda desde hace milenios. Es uno de los activadores naturales de la vía NRF2 más reconocidos por la ciencia.",
+    "comp": [
+     "Curcuminoides"
+    ],
+    "ben": [
+     "Acción antiinflamatoria",
+     "Bienestar articular",
+     "Activación de NRF2"
+    ],
+    "dato": "Es la responsable del color amarillo intenso del curry y se ha usado como tinte natural durante siglos."
+   },
+   {
+    "key": "chaga",
+    "tag": "HONGO DEL ABEDUL",
+    "name": "Hongo chaga",
+    "sub": "Inonotus obliquus",
+    "desc": "Crece sobre los abedules de los bosques fríos de Siberia y el norte de Europa. Por fuera parece carbón; por dentro guarda polifenoles y betaglucanos.",
+    "comp": [
+     "Betaglucanos",
+     "Melanina",
+     "Polifenoles"
+    ],
+    "ben": [
+     "Potente acción antioxidante",
+     "Apoyo inmunológico",
+     "Adaptógeno"
+    ],
+    "dato": "En Siberia se toma en infusión desde hace siglos y se le conoce como «el diamante del bosque»."
+   },
+   {
+    "key": "shiitake",
+    "tag": "HONGO CULINARIO",
+    "name": "Shiitake",
+    "sub": "Lentinula edodes",
+    "desc": "Originario de Asia oriental, se cultiva en Japón y China desde hace más de mil años. Es rico en betaglucanos como el lentinano y en ergotioneína.",
+    "comp": [
+     "Lentinano",
+     "Betaglucanos",
+     "Ergotioneína"
+    ],
+    "ben": [
+     "Fortalece el sistema inmune",
+     "Salud cardiovascular",
+     "Energía y vitalidad"
+    ],
+    "dato": "Su nombre viene del japonés: shii, el árbol sobre el que crece, y take, que significa «hongo»."
+   }
+  ],
+  "synergies": [
+   [
+    "Regeneración",
+    [
+     "colageno",
+     "espirulina",
+     "cordyceps"
+    ],
+    "Colágeno · Espirulina · Cordyceps",
+    "La estructura que tus tejidos necesitan, los nutrientes para construirla y la energía para hacerlo."
+   ],
+   [
+    "Escudo NRF2",
+    [
+     "curcumina",
+     "resveratrol",
+     "chaga"
+    ],
+    "Curcumina · Resveratrol · Chaga",
+    "Tres activadores naturales que encienden las defensas antioxidantes propias de cada célula."
+   ],
+   [
+    "Energía en equilibrio",
+    [
+     "cafe",
+     "cordyceps",
+     "shiitake"
+    ],
+    "Café · Cordyceps · Shiitake",
+    "El impulso del café, acompañado de hongos que ayudan a tu cuerpo a sostener su ritmo."
+   ]
+  ],
+  "ritual": [
+   [
+    "Mide",
+    "1 porción de 10 g."
+   ],
+   [
+    "Disuelve",
+    "En 250 ml de agua."
+   ],
+   [
+    "Disfruta",
+    "En ayunas o antes del desayuno."
+   ]
+  ],
+  "ritual_note": "Adultos: 1 porción al día. La bolsa de 300 g rinde 30 días.",
+  "quick": [
+   [
+    "Presentación",
+    "Polvo"
+   ],
+   [
+    "Contenido",
+    "300 g"
+   ],
+   [
+    "Porción",
+    "10 g"
+   ],
+   [
+    "Porciones",
+    "30"
+   ],
+   [
+    "Ingredientes activos",
+    "8"
+   ]
+  ],
+  "combo": [
+   [
+    "AntiOX",
+    "Complejo antioxidante de frutos y botánicos."
+   ],
+   [
+    "Green Plus",
+    "Jugo verde con espirulina, chlorella y noni."
+   ],
+   [
+    "NK+",
+    "Adaptógeno para el descanso y el sistema nervioso."
+   ],
+   [
+    "Neuro CHAI",
+    "Chai funcional para claridad mental."
+   ]
+  ],
+  "reco": [
+   "Contiene cafeína natural del café.",
+   "No exceder la porción recomendada.",
+   "En embarazo o lactancia, consulta a tu médico.",
+   "Consérvese en un lugar fresco y seco.",
+   "Manténgase fuera del alcance de los niños."
+  ]
+ }
+}
