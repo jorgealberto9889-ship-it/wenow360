@@ -163,3 +163,21 @@ body {
   85% { opacity: 1; }
   100% { top: 100%; opacity: 0; }
 }
+
+/* Panel de mediciones: el corazón late al ritmo medido, las barras respiran y los trazos se dibujan. */
+@keyframes heartbeat {
+  0%, 70%, 100% { transform: scale(1); }
+  14% { transform: scale(1.24); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.14); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scaleY(0.55); }
+  50% { transform: scaleY(1); }
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
