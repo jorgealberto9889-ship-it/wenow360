@@ -6,6 +6,8 @@ export type BiometricInput = {
   hrvLnrmssdMs?: number | null;
   stressIndex?: number | null;
   parasympatheticActivity?: number | null;
+  // Pulso medido durante el minuto (hasta 24 puntos, solo Shen.AI): se dibuja en el panel.
+  hrSeries?: number[] | null;
 };
 
 export type QualitativeReading = {
@@ -24,13 +26,20 @@ export type BiometricValues = {
   hrvLnrmssdMs: number | null;
   stressIndex: number | null;
   parasympatheticActivity: number | null;
+  hrSeries: number[] | null;
 };
+
+// Índice WeNow de bienestar (0–100): promedio de lo que tiene rango de referencia documentado (pulso, respiración
+// e índice de estrés). La VFC y la actividad parasimpática no tienen rango universal, así que no puntúan.
+// Es una síntesis orientativa de WeNow, no una medida clínica.
+export type WellnessSummary = { score: number; label: "Óptimo" | "Bueno" | "A cuidar"; message: string; inRange: number; total: number };
 
 export type BiometricReading = {
   heartRate: QualitativeReading | null;
   respiratoryRate: QualitativeReading | null;
   stress: StressReading | null;
   values: BiometricValues;
+  wellness?: WellnessSummary | null;
 };
 
 // Rangos típicos en reposo para adultos: FC 60–100 lpm, FR 12–20 rpm.
@@ -42,6 +51,29 @@ function classify(value: number | null, range: { low: number; high: number }, ty
   if (value > range.high) return { label: "Ligeramente acelerada", context: fast } as const;
   if (value < range.low) return { label: "Más pausada de lo típico", context: slow } as const;
   return { label: "Dentro de lo típico", context: typical } as const;
+}
+
+const clamp = (n: number) => Math.round(Math.min(100, Math.max(0, n)));
+
+// Cada componente vale 100 dentro de su referencia y baja de forma gradual al alejarse.
+export const heartScore = (bpm: number) => clamp(bpm >= HR.low && bpm <= 80 ? 100 : bpm > 80 && bpm <= HR.high ? 100 - ((bpm - 80) / 20) * 20 : bpm > HR.high ? 80 - (bpm - HR.high) * 1.5 : 100 - (HR.low - bpm) * 2.5);
+export const breathScore = (rpm: number) => clamp(rpm >= RR.low && rpm <= RR.high ? 100 : 100 - Math.min(Math.abs(rpm < RR.low ? RR.low - rpm : rpm - RR.high), 8) * 8);
+export const stressScore = (idx: number) => clamp(idx <= 4 ? 100 - (idx / 4) * 12 : idx <= 8 ? 88 - ((idx - 4) / 4) * 48 : 40 - ((idx - 8) / 2) * 30);
+
+export function summarizeWellness(v: BiometricValues): WellnessSummary | null {
+  const parts = [
+    v.heartRateBpm !== null && { score: heartScore(v.heartRateBpm), ok: v.heartRateBpm >= HR.low && v.heartRateBpm <= HR.high },
+    v.respiratoryRateBpm !== null && { score: breathScore(v.respiratoryRateBpm), ok: v.respiratoryRateBpm >= RR.low && v.respiratoryRateBpm <= RR.high },
+    v.stressIndex !== null && { score: stressScore(v.stressIndex), ok: v.stressIndex < STRESS_HIGH },
+  ].filter(Boolean) as { score: number; ok: boolean }[];
+  if (parts.length < 2) return null;
+  const score = Math.round(parts.reduce((a, p) => a + p.score, 0) / parts.length);
+  const inRange = parts.filter((p) => p.ok).length;
+  const [label, message]: [WellnessSummary["label"], string] =
+    score >= 80 ? ["Óptimo", "Tus indicadores se encuentran dentro de rangos de referencia."]
+    : score >= 60 ? ["Bueno", "La mayoría de tus indicadores está en rangos de referencia; hay espacio para cuidarte un poco más."]
+    : ["A cuidar", "Algunos indicadores se alejan de la referencia en este momento. Repite la medición en reposo y cuida tus hábitos."];
+  return { score, label, message, inRange, total: parts.length };
 }
 
 const finite = (v: number | null | undefined) => (typeof v === "number" && Number.isFinite(v) ? v : null);
@@ -65,6 +97,7 @@ export function describeBiometrics(input: BiometricInput | null): BiometricReadi
     hrvLnrmssdMs: finite(input.hrvLnrmssdMs),
     stressIndex: finite(input.stressIndex),
     parasympatheticActivity: finite(input.parasympatheticActivity),
+    hrSeries: Array.isArray(input.hrSeries) && input.hrSeries.length >= 3 ? input.hrSeries.filter((n) => Number.isFinite(n)) : null,
   };
   const stress = describeStress(values.stressIndex);
   const reading = {
@@ -81,7 +114,7 @@ export function describeBiometrics(input: BiometricInput | null): BiometricReadi
       "Una respiración pausada suele acompañar estados de calma.",
     ),
   };
-  return reading.heartRate || reading.respiratoryRate || stress || values.hrvSdnnMs !== null || values.parasympatheticActivity !== null ? { ...reading, stress, values } : null;
+  return reading.heartRate || reading.respiratoryRate || stress || values.hrvSdnnMs !== null || values.parasympatheticActivity !== null ? { ...reading, stress, values, wellness: summarizeWellness(values) } : null;
 }
 
 // Único efecto en el motor: una respiración acelerada o un índice de estrés elevado (≥ 5 en la escala 0–10 de

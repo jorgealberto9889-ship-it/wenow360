@@ -16,7 +16,7 @@ export async function signScanToken(reading: BiometricInput) {
   return new SignJWT({
     hr: reading.heartRateBpm, rr: reading.respiratoryRateBpm,
     sd: reading.hrvSdnnMs ?? null, ln: reading.hrvLnrmssdMs ?? null,
-    st: reading.stressIndex ?? null, ps: reading.parasympatheticActivity ?? null,
+    st: reading.stressIndex ?? null, ps: reading.parasympatheticActivity ?? null, hs: reading.hrSeries ?? null,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setAudience("biometric-scan")
@@ -32,8 +32,9 @@ export async function verifyScanToken(token: string): Promise<BiometricInput | n
     const reading: BiometricInput = {
       heartRateBpm: num(payload.hr), respiratoryRateBpm: num(payload.rr),
       hrvSdnnMs: num(payload.sd), hrvLnrmssdMs: num(payload.ln), stressIndex: num(payload.st), parasympatheticActivity: num(payload.ps),
+      hrSeries: Array.isArray(payload.hs) ? payload.hs.filter((n): n is number => typeof n === "number" && Number.isFinite(n)) : null,
     };
-    return Object.values(reading).every((v) => v === null) ? null : reading;
+    return Object.values({ ...reading, hrSeries: null }).every((v) => v === null) ? null : reading;
   } catch {
     return null;
   }

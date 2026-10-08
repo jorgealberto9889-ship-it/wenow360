@@ -66,7 +66,7 @@ const ROIS = [
   { id: "mejilla-der", cx: 208, cy: 222, rx: 28, ry: 24, delay: 1000 },
 ];
 
-function FaceMesh({ live }: { live: boolean }) {
+export function FaceMesh({ live }: { live: boolean }) {
   return (
     <svg viewBox="0 0 320 400" role="img" aria-label="Malla digital sobre un rostro: la cámara lee tres zonas de la piel" className="h-full w-full overflow-visible">
       <defs>

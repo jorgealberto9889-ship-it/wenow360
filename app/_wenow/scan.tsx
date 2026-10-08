@@ -39,7 +39,7 @@ type VitalLensInstance = {
 
 type Reading = {
   heartRateBpm: number | null; heartRateConfidence: number | null; respiratoryRateBpm: number | null; respiratoryRateConfidence: number | null;
-  hrvSdnnMs?: number | null; hrvLnrmssdMs?: number | null; stressIndex?: number | null; parasympatheticActivity?: number | null;
+  hrvSdnnMs?: number | null; hrvLnrmssdMs?: number | null; stressIndex?: number | null; parasympatheticActivity?: number | null; hrSeries?: number[] | null;
 };
 type Taken = { heart: boolean; respiratory: boolean; hrv?: boolean; stress?: boolean; parasympathetic?: boolean };
 
@@ -59,6 +59,7 @@ type ShenaiSdk = {
   startMeasurement(): void;
   getMeasurementState(): Enum;
   getMeasurementProgressPercentage(): number;
+  getHeartRateHistory10s?(maxTimeSec?: number): { hr_bpm: number }[];
   getMeasurementResults(): {
     heart_rate_bpm: number | null;
     breathing_rate_bpm: number | null;
@@ -239,6 +240,10 @@ export function ScanStep({
       if (state === S.FINISHED.value) {
         finished = true;
         const r = sdk.getMeasurementResults();
+        let hrSeries: number[] | null = null;
+        try {
+          hrSeries = sdk.getHeartRateHistory10s?.(70)?.map((m) => m.hr_bpm).filter((n) => Number.isFinite(n)) ?? null;
+        } catch {}
         stopAll();
         if (!r) return fail(UNCLEAR);
         const q = r.quality_metrics;
@@ -251,6 +256,7 @@ export function ScanStep({
           hrvLnrmssdMs: r.hrv_lnrmssd_ms ?? null,
           stressIndex: r.stress_index ?? null,
           parasympatheticActivity: r.parasympathetic_activity ?? null,
+          hrSeries,
         });
         return;
       }

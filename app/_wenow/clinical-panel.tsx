@@ -1,19 +1,25 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState, type ReactNode } from "react";
 import type { BiometricReading, BiometricValues } from "@/lib/engine/biometrics";
-import { cx } from "./ui";
+import { Chevron, Collapse, cx } from "./ui";
+import { FaceMesh } from "./rppg";
 
-// Panel de mediciones (Shen.AI): pantalla completa con aspecto de monitor clínico. Cinco instrumentos:
-// frecuencia cardiaca, variabilidad, respiración, índice de estrés y actividad parasimpática. Solo describe
-// valores y su referencia; nunca diagnostica. Los resultados guardados antes de Shen.AI no traen `values`.
+// Panel de mediciones (Shen.AI): pantalla clara y limpia, con la estructura de una app de salud y los colores de
+// WeNow. Cinco indicadores (pulso, VFC, respiración, estrés y actividad parasimpática) y un resumen con el índice
+// WeNow de bienestar. Solo describe valores y su referencia; nunca diagnostica. Los resultados guardados antes de
+// Shen.AI no traen `values`.
 
-const EMPTY: BiometricValues = { heartRateBpm: null, respiratoryRateBpm: null, hrvSdnnMs: null, hrvLnrmssdMs: null, stressIndex: null, parasympatheticActivity: null };
+const EMPTY: BiometricValues = { heartRateBpm: null, respiratoryRateBpm: null, hrvSdnnMs: null, hrvLnrmssdMs: null, stressIndex: null, parasympatheticActivity: null, hrSeries: null };
 
-const CYAN = "#5eead4";
-const MAGENTA = "#ff6fb0";
+const OK = { chip: "bg-[#e5f8ef] text-[#087748]", line: "#19b96f" };
+const WARN = { chip: "bg-[#fff3d6] text-[#8a5a00]", line: "#e0a100" };
+const HOT = { chip: "bg-[#fde8f0] text-[#a51959]", line: "#c71f70" };
+const NEUTRAL = { chip: "bg-[#f1ecef] text-[#5a5456]", line: "#a3a2a2" };
+type Tone = typeof OK;
 
-function useCountUp(to: number | null, ms = 1500) {
+function useCountUp(to: number | null, ms = 1300) {
   const [n, setN] = useState(0);
   useEffect(() => {
     if (to === null) return;
@@ -34,252 +40,274 @@ function useCountUp(to: number | null, ms = 1500) {
   return n;
 }
 
-function Module({ code, title, delay, children }: { code: string; title: string; delay: number; children: ReactNode }) {
+const Icon = ({ children, tint }: { children: ReactNode; tint: string }) => (
+  <span className="flex size-10 shrink-0 items-center justify-center rounded-full" style={{ background: `${tint}1f`, color: tint }}>
+    <svg viewBox="0 0 24 24" className="size-[19px]" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>{children}</svg>
+  </span>
+);
+
+function Metric({
+  icon, title, tint, tone, status, explain, delay, wide, children,
+}: { icon: ReactNode; title: string; tint: string; tone: Tone; status: string; explain: string; delay: number; wide?: boolean; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
   return (
     <section
       style={{ animationDelay: `${delay}ms` }}
-      className="relative h-full overflow-hidden rounded-[18px] border border-white/10 bg-[rgba(255,255,255,0.035)] p-4 motion-safe:animate-[sheet_600ms_cubic-bezier(0.23,1,0.32,1)_both]"
+      className={cx("rounded-[22px] border border-[var(--line)] bg-white p-4 shadow-[0_10px_26px_rgba(56,56,56,0.05)] motion-safe:animate-[sheet_560ms_cubic-bezier(0.23,1,0.32,1)_both]", wide && "sm:col-span-2")}
     >
-      <span aria-hidden className="absolute top-0 left-0 h-px w-16 bg-gradient-to-r from-[#5eead4] to-transparent" />
-      <header className="flex items-center justify-between gap-2">
-        <h2 className="font-mono text-[11px] font-medium tracking-[0.12em] text-[#9bb3b0] uppercase">{title}</h2>
-        <span className="rounded border border-white/10 px-1.5 py-0.5 font-mono text-[9.5px] text-[#6f8582]">{code}</span>
-      </header>
-      {children}
+      <button type="button" aria-expanded={open} onClick={() => setOpen(!open)} className="flex w-full items-center gap-3 text-left">
+        <Icon tint={tint}>{icon}</Icon>
+        <span className="min-w-0 flex-1 text-[14px] leading-tight font-semibold text-[var(--navy)]">{title}</span>
+        <span className={cx("rounded-full px-2.5 py-1 text-[11.5px] font-bold", tone.chip)}>{status}</span>
+        <span className="text-[#a3a2a2]"><Chevron open={open} /></span>
+      </button>
+      <div className="mt-3">{children}</div>
+      <Collapse open={open}>
+        <p className="mt-3 rounded-xl bg-[var(--bg)] px-3 py-2.5 text-[12.5px] leading-[1.55] text-[#4a4547]">{explain}</p>
+      </Collapse>
     </section>
   );
 }
 
-function Value({ value, unit, digits = 0, large }: { value: number | null; unit: string; digits?: number; large?: boolean }) {
+function Big({ value, unit, digits = 0, denom }: { value: number; unit?: string; digits?: number; denom?: string }) {
   const n = useCountUp(value);
   return (
-    <div className="mt-3 flex items-baseline gap-1.5">
-      <span className={cx("font-mono font-medium text-white tabular-nums", large ? "text-[52px] leading-none" : "text-[40px] leading-none")}>
-        {value === null ? "--" : n.toFixed(digits)}
-      </span>
-      <span className="font-mono text-[12px] text-[#9bb3b0]">{unit}</span>
+    <div className="flex items-baseline gap-1.5">
+      <span className="text-[38px] leading-none font-extrabold tracking-[-0.03em] text-[var(--navy)] tabular-nums">{n.toFixed(digits)}</span>
+      {unit && <span className="text-[14px] font-medium text-[var(--muted)]">{unit}</span>}
+      {denom && <span className="text-[14px] font-medium text-[#a3a2a2]">{denom}</span>}
     </div>
   );
 }
 
-const Note = ({ children }: { children: ReactNode }) => <p className="mt-3 text-[12.5px] leading-[1.55] text-[#b9c9c7]">{children}</p>;
-const Unavailable = () => <p className="mt-4 text-[12.5px] leading-[1.55] text-[#8aa09d]">No se pudo leer con suficiente claridad esta vez, así que no la usamos.</p>;
+const Unavailable = () => <p className="text-[12.5px] leading-[1.55] text-[var(--muted)]">No se pudo leer con suficiente claridad esta vez, así que no la usamos.</p>;
 
-function Chip({ tone, children }: { tone: "ok" | "warn" | "hot" | "neutral"; children: ReactNode }) {
-  const c = { ok: "border-[#5eead4]/40 bg-[#5eead4]/10 text-[#5eead4]", warn: "border-[#fbbf24]/40 bg-[#fbbf24]/10 text-[#fbbf24]", hot: "border-[#ff6fb0]/50 bg-[#ff6fb0]/10 text-[#ff9fc9]", neutral: "border-white/15 bg-white/5 text-[#b9c9c7]" }[tone];
-  return <span className={cx("inline-block rounded-full border px-2.5 py-1 font-mono text-[10.5px] font-medium tracking-[0.04em]", c)}>{children}</span>;
-}
-
-// Traza tipo ECG a la velocidad real del pulso (visualización ilustrativa, no el registro del latido).
-const beat = (o: number) => `L${o + 30} 40L${o + 36} 40L${o + 42} 28L${o + 48} 40L${o + 54} 40L${o + 60} 6L${o + 68} 66L${o + 76} 40L${o + 86} 40L${o + 98} 32L${o + 110} 40L${o + 140} 40`;
-const ECG_PATH = `M0 40${beat(0)}${beat(140)}`;
-function EcgTrace({ bpm }: { bpm: number }) {
-  const secPerBeat = 60 / Math.min(180, Math.max(35, bpm));
+// Línea del pulso medido (serie real) o, si no llegó, una traza suave con el valor medido.
+function Sparkline({ id, series, fallback, color, min, max }: { id: string; series: number[] | null; fallback: number; color: string; min: number; max: number }) {
+  const real = series && series.length >= 3;
+  const pts = real ? series : Array.from({ length: 24 }, (_, i) => fallback + Math.sin(i * 0.9) * 2.2 + Math.cos(i * 0.45) * 1.4);
+  const lo = real ? Math.min(...pts) - 4 : Math.min(min, ...pts);
+  const hi = real ? Math.max(...pts) + 4 : Math.max(max, ...pts);
+  const x = (i: number) => (i / (pts.length - 1)) * 200;
+  const y = (v: number) => 46 - ((v - lo) / (hi - lo || 1)) * 40;
+  const d = pts.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join("");
   return (
-    <div className="relative mt-3 h-[72px] overflow-hidden rounded-xl bg-black/35 ring-1 ring-white/10">
-      <div aria-hidden className="absolute inset-0 opacity-[0.22]" style={{ backgroundImage: "linear-gradient(rgba(94,234,212,0.55) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,0.55) 1px,transparent 1px)", backgroundSize: "14px 14px" }} />
-      <svg viewBox="0 0 280 72" preserveAspectRatio="none" className="absolute inset-y-0 left-0 h-full w-[200%] motion-safe:animate-[pulse-scroll_linear_infinite]" style={{ animationDuration: `${secPerBeat * 2}s` }}>
-        <path d={ECG_PATH} fill="none" stroke={CYAN} strokeWidth="2" strokeLinejoin="round" vectorEffect="non-scaling-stroke" style={{ filter: `drop-shadow(0 0 4px ${CYAN})` }} />
-      </svg>
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#0b1112] to-transparent" />
-    </div>
-  );
-}
-
-// Onda respiratoria a su ritmo real.
-function BreathWave({ rpm }: { rpm: number }) {
-  const sec = 60 / Math.min(40, Math.max(4, rpm));
-  return (
-    <div className="relative mt-3 h-[72px] overflow-hidden rounded-xl bg-black/35 ring-1 ring-white/10">
-      <div aria-hidden className="absolute inset-0 opacity-[0.22]" style={{ backgroundImage: "linear-gradient(rgba(94,234,212,0.55) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,0.55) 1px,transparent 1px)", backgroundSize: "14px 14px" }} />
-      <svg viewBox="0 0 400 72" preserveAspectRatio="none" className="absolute inset-y-0 left-0 h-full w-[200%] motion-safe:animate-[pulse-scroll_linear_infinite]" style={{ animationDuration: `${sec * 2}s` }}>
-        <path d="M0 36C25 4 75 4 100 36C125 68 175 68 200 36C225 4 275 4 300 36C325 68 375 68 400 36" fill="none" stroke={MAGENTA} strokeWidth="2" vectorEffect="non-scaling-stroke" style={{ filter: `drop-shadow(0 0 4px ${MAGENTA})` }} />
-      </svg>
-    </div>
-  );
-}
-
-// Referencia con banda y marcador: la banda sombreada es el rango típico; el punto, tu valor.
-function RangeBar({ value, min, max, from, to, unit }: { value: number; min: number; max: number; from: number; to: number; unit: string }) {
-  const pct = (v: number) => `${Math.min(100, Math.max(0, ((v - min) / (max - min)) * 100))}%`;
-  return (
-    <div className="mt-3" aria-hidden>
-      <div className="relative h-2 rounded-full bg-white/10">
-        <span className="absolute inset-y-0 rounded-full bg-[#5eead4]/30" style={{ left: pct(from), width: `calc(${pct(to)} - ${pct(from)})` }} />
-        <span className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#0b1112] bg-white shadow-[0_0_10px_rgba(255,255,255,0.6)]" style={{ left: pct(value) }} />
-      </div>
-      <div className="mt-1.5 flex justify-between font-mono text-[10px] text-[#6f8582]">
-        <span>{min}</span>
-        <span>Típico {from}–{to} {unit}</span>
-        <span>{max}</span>
-      </div>
-    </div>
-  );
-}
-
-// Medidor semicircular del índice de estrés (0–10): 0–4 referencia, 5–8 elevada, 9–10 muy elevada.
-function StressGauge({ value }: { value: number }) {
-  const R = 70;
-  const arc = (a: number, b: number) => {
-    const pt = (t: number) => [100 + R * Math.cos(Math.PI * (1 - t / 10)), 100 - R * Math.sin(Math.PI * (1 - t / 10))];
-    const [x1, y1] = pt(a);
-    const [x2, y2] = pt(b);
-    return `M${x1.toFixed(1)} ${y1.toFixed(1)}A${R} ${R} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`;
-  };
-  const ang = Math.PI * (1 - Math.min(10, Math.max(0, value)) / 10);
-  const nx = 100 + (R - 12) * Math.cos(ang);
-  const ny = 100 - (R - 12) * Math.sin(ang);
-  return (
-    <svg viewBox="0 0 200 112" className="mt-2 w-full max-w-[260px]" role="img" aria-label={`Índice de estrés ${value.toFixed(1)} de 10`}>
-      <path d={arc(0, 4.95)} stroke="#5eead4" strokeOpacity="0.55" strokeWidth="9" fill="none" strokeLinecap="round" />
-      <path d={arc(5, 8.95)} stroke="#fbbf24" strokeOpacity="0.6" strokeWidth="9" fill="none" strokeLinecap="round" />
-      <path d={arc(9, 10)} stroke="#ff6fb0" strokeOpacity="0.75" strokeWidth="9" fill="none" strokeLinecap="round" />
-      <line x1="100" y1="100" x2={nx} y2={ny} stroke="#fff" strokeWidth="2.5" strokeLinecap="round" style={{ transformOrigin: "100px 100px" }} className="motion-safe:animate-[needle_1400ms_cubic-bezier(0.23,1,0.32,1)_both]" />
-      <circle cx="100" cy="100" r="5" fill="#fff" />
-      <g fontFamily="var(--font-mono)" fontSize="9" fill="#6f8582"><text x="22" y="110">0</text><text x="96" y="22">5</text><text x="172" y="110">10</text></g>
+    <svg viewBox="0 0 200 52" preserveAspectRatio="none" className="h-14 w-full" aria-hidden>
+      <defs>
+        <linearGradient id={id} x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor={color} stopOpacity="0.22" /><stop offset="1" stopColor={color} stopOpacity="0" /></linearGradient>
+      </defs>
+      <path d={`${d}L200 52L0 52Z`} fill={`url(#${id})`} />
+      <path d={d} fill="none" stroke={color} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
     </svg>
   );
 }
 
-// Balance de control del pulso: la parte parasimpática (calma y recuperación) frente al resto.
-function BalanceBar({ pct }: { pct: number }) {
-  const p = Math.min(100, Math.max(0, pct));
+// Barras tipo ecualizador para la respiración: la cantidad de ciclos sigue al ritmo medido.
+function BreathBars({ rpm, color }: { rpm: number; color: string }) {
+  const bars = 28;
   return (
-    <div className="mt-3" aria-hidden>
-      <div className="flex h-3 overflow-hidden rounded-full bg-white/10">
-        <span className="h-full bg-[#5eead4] shadow-[0_0_12px_rgba(94,234,212,0.6)] transition-[width] duration-1000 ease-out" style={{ width: `${p}%` }} />
-        <span className="h-full bg-[#ff6fb0]/60" style={{ width: `${100 - p}%` }} />
-      </div>
-      <div className="mt-1.5 flex justify-between font-mono text-[10px] text-[#8aa09d]">
-        <span>Calma y recuperación {Math.round(p)}%</span>
-        <span>Activación {Math.round(100 - p)}%</span>
+    <div className="flex h-14 items-center justify-between gap-[3px]" aria-hidden>
+      {Array.from({ length: bars }, (_, i) => {
+        const wave = Math.abs(Math.sin((i / bars) * Math.PI * (rpm / 3.2)));
+        return <span key={i} className="w-full origin-center rounded-full motion-safe:animate-[bar-rise_700ms_ease-out_both]" style={{ height: `${(18 + wave * 82).toFixed(1)}%`, background: color, opacity: Number((0.35 + wave * 0.65).toFixed(2)), animationDelay: `${i * 18}ms` }} />;
+      })}
+    </div>
+  );
+}
+
+// Medidor semicircular del índice de estrés (0–10).
+function StressGauge({ value, color }: { value: number; color: string }) {
+  const R = 54;
+  const pt = (t: number) => [70 + R * Math.cos(Math.PI * (1 - t / 10)), 70 - R * Math.sin(Math.PI * (1 - t / 10))];
+  const [sx, sy] = pt(0);
+  const [ex, ey] = pt(10);
+  const [vx, vy] = pt(Math.min(10, Math.max(0, value)));
+  return (
+    <svg viewBox="0 0 140 84" className="mx-auto h-[84px] w-[140px]" role="img" aria-label={`Índice de estrés ${value.toFixed(1)} de 10`}>
+      <path d={`M${sx} ${sy}A${R} ${R} 0 0 1 ${ex} ${ey}`} stroke="#ece6e9" strokeWidth="11" fill="none" strokeLinecap="round" />
+      {value > 0.2 && <path d={`M${sx} ${sy}A${R} ${R} 0 0 1 ${vx.toFixed(1)} ${vy.toFixed(1)}`} stroke={color} strokeWidth="11" fill="none" strokeLinecap="round" />}
+    </svg>
+  );
+}
+
+// Anillo del índice WeNow de bienestar.
+function ScoreRing({ score, color }: { score: number; color: string }) {
+  const n = useCountUp(score, 1500);
+  const C = 2 * Math.PI * 46;
+  return (
+    <div className="relative size-[132px] shrink-0">
+      <svg viewBox="0 0 110 110" className="size-full -rotate-90" aria-hidden>
+        <circle cx="55" cy="55" r="46" stroke="#eee8eb" strokeWidth="10" fill="none" />
+        <circle cx="55" cy="55" r="46" stroke={color} strokeWidth="10" fill="none" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * (1 - n / 100)} />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-[34px] leading-none font-extrabold tracking-[-0.03em] text-[var(--navy)] tabular-nums">{Math.round(n)}</span>
+        <span className="mt-0.5 text-[12px] font-medium text-[var(--muted)]">/ 100</span>
       </div>
     </div>
   );
 }
 
-const hrTone = (l?: string) => (l === "Dentro de lo típico" ? "ok" : "warn");
+const rangeTone = (label?: string): Tone => (label === "Dentro de lo típico" ? OK : WARN);
+const shortRange = (label?: string) => (label === "Dentro de lo típico" ? "Normal" : label === "Ligeramente acelerada" ? "Elevada" : "Baja");
 
-export function ClinicalPanel({ bio, completedAt, code, onContinue, footer }: { bio: BiometricReading; completedAt?: string; code?: string; onContinue?: () => void; footer?: ReactNode }) {
+export function ClinicalPanel({ bio, completedAt, footer }: { bio: BiometricReading; completedAt?: string; footer?: ReactNode }) {
   const v = bio.values ?? EMPTY;
   const hr = v.heartRateBpm;
   const rr = v.respiratoryRateBpm;
   const stress = bio.stress ?? null;
+  const wellness = bio.wellness ?? null;
+  const [info, setInfo] = useState(false);
   const date = completedAt ? new Date(completedAt) : null;
-  const measured = date && !Number.isNaN(date.getTime()) ? date.toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" }) : null;
-  const id = code ? code.replace(/-/g, "").slice(0, 8).toUpperCase() : null;
-  const stressTone = stress?.label === "Dentro de la referencia" ? "ok" : stress?.label === "Carga elevada" ? "warn" : "hot";
+  const measured = date && !Number.isNaN(date.getTime()) ? date.toLocaleString("es-MX", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : null;
+  const stressTone = stress?.label === "Dentro de la referencia" ? OK : stress?.label === "Carga elevada" ? WARN : HOT;
+  const wellTone = wellness?.label === "Óptimo" ? OK : wellness?.label === "Bueno" ? { ...OK, line: "#7bc96a" } : WARN;
+  const stressShort = stress?.label === "Dentro de la referencia" ? "En referencia" : stress?.label === "Carga elevada" ? "Elevado" : "Muy elevado";
 
   return (
-    <div className="relative min-h-dvh w-full overflow-hidden bg-[#0b1112] text-white">
-      {/* Papel milimétrico + resplandor */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "linear-gradient(#5eead4 1px,transparent 1px),linear-gradient(90deg,#5eead4 1px,transparent 1px)", backgroundSize: "28px 28px" }} />
-      <div aria-hidden className="pointer-events-none absolute -top-40 left-1/2 size-[640px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(165,25,89,0.28),transparent_65%)]" />
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#5eead4] to-transparent opacity-60" />
-
-      <div className="relative mx-auto w-full max-w-[1080px] px-5 pt-6 pb-8 lg:px-8 lg:pt-10">
-        <header className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 font-mono text-[11px] font-medium tracking-[0.14em] text-[#5eead4] uppercase">
-              <span className="relative flex size-2"><span className="absolute inline-flex size-full rounded-full bg-[#5eead4] opacity-70 motion-safe:animate-ping" /><span className="relative inline-flex size-2 rounded-full bg-[#5eead4]" /></span>
-              Panel de mediciones · WeNow 360
-            </div>
-            <h1 className="mt-3 text-[30px] leading-[1.08] font-extrabold tracking-[-0.025em] lg:text-[42px]">Tu lectura biométrica</h1>
-            <p className="mt-2 max-w-[560px] text-[14px] leading-[1.6] text-[#b9c9c7]">Cinco mediciones tomadas con la cámara de tu dispositivo en un minuto, sin tocar nada.</p>
-          </div>
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-1 font-mono text-[10.5px] text-[#8aa09d] sm:text-right">
-            <div><dt className="uppercase">Medición</dt><dd className="text-[12px] text-white">{id ?? "—"}</dd></div>
-            <div><dt className="uppercase">Duración</dt><dd className="text-[12px] text-white">60 s</dd></div>
-            <div className="col-span-2"><dt className="uppercase">Fecha</dt><dd className="text-[12px] text-white">{measured ?? "—"}</dd></div>
-          </dl>
+    <div className="min-h-dvh w-full bg-[var(--bg)]">
+      <div className="mx-auto w-full max-w-[760px] px-5 pt-5 pb-6">
+        <header className="flex items-center justify-between">
+          <Image src="/assets/wenow-360-logo.png" alt="WeNow 360" width={1259} height={1132} className="h-11 w-auto" />
+          <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-bold tracking-[0.06em] text-[var(--muted)] uppercase ring-1 ring-[var(--line)]">Panel de mediciones</span>
         </header>
 
-        <div className="mt-7 grid gap-3.5 md:grid-cols-2 lg:grid-cols-6">
-          <div className="h-full md:col-span-2 lg:col-span-3">
-            <Module code="HR" title="Frecuencia cardiaca" delay={0}>
-              {hr === null ? <Unavailable /> : (
-                <>
-                  <Value value={hr} unit="lpm" large />
-                  <EcgTrace bpm={hr} />
-                  <RangeBar value={hr} min={40} max={140} from={60} to={100} unit="lpm" />
-                  {bio.heartRate && <div className="mt-3"><Chip tone={hrTone(bio.heartRate.label)}>{bio.heartRate.label.toUpperCase()}</Chip></div>}
-                  <Note>{bio.heartRate?.context}</Note>
-                </>
+        <div className="mt-5 flex items-center justify-between gap-4">
+          <div className="min-w-0">
+            <h1 className="text-[32px] leading-[1.05] font-extrabold tracking-[-0.03em] text-[var(--navy)] sm:text-[40px]">Resultados</h1>
+            <p className="mt-1 text-[16px] text-[var(--muted)]">Escaneo de bienestar</p>
+            <ul className="mt-4 flex flex-col gap-2 text-[13px] text-[#4a4547]">
+              {measured && (
+                <li className="flex items-center gap-2.5">
+                  <svg viewBox="0 0 24 24" className="size-[18px] text-[#a3a2a2]" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></svg>
+                  {measured}
+                </li>
               )}
-            </Module>
+              <li className="flex items-center gap-2.5">
+                <svg viewBox="0 0 24 24" className="size-[18px] text-[#19b96f]" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="9" /><path d="M8 12.5l2.7 2.7L16 9.5" /></svg>
+                Análisis completado · 60 s
+              </li>
+            </ul>
           </div>
-
-          <div className="h-full md:col-span-2 lg:col-span-3">
-            <Module code="BR" title="Frecuencia respiratoria" delay={120}>
-              {rr === null ? <Unavailable /> : (
-                <>
-                  <Value value={rr} unit="rpm" large />
-                  <BreathWave rpm={rr} />
-                  <RangeBar value={rr} min={4} max={30} from={12} to={20} unit="rpm" />
-                  {bio.respiratoryRate && <div className="mt-3"><Chip tone={hrTone(bio.respiratoryRate.label)}>{bio.respiratoryRate.label.toUpperCase()}</Chip></div>}
-                  <Note>{bio.respiratoryRate?.context}</Note>
-                </>
-              )}
-            </Module>
-          </div>
-
-          <div className="h-full md:col-span-2 lg:col-span-2">
-            <Module code="HRV" title="Variabilidad cardiaca" delay={240}>
-              {v.hrvSdnnMs === null && v.hrvLnrmssdMs === null ? <Unavailable /> : (
-                <>
-                  {v.hrvSdnnMs !== null && <Value value={v.hrvSdnnMs} unit="ms · SDNN" />}
-                  {v.hrvLnrmssdMs !== null && (
-                    <div className="mt-2 flex items-baseline gap-1.5 font-mono"><span className="text-[18px] text-white tabular-nums">{v.hrvLnrmssdMs.toFixed(1)}</span><span className="text-[11px] text-[#9bb3b0]">ms · lnRMSSD</span></div>
-                  )}
-                  <div className="mt-3"><Chip tone="neutral">SIN RANGO UNIVERSAL</Chip></div>
-                  <Note>Mide cuánto cambia el tiempo entre un latido y otro. Es útil para compararte contigo, a la misma hora y en reposo; una variabilidad mayor suele acompañar un cuerpo que se adapta mejor.</Note>
-                </>
-              )}
-            </Module>
-          </div>
-
-          <div className="h-full md:col-span-1 lg:col-span-2">
-            <Module code="STR" title="Índice de estrés" delay={360}>
-              {v.stressIndex === null ? <Unavailable /> : (
-                <>
-                  <div className="mt-1 flex justify-center"><StressGauge value={v.stressIndex} /></div>
-                  <div className="-mt-1 flex items-baseline justify-center gap-1.5"><span className="font-mono text-[34px] leading-none font-medium tabular-nums">{v.stressIndex.toFixed(1)}</span><span className="font-mono text-[12px] text-[#9bb3b0]">/ 10</span></div>
-                  {stress && <div className="mt-3 text-center"><Chip tone={stressTone}>{stress.label.toUpperCase()}</Chip></div>}
-                  <Note>{stress?.context} Mide la carga fisiológica de tu cuerpo; no evalúa emociones ni tu estado mental.</Note>
-                </>
-              )}
-            </Module>
-          </div>
-
-          <div className="h-full md:col-span-1 lg:col-span-2">
-            <Module code="PSY" title="Actividad parasimpática" delay={480}>
-              {v.parasympatheticActivity === null ? <Unavailable /> : (
-                <>
-                  <Value value={v.parasympatheticActivity} unit="%" large />
-                  <BalanceBar pct={v.parasympatheticActivity} />
-                  <Note>Qué parte del control de tu pulso corresponde a la rama de calma y recuperación de tu sistema nervioso. Más porcentaje indica más influencia de esa rama.</Note>
-                </>
-              )}
-            </Module>
+          <div className="relative size-[132px] shrink-0 overflow-hidden rounded-[22px] bg-[#1d1d1d] shadow-[0_14px_30px_rgba(56,56,56,0.22)] sm:size-[160px]" aria-hidden>
+            <div className="absolute inset-0 scale-[1.28]"><FaceMesh live /></div>
+            {["left-2.5 top-2.5 border-l-2 border-t-2 rounded-tl-lg", "right-2.5 top-2.5 border-r-2 border-t-2 rounded-tr-lg", "left-2.5 bottom-2.5 border-l-2 border-b-2 rounded-bl-lg", "right-2.5 bottom-2.5 border-r-2 border-b-2 rounded-br-lg"].map((c) => (
+              <span key={c} className={cx("absolute size-5 border-[#ff6fb0]", c)} />
+            ))}
           </div>
         </div>
 
-        <p className="mt-7 max-w-[760px] font-mono text-[10.5px] leading-[1.7] text-[#7d918e]">
-          Medición con tecnología Shen.AI. Orientación de bienestar: no es un dispositivo médico ni un diagnóstico, y los trazos son una visualización ilustrativa de tus valores. Si tienes síntomas o dudas sobre tu salud, consulta a un profesional.
-        </p>
-
-        {(onContinue || footer) && (
-          <div className="sticky bottom-0 -mx-5 mt-6 border-t border-white/10 bg-[#0b1112]/90 px-5 pt-3.5 pb-[max(20px,env(safe-area-inset-bottom))] backdrop-blur lg:-mx-8 lg:px-8">
-            <div className="mx-auto max-w-[440px]">
-              {footer ?? (
-                <button type="button" onClick={onContinue} className="press w-full rounded-full bg-[var(--blue)] py-4 text-[15px] font-bold text-white shadow-[0_14px_30px_rgba(165,25,89,0.4)]">
-                  Continuar con mi resultado
-                </button>
-              )}
+        {wellness && (
+          <section className="mt-5 rounded-[24px] border border-[var(--line)] bg-white p-5 shadow-[0_12px_30px_rgba(56,56,56,0.06)] motion-safe:animate-[sheet_560ms_cubic-bezier(0.23,1,0.32,1)_both]">
+            <div className="flex items-center justify-between gap-4">
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5 text-[15px] font-semibold text-[var(--navy)]">
+                  Índice WeNow de bienestar
+                  <button type="button" aria-expanded={info} aria-label="Cómo se calcula" onClick={() => setInfo(!info)} className="press text-[#a3a2a2]">
+                    <svg viewBox="0 0 24 24" className="size-[17px]" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 7.8v.2" /></svg>
+                  </button>
+                </div>
+                <div className="mt-1 text-[32px] leading-[1.1] font-extrabold tracking-[-0.025em]" style={{ color: wellTone.line === "#e0a100" ? "#8a5a00" : "#0a6b3f" }}>{wellness.label}</div>
+                <p className="mt-1.5 text-[13px] leading-[1.5] text-[var(--muted)]">{wellness.message}</p>
+                <p className="mt-2 text-[12px] font-semibold text-[#4a4547]">{wellness.inRange} de {wellness.total} indicadores en referencia</p>
+              </div>
+              <ScoreRing score={wellness.score} color={wellTone.line} />
             </div>
-          </div>
+            <Collapse open={info}>
+              <p className="mt-3 rounded-xl bg-[var(--bg)] px-3 py-2.5 text-[12.5px] leading-[1.55] text-[#4a4547]">
+                Es una síntesis orientativa de WeNow: combina tu frecuencia cardiaca, tu frecuencia respiratoria y tu índice de estrés frente a sus rangos de referencia. La variabilidad y la actividad parasimpática no puntúan porque no tienen un rango universal. No es una medida clínica.
+              </p>
+            </Collapse>
+          </section>
         )}
+
+        <h2 className="mt-7 mb-3 text-[19px] font-extrabold tracking-[-0.015em] text-[var(--navy)]">Indicadores principales</h2>
+        <div className="grid gap-3.5 sm:grid-cols-2">
+          <Metric
+            title="Frecuencia cardiaca" tint="#e5484d" tone={rangeTone(bio.heartRate?.label)} status={hr === null ? "Sin lectura" : shortRange(bio.heartRate?.label)} delay={80}
+            icon={<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" />}
+            explain={`Cuántas veces late tu corazón por minuto en reposo. Lo típico es de 60 a 100. ${bio.heartRate?.context ?? ""}`}
+          >
+            {hr === null ? <Unavailable /> : (
+              <>
+                <Big value={hr} unit="lpm" />
+                <div className="mt-2"><Sparkline id="sp-hr" series={v.hrSeries} fallback={hr} color={rangeTone(bio.heartRate?.label).line} min={50} max={90} /></div>
+                <p className="mt-1 text-[10.5px] text-[#a3a2a2]">{v.hrSeries && v.hrSeries.length >= 3 ? "Tu pulso durante la medición" : "Trazo ilustrativo de tu valor"}</p>
+              </>
+            )}
+          </Metric>
+
+          <Metric
+            title="Variabilidad cardiaca (VFC)" tint="#19b96f" tone={NEUTRAL} status={v.hrvSdnnMs === null && v.hrvLnrmssdMs === null ? "Sin lectura" : "Tu referencia"} delay={160}
+            icon={<path d="M3 12h4l2-5 4 10 2-5h6" />}
+            explain="Cuánto cambia el tiempo entre un latido y otro. No hay un valor ideal universal: sirve para compararte contigo, a la misma hora y en reposo. Una variabilidad mayor suele acompañar un cuerpo que se adapta mejor al día a día."
+          >
+            {v.hrvSdnnMs === null && v.hrvLnrmssdMs === null ? <Unavailable /> : (
+              <>
+                {v.hrvSdnnMs !== null ? <Big value={v.hrvSdnnMs} unit="ms" /> : <Big value={v.hrvLnrmssdMs!} unit="ms" digits={1} />}
+                {v.hrvSdnnMs !== null && v.hrvLnrmssdMs !== null && <p className="mt-1 text-[12px] text-[var(--muted)]">SDNN · lnRMSSD {v.hrvLnrmssdMs.toFixed(1)} ms</p>}
+                <div className="mt-2"><Sparkline id="sp-hrv" series={null} fallback={v.hrvSdnnMs ?? 40} color="#19b96f" min={0} max={100} /></div>
+                <p className="mt-1 text-[10.5px] text-[#a3a2a2]">Trazo ilustrativo de tu valor</p>
+              </>
+            )}
+          </Metric>
+
+          <Metric
+            title="Frecuencia respiratoria" tint="#3b82c4" tone={rangeTone(bio.respiratoryRate?.label)} status={rr === null ? "Sin lectura" : shortRange(bio.respiratoryRate?.label)} delay={240}
+            icon={<><path d="M9 4v8c0 3-2 5-5 5V9c0-2 2-5 5-5Z" /><path d="M15 4v8c0 3 2 5 5 5V9c0-2-2-5-5-5Z" /></>}
+            explain={`Cuántas veces respiras por minuto en reposo. Lo típico es de 12 a 20. ${bio.respiratoryRate?.context ?? ""}`}
+          >
+            {rr === null ? <Unavailable /> : (
+              <>
+                <Big value={rr} unit="rpm" />
+                <div className="mt-2"><BreathBars rpm={rr} color={rangeTone(bio.respiratoryRate?.label).line} /></div>
+              </>
+            )}
+          </Metric>
+
+          <Metric
+            title="Índice de estrés" tint="#e0a100" tone={stressTone} status={v.stressIndex === null ? "Sin lectura" : stressShort} delay={320}
+            icon={<path d="M13 3L5 13h6l-1 8 8-10h-6l1-8Z" />}
+            explain={`Una escala de 0 a 10 de la carga fisiológica de tu cuerpo durante la medición: de 0 a 4 está en referencia, de 5 a 8 es elevada y de 9 a 10 muy elevada. No mide emociones ni tu estado mental. ${stress?.context ?? ""}`}
+          >
+            {v.stressIndex === null ? <Unavailable /> : (
+              <div className="text-center">
+                <StressGauge value={v.stressIndex} color={stressTone.line} />
+                <div className="-mt-9 flex items-baseline justify-center gap-1"><span className="text-[28px] leading-none font-extrabold text-[var(--navy)] tabular-nums">{v.stressIndex.toFixed(1)}</span><span className="text-[13px] text-[#a3a2a2]">/ 10</span></div>
+                <p className="mt-2 text-[12px] leading-snug text-[var(--muted)]">{stress?.context}</p>
+              </div>
+            )}
+          </Metric>
+
+          <Metric
+            wide title="Actividad parasimpática" tint="#2f9e6b" tone={NEUTRAL} status={v.parasympatheticActivity === null ? "Sin lectura" : "Calma y recuperación"} delay={400}
+            icon={<><path d="M12 21c-4-3-7-6-7-10 3 0 5 1 7 3 2-2 4-3 7-3 0 4-3 7-7 10Z" /><path d="M12 14V8" /></>}
+            explain="Qué parte del control de tu pulso corresponde a la rama de calma y recuperación de tu sistema nervioso (se calcula con las frecuencias bajas y altas de tu variabilidad). Más porcentaje indica más influencia de esa rama."
+          >
+            {v.parasympatheticActivity === null ? <Unavailable /> : (
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+                <Big value={v.parasympatheticActivity} unit="%" />
+                <div className="flex-1">
+                  <div className="h-3 overflow-hidden rounded-full bg-[#ece6e9]" aria-hidden>
+                    <span className="block h-full rounded-full bg-[linear-gradient(90deg,#19b96f,#7bd9a6)] transition-[width] duration-1000 ease-out" style={{ width: `${Math.min(100, Math.max(0, v.parasympatheticActivity))}%` }} />
+                  </div>
+                  <div className="mt-1.5 flex justify-between text-[11px] text-[#a3a2a2]"><span>Más activación</span><span>Más calma y recuperación</span></div>
+                </div>
+              </div>
+            )}
+          </Metric>
+        </div>
+
+        <p className="mt-6 text-[11.5px] leading-[1.65] text-[var(--muted)]">
+          Medición con tecnología Shen.AI. Orientación de bienestar: no es un dispositivo médico ni un diagnóstico. Si tienes síntomas o dudas sobre tu salud, consulta a un profesional.
+        </p>
       </div>
+
+      {footer && (
+        <div className="sticky bottom-0 border-t border-[var(--line)] bg-[var(--bg)] px-5 pt-3.5 pb-[max(20px,env(safe-area-inset-bottom))]">
+          <div className="mx-auto max-w-[440px]">{footer}</div>
+        </div>
+      )}
     </div>
   );
 }

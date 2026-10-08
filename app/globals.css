@@ -150,3 +150,8 @@ body {
 @keyframes needle {
   from { transform: rotate(-90deg); }
 }
+
+/* Panel de mediciones claro: barras que crecen desde el centro. */
+@keyframes bar-rise {
+  from { transform: scaleY(0.15); opacity: 0; }
+}

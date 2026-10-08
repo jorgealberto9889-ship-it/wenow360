@@ -156,6 +156,22 @@ test("el índice de estrés de Shen.AI (≥5) suma una sola vez al eje de estré
   assert.equal(stressed.biometric?.values.parasympatheticActivity, 40);
 });
 
+test("índice WeNow de bienestar: usa solo pulso, respiración y estrés, y necesita al menos dos", () => {
+  const calm = calculateResult(answers({}), catalog, { heartRateBpm: 70, respiratoryRateBpm: 15, stressIndex: 2, hrvSdnnMs: 10, parasympatheticActivity: 5 }).biometric?.wellness;
+  assert.equal(calm?.label, "Óptimo");
+  assert.equal(calm?.inRange, 3);
+  assert.ok((calm?.score ?? 0) >= 90);
+  const strained = calculateResult(answers({}), catalog, { heartRateBpm: 112, respiratoryRateBpm: 24, stressIndex: 9.5 }).biometric?.wellness;
+  assert.equal(strained?.label, "A cuidar");
+  assert.equal(strained?.inRange, 0);
+  assert.ok((strained?.score ?? 100) < 60);
+  assert.equal(calculateResult(answers({}), catalog, { heartRateBpm: 70, respiratoryRateBpm: null }).biometric?.wellness ?? null, null);
+  // La VFC y la actividad parasimpática no mueven el índice.
+  const a = calculateResult(answers({}), catalog, { heartRateBpm: 70, respiratoryRateBpm: 15, hrvSdnnMs: 5, parasympatheticActivity: 2 }).biometric?.wellness?.score;
+  const b = calculateResult(answers({}), catalog, { heartRateBpm: 70, respiratoryRateBpm: 15, hrvSdnnMs: 90, parasympatheticActivity: 90 }).biometric?.wellness?.score;
+  assert.equal(a, b);
+});
+
 test("el esquema rechaza severidades de objetivos no elegidos y limpia 'none'", () => {
   assert.equal(answersSchema.safeParse({ ...baseInput, metrics: { ...baseInput.metrics, focus: 2 } }).success, false);
   assert.equal(answersSchema.safeParse({ ...baseInput, secondaryGoals: ["focus"] }).success, false);

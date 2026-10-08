@@ -123,7 +123,16 @@ export type ClientReading = {
   hrvLnrmssdMs?: number | null;
   stressIndex?: number | null;
   parasympatheticActivity?: number | null;
+  hrSeries?: number[] | null;
 };
+
+// Reduce el pulso medido a 24 puntos plausibles equiespaciados (solo para dibujarlo).
+function compactSeries(list: number[] | null | undefined) {
+  const ok = (list ?? []).filter((n) => n >= PLAUSIBLE.heart[0] && n <= PLAUSIBLE.heart[1]);
+  if (ok.length < 3) return null;
+  const n = Math.min(24, ok.length);
+  return Array.from({ length: n }, (_, i) => Math.round(ok[Math.round((i * (ok.length - 1)) / Math.max(1, n - 1))]));
+}
 
 export async function finishScanSession(sessionId: string, reading: ClientReading) {
   const [row] = await db
@@ -150,6 +159,7 @@ export async function finishScanSession(sessionId: string, reading: ClientReadin
     hrvLnrmssdMs: extra(reading.hrvLnrmssdMs, PLAUSIBLE.hrv),
     stressIndex: extra(reading.stressIndex, PLAUSIBLE.stress),
     parasympatheticActivity: extra(reading.parasympatheticActivity, PLAUSIBLE.parasympathetic),
+    hrSeries: onDevice ? compactSeries(reading.hrSeries) : null,
   };
 
   await db
@@ -162,7 +172,7 @@ export async function finishScanSession(sessionId: string, reading: ClientReadin
     })
     .where(eq(schema.scanSessions.id, sessionId));
 
-  if (Object.values(accepted).every((v) => v === null)) {
+  if (Object.values({ ...accepted, hrSeries: null }).every((v) => v === null)) {
     return { ok: false as const, reason: "low_confidence" as const };
   }
   return {

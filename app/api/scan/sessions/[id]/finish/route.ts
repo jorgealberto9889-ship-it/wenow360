@@ -14,6 +14,7 @@ const readingSchema = z.object({
   hrvLnrmssdMs: num.optional(),
   stressIndex: num.optional(),
   parasympatheticActivity: num.optional(),
+  hrSeries: z.array(z.number().finite()).max(200).nullable().optional(),
 });
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {

@@ -125,7 +125,6 @@ function ResultActs({ saved, draft, name, distributor, voice, seq, assistantToke
       <ClinicalPanel
         bio={saved.result.biometric}
         completedAt={saved.completedAt}
-        code={saved.assessmentId}
         footer={<NextButton key="panel" voice={voice} onClick={() => goTo(2)}>Ver lo que encontramos</NextButton>}
       />
     );
