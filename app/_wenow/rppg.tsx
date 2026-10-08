@@ -1,133 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState, type ReactNode } from "react";
 import { useInView } from "./trust";
 import { cx } from "./ui";
 
-// ── Malla del rostro ────────────────────────────────────────────────────────────────────────────
-// Se genera en código (determinista, igual en servidor y cliente): una retícula triangulada recortada con
-// la forma de un rostro. Cada punto es un nodo; cada arista, una línea fina de la malla.
-const FACE = { cx: 160, top: 46, bottom: 356, half: 104 };
-const ROW = 20;
-const COL = 22;
-
-function halfWidth(y: number) {
-  const mid = (FACE.top + FACE.bottom) / 2 - 16;
-  const t = (y - mid) / ((FACE.bottom - FACE.top) / 2);
-  if (Math.abs(t) >= 1) return 0;
-  const taper = y > mid ? 1 - 0.2 * Math.pow(t, 1.6) : 1;
-  return FACE.half * Math.sqrt(1 - t * t) * taper;
-}
-
-const r1 = (n: number) => Math.round(n * 10) / 10;
-
-function buildMesh() {
-  const rows: { x: number; y: number }[][] = [];
-  for (let y = FACE.top + 6, i = 0; y < FACE.bottom - 4; y += ROW, i++) {
-    const hw = halfWidth(y) - 4;
-    const row: { x: number; y: number }[] = [];
-    if (hw > 8) {
-      const off = i % 2 ? COL / 2 : 0;
-      for (let x = FACE.cx - hw + off + 2; x <= FACE.cx + hw; x += COL) {
-        // Pequeña irregularidad determinista para que se sienta orgánica, no una cuadrícula.
-        row.push({ x: r1(x + Math.sin(i * 7.3 + x * 0.21) * 2.2), y: r1(y + Math.cos(x * 0.17 + i * 3.1) * 2.2) });
-      }
-    }
-    rows.push(row);
-  }
-  const edges: string[] = [];
-  const nodes: { x: number; y: number }[] = [];
-  rows.forEach((row, i) => {
-    row.forEach((p, j) => {
-      nodes.push(p);
-      if (row[j + 1]) edges.push(`M${p.x} ${p.y}L${row[j + 1].x} ${row[j + 1].y}`);
-      const below = rows[i + 1] ?? [];
-      // Las dos aristas diagonales hacia los vecinos más cercanos de la fila de abajo.
-      below
-        .map((q) => ({ q, d: Math.abs(q.x - p.x) }))
-        .sort((a, b) => a.d - b.d)
-        .slice(0, 2)
-        .forEach(({ q, d }) => { if (d < COL) edges.push(`M${p.x} ${p.y}L${q.x} ${q.y}`); });
-    });
-  });
-  return { d: edges.join(""), nodes };
-}
-
-const MESH = buildMesh();
-
-// Contorno suave del rostro (óvalo con mentón más estrecho), dibujado a mano sobre la misma forma.
-const OUTLINE =
-  "M160 40C108 40 62 80 58 150C56 210 70 262 96 304C118 338 138 356 160 356C182 356 202 338 224 304C250 262 264 210 262 150C258 80 212 40 160 40Z";
-
-// Zonas de lectura (ROI): donde la cámara busca la variación de color de la piel.
-const ROIS = [
-  { id: "frente", cx: 160, cy: 98, rx: 46, ry: 17, delay: 0 },
-  { id: "mejilla-izq", cx: 112, cy: 222, rx: 28, ry: 24, delay: 500 },
-  { id: "mejilla-der", cx: 208, cy: 222, rx: 28, ry: 24, delay: 1000 },
-];
-
-export function FaceMesh({ live }: { live: boolean }) {
-  return (
-    <svg viewBox="0 0 320 400" role="img" aria-label="Malla digital sobre un rostro: la cámara lee tres zonas de la piel" className="h-full w-full overflow-visible">
-      <defs>
-        <linearGradient id="rppg-scan" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#ff6fb0" stopOpacity="0" />
-          <stop offset="0.85" stopColor="#ff6fb0" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#ffd3e8" stopOpacity="0.95" />
-        </linearGradient>
-        <clipPath id="rppg-face"><path d={OUTLINE} /></clipPath>
-      </defs>
-
-      {/* La malla se revela de arriba hacia abajo la primera vez que entra en pantalla. */}
-      <g
-        style={{ clipPath: live ? "inset(0 0 0 0)" : "inset(0 0 100% 0)" }}
-        className="transition-[clip-path] duration-[2200ms] ease-out motion-reduce:transition-none"
-      >
-        <path d={MESH.d} fill="none" stroke="#e48bb6" strokeOpacity="0.42" strokeWidth="0.8" />
-        <g fill="#ffd3e8">
-          {MESH.nodes.map((n, i) => (
-            <circle
-              key={i} cx={n.x} cy={n.y} r={i % 5 === 0 ? 1.9 : 1.2}
-              style={{ animationDelay: `${(i * 137) % 2600}ms` }}
-              className={cx(i % 3 === 0 && "motion-safe:animate-[node-blink_2.6s_ease-in-out_infinite]")}
-              opacity={i % 3 === 0 ? undefined : 0.75}
-            />
-          ))}
-        </g>
-
-        {/* Rasgos mínimos para que se lea como rostro. */}
-        <g fill="none" stroke="#ffffff" strokeOpacity="0.55" strokeWidth="1.3" strokeLinecap="round">
-          <path d="M112 160C122 153 136 153 146 160C136 166 122 166 112 160Z" />
-          <path d="M174 160C184 153 198 153 208 160C198 166 184 166 174 160Z" />
-          <path d="M160 168C158 190 154 206 148 218C152 224 168 224 172 218" />
-          <path d="M134 270C148 280 172 280 186 270" />
-        </g>
-
-        <path d={OUTLINE} fill="none" stroke="#ff8cc2" strokeWidth="1.8" style={{ filter: "drop-shadow(0 0 5px rgba(255,111,176,0.8))" }} />
-      </g>
-
-      {/* Línea de escaneo, recortada al rostro. */}
-      <g clipPath="url(#rppg-face)">
-        <g className={cx("motion-reduce:hidden", live ? "animate-[scan-sweep_3.8s_ease-in-out_2.2s_infinite]" : "opacity-0")}>
-          <rect x="40" y="-60" width="240" height="60" fill="url(#rppg-scan)" />
-          <rect x="40" y="-1" width="240" height="1.6" fill="#fff" opacity="0.9" />
-        </g>
-      </g>
-
-      {/* Zonas de lectura con ondas que laten. */}
-      {live && ROIS.map((r) => (
-        <g key={r.id} style={{ transformBox: "fill-box", transformOrigin: "center" }}>
-          <ellipse cx={r.cx} cy={r.cy} rx={r.rx} ry={r.ry} fill="rgba(255,111,176,0.10)" stroke="#ffd3e8" strokeWidth="1.2" strokeDasharray="3 3" />
-          <ellipse
-            cx={r.cx} cy={r.cy} rx={r.rx} ry={r.ry} fill="none" stroke="#ff6fb0" strokeWidth="1.4"
-            style={{ transformBox: "fill-box", transformOrigin: "center", animationDelay: `${2200 + r.delay}ms` }}
-            className="motion-safe:animate-[roi-pulse_2s_ease-out_infinite]"
-          />
-        </g>
-      ))}
-    </svg>
-  );
-}
+// Sección «Tecnología rPPG» de la portada. Explica el proceso en cuatro etapas: cada una se ilustra con una de las
+// fotos de referencia (modelo 3D, puntos de referencia, micromovimientos y flujo de sangre). La foto central cambia
+// sola cada pocos segundos y la tarjeta de la etapa activa se ilumina; también se puede tocar una tarjeta para verla.
 
 // ── Señal de pulso ────────────────────────────────────────────────────────────────────────────
 // Un latido (forma típica de una onda de pulso: subida rápida, pico y muesca) repetido 6 veces. La
@@ -219,38 +99,146 @@ function SignalCard({ live }: { live: boolean }) {
 }
 
 // ── Sección ──────────────────────────────────────────────────────────────────────────────────
+const STAGES = [
+  {
+    title: "Modelo 3D de tu rostro", text: "Crea un modelo único de tu rostro para saber exactamente dónde leer cada medición.",
+    image: "/assets/rppg/malla-3d.webp", caption: "Malla 3D de tu rostro",
+    icon: <><path d="M12 3c-4.5 0-7 3.2-7 7.5 0 5 3 9.5 7 10.5 4-1 7-5.5 7-10.5C19 6.2 16.5 3 12 3Z" /><path d="M12 3v18M5.2 9.5h13.6M6 15h12" /></>,
+  },
+  {
+    title: "Datos faciales detallados", text: "Identifica los puntos de referencia de tu rostro para que la lectura sea más estable y detallada.",
+    image: "/assets/rppg/puntos.webp", caption: "Puntos de referencia faciales",
+    icon: <><path d="M12 5v14M5 12h14" /><circle cx="12" cy="12" r="8.5" /></>,
+  },
+  {
+    title: "Detección de micromovimientos", text: "Detecta pequeños movimientos faciales que pasan desapercibidos para el ojo humano.",
+    image: "/assets/rppg/micromovimientos.webp", caption: "Micromovimientos de la piel",
+    icon: <><path d="M4 8h16M4 8l3-3M4 8l3 3M20 16H4M20 16l-3-3M20 16l-3 3" /></>,
+  },
+  {
+    title: "Seguimiento del pulso", text: "Registra el flujo y las pulsaciones de la sangre debajo de la piel.",
+    image: "/assets/rppg/mapa-calor.webp", caption: "Flujo de sangre bajo la piel",
+    icon: <><path d="M3 12h4l2-5 4 10 2-5h6" /></>,
+  },
+];
+
 const STEPS = [
   ["01", "Enciende tu cámara", "Con buena luz y de frente, desde tu celular o computadora."],
   ["02", "Mírala unos segundos", "Sin tocar nada: la cámara observa tu rostro, menos de un minuto."],
   ["03", "Recibe tu lectura", "Cinco mediciones en un panel clínico propio, que además enriquecen tu evaluación."],
 ];
 
+const STAGE_MS = 4200;
+
+function StageCard({ i, active, onSelect, seen }: { i: number; active: boolean; onSelect: () => void; seen: boolean }) {
+  const st = STAGES[i];
+  return (
+    <button
+      type="button" aria-pressed={active} onClick={onSelect}
+      style={{ transitionDelay: seen ? `${200 + i * 120}ms` : "0ms" }}
+      className={cx(
+        "group relative flex w-full items-start gap-4 overflow-hidden rounded-[22px] border p-4 text-left transition-[opacity,transform,border-color,background-color] duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none lg:p-5",
+        seen ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100",
+        active ? "border-[#ff6fb0]/60 bg-[#ff6fb0]/[0.09] shadow-[0_0_34px_rgba(255,111,176,0.16)]" : "border-white/10 bg-white/[0.03] hover:border-white/25",
+      )}
+    >
+      <span className={cx("flex size-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-500", active ? "border-[#ff6fb0]/60 bg-[#ff6fb0]/15 text-[#ffd3e8]" : "border-white/15 text-[#cfc8cb]")}>
+        <svg viewBox="0 0 24 24" className="size-[22px]" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden>{st.icon}</svg>
+      </span>
+      <span className="min-w-0">
+        <span className="flex items-center gap-2 font-mono text-[10px] font-medium tracking-[0.14em] text-[#ff9fc9] uppercase">Etapa {i + 1}</span>
+        <span className="mt-0.5 block text-[15.5px] leading-snug font-bold text-white">{st.title}</span>
+        <span className="mt-1 block text-[13px] leading-[1.55] text-[#c9c2c5]">{st.text}</span>
+      </span>
+      {/* Avance de la etapa activa */}
+      <span aria-hidden className="absolute inset-x-0 bottom-0 h-[2px] bg-white/5">
+        {active && <span key={`bar-${i}`} className="block h-full origin-left bg-[linear-gradient(90deg,#ff6fb0,#ffd3e8)] motion-safe:animate-[stage-progress_4200ms_linear_both]" />}
+      </span>
+    </button>
+  );
+}
+
 export function RppgSection({ children }: { children?: ReactNode }) {
   const [ref, seen] = useInView<HTMLElement>();
+  const [stage, setStage] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  // Avanza sola cada pocos segundos mientras la sección es visible (no con movimiento reducido).
+  useEffect(() => {
+    if (!seen || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = setTimeout(() => setStage((s) => (s + 1) % STAGES.length), STAGE_MS);
+    return () => clearTimeout(t);
+  }, [seen, paused, stage]);
+
   return (
     <section ref={ref} id="tecnologia" className="mx-auto w-full max-w-[1180px] scroll-mt-20 px-5 pt-16 lg:px-8 lg:pt-24">
-      <div className="relative overflow-hidden rounded-[32px] bg-[#1d1d1d] px-6 py-12 text-white shadow-[0_28px_60px_rgba(56,56,56,0.35)] lg:px-12 lg:py-16">
+      <div className="relative overflow-hidden rounded-[32px] bg-[#101319] px-6 py-12 text-white shadow-[0_28px_60px_rgba(56,56,56,0.35)] lg:px-12 lg:py-16">
         {/* Retícula técnica y resplandor magenta */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{ backgroundImage: "linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)", backgroundSize: "40px 40px", maskImage: "radial-gradient(70% 70% at 70% 45%,#000,transparent)" }}
+          style={{ backgroundImage: "linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)", backgroundSize: "40px 40px", maskImage: "radial-gradient(70% 70% at 50% 40%,#000,transparent)" }}
         />
-        <div aria-hidden className="pointer-events-none absolute -right-24 top-1/4 size-[520px] rounded-full bg-[radial-gradient(circle,rgba(199,31,112,0.45),transparent_65%)]" />
+        <div aria-hidden className="pointer-events-none absolute top-[18%] left-1/2 size-[560px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(199,31,112,0.38),transparent_65%)]" />
 
-        <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+        <div className="relative mx-auto max-w-[720px] text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 font-mono text-[11px] font-medium tracking-[0.14em] text-[#ffd3e8] uppercase">
+            <span className="size-1.5 rounded-full bg-[#ff6fb0]" /> Tecnología rPPG
+          </span>
+          <h2 className="mt-4 text-[32px] leading-[1.06] font-extrabold tracking-[-0.03em] lg:text-[46px]">
+            Tu pulso, leído <span className="text-[#ff6fb0]">con la cámara</span>
+          </h2>
+          <p className="mt-4 text-[15px] leading-[1.65] text-[#d9d2d5]">
+            La <strong className="font-bold text-white">fotopletismografía remota (rPPG)</strong> detecta los cambios casi invisibles de color que el flujo de sangre provoca en tu piel con cada latido. Con eso, una cámara común estima tu frecuencia cardiaca y respiratoria, tu variabilidad cardiaca, un índice de estrés y tu actividad parasimpática: sin sensores, sin pulseras y sin tocar nada.
+          </p>
+        </div>
+
+        {/* Proceso en cuatro etapas: tarjetas alrededor de la foto */}
+        <div
+          className="relative mt-10 grid items-center gap-4 lg:grid-cols-[1fr_minmax(300px,380px)_1fr] lg:gap-6"
+          onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
+        >
+          <div className="order-2 flex flex-col gap-4 lg:order-1 lg:gap-10">
+            <StageCard i={0} active={stage === 0} onSelect={() => setStage(0)} seen={seen} />
+            <StageCard i={1} active={stage === 1} onSelect={() => setStage(1)} seen={seen} />
+          </div>
+
+          <div className="relative order-1 mx-auto w-full max-w-[340px] lg:order-2 lg:max-w-none">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(120%_90%_at_50%_30%,#2a2230,#12151b_70%)] shadow-[0_30px_70px_rgba(0,0,0,0.5)]">
+              {STAGES.map((st, i) => (
+                <Image
+                  key={st.image} src={st.image} alt={`Modelo con ${st.caption.toLowerCase()}`} width={720} height={900} sizes="(min-width:1024px) 380px, 340px"
+                  priority={i === 0}
+                  className={cx(
+                    "absolute inset-0 size-full object-cover object-top transition-[opacity,transform] duration-[900ms] ease-out motion-reduce:transition-none",
+                    stage === i ? "scale-100 opacity-100" : "scale-[1.04] opacity-0",
+                  )}
+                />
+              ))}
+              <span aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#101319] to-transparent" />
+              {/* Barrido de lectura */}
+              <span aria-hidden className="pointer-events-none absolute inset-x-0 h-14 bg-[linear-gradient(180deg,transparent,rgba(255,111,176,0.30))] motion-safe:animate-[tile-scan_3.6s_ease-in-out_infinite] motion-reduce:hidden" />
+              {["left-3 top-3 border-l-2 border-t-2 rounded-tl-xl", "right-3 top-3 border-r-2 border-t-2 rounded-tr-xl", "left-3 bottom-3 border-l-2 border-b-2 rounded-bl-xl", "right-3 bottom-3 border-r-2 border-b-2 rounded-br-xl"].map((c) => (
+                <span key={c} aria-hidden className={cx("absolute size-6 border-[#ff6fb0] motion-safe:animate-[halo-soft_2.4s_ease-in-out_infinite]", c)} />
+              ))}
+              <div className="absolute inset-x-0 bottom-3 flex justify-center">
+                <span className="rounded-full border border-white/15 bg-black/55 px-3 py-1.5 font-mono text-[10.5px] font-medium tracking-[0.1em] text-[#ffd3e8] uppercase backdrop-blur" aria-live="polite">
+                  {stage + 1}/{STAGES.length} · {STAGES[stage].caption}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="order-3 flex flex-col gap-4 lg:gap-10">
+            <StageCard i={2} active={stage === 2} onSelect={() => setStage(2)} seen={seen} />
+            <StageCard i={3} active={stage === 3} onSelect={() => setStage(3)} seen={seen} />
+          </div>
+        </div>
+
+        {/* Pasos para el usuario + señal de ejemplo */}
+        <div className="relative mt-12 grid items-center gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 font-mono text-[11px] font-medium tracking-[0.14em] text-[#ffd3e8] uppercase">
-              <span className="size-1.5 rounded-full bg-[#ff6fb0]" /> Tecnología rPPG
-            </span>
-            <h2 className="mt-4 text-[32px] leading-[1.06] font-extrabold tracking-[-0.03em] lg:text-[46px]">
-              Tu pulso, leído <span className="text-[#ff6fb0]">con la cámara</span>
-            </h2>
-            <p className="mt-4 max-w-[520px] text-[15px] leading-[1.65] text-[#d9d2d5]">
-              La <strong className="font-bold text-white">fotopletismografía remota (rPPG)</strong> detecta los cambios casi invisibles de color que el flujo de sangre provoca en tu piel con cada latido. Con eso, una cámara común estima tu frecuencia cardiaca y respiratoria, tu variabilidad cardiaca, un índice de estrés y tu actividad parasimpática: sin sensores, sin pulseras y sin tocar nada.
-            </p>
-
-            <ol className="mt-7 flex flex-col gap-4">
+            <ol className="flex flex-col gap-4">
               {STEPS.map(([n, t, d], i) => (
                 <li
                   key={n}
@@ -265,23 +253,12 @@ export function RppgSection({ children }: { children?: ReactNode }) {
                 </li>
               ))}
             </ol>
-
             <p className="mt-6 max-w-[500px] text-[12px] leading-[1.6] text-[#a9a3a6]">
               Es opcional y complementa tu evaluación. El video se procesa en el momento y no se guarda; solo se conservan los valores. Es una orientación de bienestar: no es un dispositivo médico ni diagnostica.
             </p>
             {children && <div className="mt-7">{children}</div>}
           </div>
-
-          {/* Visual: malla del rostro + tarjeta de señal */}
-          <div className="relative mx-auto w-full max-w-[460px] lg:max-w-none lg:pb-[130px]">
-            <div className="relative mx-auto h-[360px] w-[288px] sm:h-[420px] sm:w-[336px] lg:mx-auto lg:h-[460px] lg:w-[368px]">
-              <div aria-hidden className="absolute inset-[-8%] rounded-[40%] bg-[radial-gradient(closest-side,rgba(165,25,89,0.35),transparent)] motion-safe:animate-[halo-soft_4s_ease-in-out_infinite]" />
-              <FaceMesh live={seen} />
-            </div>
-            <div className="relative -mt-10 ml-auto w-[min(100%,330px)] sm:-mt-24 lg:absolute lg:right-0 lg:bottom-0 lg:mt-0">
-              <SignalCard live={seen} />
-            </div>
-          </div>
+          <div className="mx-auto w-full max-w-[420px] lg:max-w-none"><SignalCard live={seen} /></div>
         </div>
       </div>
     </section>
