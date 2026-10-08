@@ -58,6 +58,9 @@ function useCountUp(to: number, run: boolean, ms = 1800) {
 function SignalCard({ live }: { live: boolean }) {
   const bpm = useCountUp(72, live);
   const rpm = useCountUp(16, live, 2200);
+  const hrv = useCountUp(48, live, 2000);
+  const stress = useCountUp(32, live, 2400);
+  const para = useCountUp(58, live, 2600);
   return (
     <div className="rounded-[22px] border border-white/15 bg-[rgba(30,30,30,0.78)] p-4 shadow-[0_24px_50px_rgba(0,0,0,0.45)] backdrop-blur-md">
       <div className="flex items-center justify-between gap-2">
@@ -82,17 +85,20 @@ function SignalCard({ live }: { live: boolean }) {
         <span className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-[linear-gradient(90deg,rgba(30,30,30,0.95),transparent)]" />
       </div>
 
-      <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
-        <div>
-          <dt className="text-[10px] font-semibold tracking-[0.06em] text-[#b1abae] uppercase">Frecuencia cardiaca</dt>
-          <dd className="mt-0.5 font-mono text-[26px] leading-none font-medium text-white tabular-nums">{bpm}<span className="ml-1 text-[11px] text-[#b1abae]">lpm</span></dd>
-          <div className="mt-2"><Segments value={7} live={live} /></div>
-        </div>
-        <div>
-          <dt className="text-[10px] font-semibold tracking-[0.06em] text-[#b1abae] uppercase">Frecuencia respiratoria</dt>
-          <dd className="mt-0.5 font-mono text-[26px] leading-none font-medium text-white tabular-nums">{rpm}<span className="ml-1 text-[11px] text-[#b1abae]">rpm</span></dd>
-          <div className="mt-2"><Segments value={5} live={live} delay={300} /></div>
-        </div>
+      <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-4">
+        {[
+          ["Frecuencia cardiaca", bpm, "lpm", 7, 0],
+          ["Frecuencia respiratoria", rpm, "rpm", 5, 150],
+          ["Variabilidad cardiaca", hrv, "ms", 6, 300],
+          ["Índice de estrés", (stress / 10).toFixed(1), "/ 10", 3, 450],
+          ["Actividad parasimpática", para, "%", 7, 600],
+        ].map(([label, value, unit, segs, delay], i) => (
+          <div key={label as string} className={i === 4 ? "col-span-2" : undefined}>
+            <dt className="text-[10px] font-semibold tracking-[0.06em] text-[#b1abae] uppercase">{label}</dt>
+            <dd className="mt-0.5 font-mono text-[24px] leading-none font-medium text-white tabular-nums">{value}<span className="ml-1 text-[11px] text-[#b1abae]">{unit}</span></dd>
+            <div className="mt-2"><Segments value={segs as number} live={live} delay={delay as number} /></div>
+          </div>
+        ))}
       </dl>
     </div>
   );
