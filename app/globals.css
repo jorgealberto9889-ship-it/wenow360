@@ -155,3 +155,11 @@ body {
 @keyframes bar-rise {
   from { transform: scaleY(0.15); opacity: 0; }
 }
+
+/* Barrido de lectura sobre la foto del panel de mediciones. */
+@keyframes tile-scan {
+  0% { top: -12%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}

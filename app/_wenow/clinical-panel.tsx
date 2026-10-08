@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useEffect, useState, type ReactNode } from "react";
 import type { BiometricReading, BiometricValues } from "@/lib/engine/biometrics";
 import { Chevron, Collapse, cx } from "./ui";
-import { FaceMesh } from "./rppg";
 
 // Panel de mediciones (Shen.AI): pantalla clara y limpia, con la estructura de una app de salud y los colores de
 // WeNow. Cinco indicadores (pulso, VFC, respiración, estrés y actividad parasimpática) y un resumen con el índice
@@ -168,7 +167,7 @@ export function ClinicalPanel({ bio, completedAt, footer }: { bio: BiometricRead
     <div className="min-h-dvh w-full bg-[var(--bg)]">
       <div className="mx-auto w-full max-w-[760px] px-5 pt-5 pb-6">
         <header className="flex items-center justify-between">
-          <Image src="/assets/wenow-360-logo.png" alt="WeNow 360" width={1259} height={1132} className="h-11 w-auto" />
+          <Image src="/assets/wenow-360-logo.png" alt="WeNow 360" width={1259} height={1132} sizes="64px" priority className="h-11 w-auto" />
           <span className="rounded-full bg-white px-3 py-1.5 text-[11px] font-bold tracking-[0.06em] text-[var(--muted)] uppercase ring-1 ring-[var(--line)]">Panel de mediciones</span>
         </header>
 
@@ -189,10 +188,12 @@ export function ClinicalPanel({ bio, completedAt, footer }: { bio: BiometricRead
               </li>
             </ul>
           </div>
-          <div className="relative size-[132px] shrink-0 overflow-hidden rounded-[22px] bg-[#1d1d1d] shadow-[0_14px_30px_rgba(56,56,56,0.22)] sm:size-[160px]" aria-hidden>
-            <div className="absolute inset-0 scale-[1.28]"><FaceMesh live /></div>
+          <div className="relative h-[168px] w-[132px] shrink-0 overflow-hidden rounded-[22px] bg-[linear-gradient(160deg,#f6e9f0,#e4d7ee)] shadow-[0_14px_30px_rgba(56,56,56,0.18)] ring-1 ring-white sm:h-[210px] sm:w-[164px]" aria-hidden>
+            <Image src="/assets/modelo-malla.webp" alt="" width={640} height={800} sizes="300px" className="absolute top-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2 -translate-y-[6%]" priority />
+            {/* Barrido de lectura sobre el rostro */}
+            <span className="pointer-events-none absolute inset-x-0 h-10 bg-[linear-gradient(180deg,transparent,rgba(199,31,112,0.28))] motion-safe:animate-[tile-scan_3.4s_ease-in-out_infinite] motion-reduce:hidden" />
             {["left-2.5 top-2.5 border-l-2 border-t-2 rounded-tl-lg", "right-2.5 top-2.5 border-r-2 border-t-2 rounded-tr-lg", "left-2.5 bottom-2.5 border-l-2 border-b-2 rounded-bl-lg", "right-2.5 bottom-2.5 border-r-2 border-b-2 rounded-br-lg"].map((c) => (
-              <span key={c} className={cx("absolute size-5 border-[#ff6fb0]", c)} />
+              <span key={c} className={cx("absolute size-5 border-[#19b96f]", c)} />
             ))}
           </div>
         </div>
