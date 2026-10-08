@@ -9,6 +9,11 @@ const readingSchema = z.object({
   heartRateConfidence: num,
   respiratoryRateBpm: num,
   respiratoryRateConfidence: num,
+  // Solo Shen.AI las entrega; opcionales para que VitalLens y clientes anteriores sigan funcionando.
+  hrvSdnnMs: num.optional(),
+  hrvLnrmssdMs: num.optional(),
+  stressIndex: num.optional(),
+  parasympatheticActivity: num.optional(),
 });
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {

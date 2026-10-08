@@ -163,9 +163,14 @@ export const biometricReadings = sqliteTable("biometric_readings", {
     .notNull()
     .unique()
     .references(() => assessments.id),
-  provider: text("provider", { enum: ["vitallens"] }).notNull().default("vitallens"),
+  provider: text("provider", { enum: ["vitallens", "shenai"] }).notNull().default("vitallens"),
   heartRateBpm: real("heart_rate_bpm"),
   respiratoryRateBpm: real("respiratory_rate_bpm"),
+  // Solo Shen.AI: variabilidad cardiaca, índice de estrés (0–10) y actividad parasimpática (%).
+  hrvSdnnMs: real("hrv_sdnn_ms"),
+  hrvLnrmssdMs: real("hrv_lnrmssd_ms"),
+  stressIndex: real("stress_index"),
+  parasympatheticActivity: real("parasympathetic_activity"),
   capturedAt: now("captured_at"),
 });
 

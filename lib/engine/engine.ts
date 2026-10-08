@@ -1,11 +1,11 @@
 import { BRAND } from "../brand";
 import { GOAL_LABELS, type Answers, type GoalId, type MetricId } from "./answers";
-import { describeBiometrics, respiratoryStressBoost, type BiometricInput, type BiometricReading } from "./biometrics";
+import { describeBiometrics, respiratoryElevated, respiratoryStressBoost, stressElevated, type BiometricInput, type BiometricReading } from "./biometrics";
 
 // Motor de recomendación de WeNow 360. Mecanismo heredado de WeNow 360 V2 (puntaje por objetivo y por
 // métrica, exclusiones de seguridad, pares incompatibles, kit de 3–4 productos) con el catálogo de
 // WeNow (scripts/data/wenow-catalog.ts). Los pesos son una propuesta inicial a validar con WeNow.
-export const ENGINE_VERSION = "wenow-1.0";
+export const ENGINE_VERSION = "wenow-1.1";
 
 export type EngineProduct = {
   id: string;
@@ -278,7 +278,10 @@ export function calculateResult(a: Answers, catalog: EngineProduct[], biometricI
     if (value <= 0) continue;
     for (const [id, weight] of Object.entries(METRIC_PRODUCT_WEIGHTS[metric])) {
       add(id, value * weight, `metric:${metric}`);
-      if (metric === "stress" && value > reported) reasons.get(id)?.add("biometric:respiratory_elevated");
+      if (metric === "stress" && value > reported) {
+        if (respiratoryElevated(biometricInput)) reasons.get(id)?.add("biometric:respiratory_elevated");
+        if (stressElevated(biometricInput)) reasons.get(id)?.add("biometric:stress_elevated");
+      }
     }
   }
 

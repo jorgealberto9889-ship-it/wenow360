@@ -50,7 +50,7 @@ const describe = (action: string, entityId: string | null) => {
 
 export default async function Operacion() {
   await requireAdmin();
-  const { emails, scans, audit, celia } = await operations();
+  const { emails, scans, audit, celia, monthScans } = await operations();
   const sent = emails.sent ?? 0;
   const failed = (emails.failed ?? 0) + (emails.bounced ?? 0);
 
@@ -80,6 +80,9 @@ export default async function Operacion() {
         <Stat label="Correos enviados" value={sent} />
         <Stat label="Correos con error" value={failed} tone={failed ? "bad" : "good"} note={failed ? "Revisa la ficha del prospecto" : "Sin errores"} />
         <Stat label="Escaneos completados" value={scans.finished} note={scanProvider() === "shenai" ? `${scans.sessions} iniciados · Shen.AI` : `${scans.sessions} iniciados · ${scans.requests} llamadas a VitalLens`} />
+        {scanProvider() === "shenai" && (
+          <Stat label="Escaneos del mes (plan Shen.AI)" value={`${monthScans} / 500`} tone={monthScans >= 500 ? "bad" : "good"} note={monthScans >= 500 ? "Plan agotado: cada escaneo extra se cobra (0,20 €)" : monthScans >= 400 ? "Cerca del límite del plan" : "Mediciones iniciadas este mes"} />
+        )}
         <Stat label="Conversaciones con Winnie" value={celia.conversations} note={`${celia.questions} preguntas`} />
       </div>
 

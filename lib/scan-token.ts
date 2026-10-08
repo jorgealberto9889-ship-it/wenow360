@@ -13,7 +13,11 @@ function key() {
 }
 
 export async function signScanToken(reading: BiometricInput) {
-  return new SignJWT({ hr: reading.heartRateBpm, rr: reading.respiratoryRateBpm })
+  return new SignJWT({
+    hr: reading.heartRateBpm, rr: reading.respiratoryRateBpm,
+    sd: reading.hrvSdnnMs ?? null, ln: reading.hrvLnrmssdMs ?? null,
+    st: reading.stressIndex ?? null, ps: reading.parasympatheticActivity ?? null,
+  })
     .setProtectedHeader({ alg: "HS256" })
     .setAudience("biometric-scan")
     .setIssuedAt()
@@ -25,8 +29,11 @@ export async function verifyScanToken(token: string): Promise<BiometricInput | n
   try {
     const { payload } = await jwtVerify(token, key(), { algorithms: ["HS256"], audience: "biometric-scan" });
     const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : null);
-    const reading = { heartRateBpm: num(payload.hr), respiratoryRateBpm: num(payload.rr) };
-    return reading.heartRateBpm === null && reading.respiratoryRateBpm === null ? null : reading;
+    const reading: BiometricInput = {
+      heartRateBpm: num(payload.hr), respiratoryRateBpm: num(payload.rr),
+      hrvSdnnMs: num(payload.sd), hrvLnrmssdMs: num(payload.ln), stressIndex: num(payload.st), parasympatheticActivity: num(payload.ps),
+    };
+    return Object.values(reading).every((v) => v === null) ? null : reading;
   } catch {
     return null;
   }

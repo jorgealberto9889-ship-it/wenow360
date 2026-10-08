@@ -39,7 +39,7 @@ async function main() {
       .onConflictDoNothing();
     await tx
       .insert(s.recommendationRuleVersions)
-      .values({ id: ENGINE_VERSION, publishedBy: "seed", changelog: "Motor WeNow 360: 15 productos NutriDay Plus / Club WeNow." })
+      .values({ id: ENGINE_VERSION, publishedBy: "seed", changelog: "Motor WeNow 360: 15 productos NutriDay Plus / Club WeNow. 1.1: el índice de estrés de Shen.AI también suma al eje de estrés." })
       .onConflictDoNothing();
   });
 

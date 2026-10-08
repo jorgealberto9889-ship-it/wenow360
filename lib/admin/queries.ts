@@ -242,7 +242,8 @@ export const catalog = () =>
 
 export async function operations() {
   const since = periodStart("30");
-  const [emails, scans, audit, celia] = await Promise.all([
+  const monthStart = new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), 1)).toISOString();
+  const [emails, scans, audit, celia, month] = await Promise.all([
     rows<{ status: string; n: number }>(`select status, count(*) as n from email_events where created_at >= ? group by status`, [since]),
     one<{ sessions: number; finished: number; requests: number }>(
       `select count(*) as sessions, count(finished_at) as finished, coalesce(sum(api_requests), 0) as requests from scan_sessions where created_at >= ?`,
@@ -259,10 +260,13 @@ export async function operations() {
       `select count(distinct assessment_id) as conversations, sum(role = 'user') as questions from assistant_messages where created_at >= ?`,
       [since],
     ),
+    // Cada sesión de escaneo con Shen.AI consume una medición del plan (500 al mes, luego se cobra por escaneo).
+    one<{ n: number }>(`select count(*) as n from scan_sessions where created_at >= ?`, [monthStart]),
   ]);
   return {
     emails: Object.fromEntries(emails.map((e) => [e.status, Number(e.n)])) as Record<string, number>,
     scans: { sessions: Number(scans?.sessions ?? 0), finished: Number(scans?.finished ?? 0), requests: Number(scans?.requests ?? 0) },
+    monthScans: Number(month?.n ?? 0),
     audit,
     celia: { conversations: Number(celia?.conversations ?? 0), questions: Number(celia?.questions ?? 0) },
   };

@@ -96,6 +96,31 @@ export function biometricInsights(bio: BiometricReading, draft: Draft) {
           : bio.respiratoryRate.context,
     });
   }
+  const v = bio.values;
+  if (v.hrvSdnnMs !== null) {
+    items.push({
+      label: "Variabilidad cardiaca",
+      what: "Cuánto cambia el tiempo entre un latido y otro. No hay un valor ideal universal: sirve para compararte contigo, a la misma hora y en reposo.",
+      reading: `${Math.round(v.hrvSdnnMs)} ms`,
+      context: "Una variabilidad mayor suele acompañar un cuerpo que se adapta mejor al día a día.",
+    });
+  }
+  if (bio.stress) {
+    items.push({
+      label: "Índice de estrés",
+      what: "Una escala de 0 a 10 de la carga fisiológica de tu cuerpo durante la medición; no mide emociones ni tu estado mental.",
+      reading: `${bio.stress.label}${v.stressIndex !== null ? ` · ${v.stressIndex.toFixed(1)} de 10` : ""}`,
+      context: bio.stress.context,
+    });
+  }
+  if (v.parasympatheticActivity !== null) {
+    items.push({
+      label: "Actividad parasimpática",
+      what: "El porcentaje del control de tu pulso que corresponde a la rama de calma y recuperación de tu sistema nervioso.",
+      reading: `${Math.round(v.parasympatheticActivity)} %`,
+      context: "Un valor más alto indica más influencia de la rama de calma y recuperación.",
+    });
+  }
   const note = !bio.respiratoryRate ? "Tu respiración no se pudo leer con suficiente claridad esta vez, así que no la usamos." : null;
   return { items, note };
 }
@@ -143,6 +168,7 @@ export function reasonText(rec: Recommendation | undefined) {
   if (rec.reasonCodes.includes("boost:metabolic_profile")) add("tu perfil metabólico");
   if (rec.reasonCodes.includes("habit:hydration_low")) add("tu consumo de agua");
   if (rec.reasonCodes.includes("biometric:respiratory_elevated")) add("tu lectura de respiración");
+  if (rec.reasonCodes.includes("biometric:stress_elevated")) add("tu índice de estrés en el escaneo");
   return phrases.length ? `Te lo recomendamos por ${list(phrases.slice(0, 3))}.` : "";
 }
 

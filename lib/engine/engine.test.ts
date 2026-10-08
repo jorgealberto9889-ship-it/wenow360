@@ -139,6 +139,23 @@ test("respiración acelerada suma solo al eje de estrés; la frecuencia cardiaca
   assert.deepEqual(fastBreath.areas, plain.areas);
 });
 
+test("el índice de estrés de Shen.AI (≥5) suma una sola vez al eje de estrés y la VFC no puntúa", () => {
+  const a = answers({ primaryGoal: "stress", metrics: { ...baseInput.metrics, stress: 1 } });
+  const score = (r: ReturnType<typeof calculateResult>, id: string) => r.recommendations.find((x) => x.productId === id)?.relevanceScore ?? 0;
+  const calm = { heartRateBpm: 70, respiratoryRateBpm: 16 };
+  const plain = calculateResult(a, catalog, calm);
+  const stressed = calculateResult(a, catalog, { ...calm, stressIndex: 6.5, hrvSdnnMs: 30, parasympatheticActivity: 40 });
+  const both = calculateResult(a, catalog, { ...calm, respiratoryRateBpm: 24, stressIndex: 8 });
+  const lowStress = calculateResult(a, catalog, { ...calm, stressIndex: 3, hrvSdnnMs: 80 });
+  assert.equal(score(stressed, "nk-plus") - score(plain, "nk-plus"), 3);
+  assert.equal(score(both, "nk-plus"), score(stressed, "nk-plus"));
+  assert.deepEqual(lowStress.recommendations, plain.recommendations);
+  assert.ok(stressed.recommendations.find((x) => x.productId === "nk-plus")?.reasonCodes.includes("biometric:stress_elevated"));
+  assert.equal(stressed.biometric?.stress?.label, "Carga elevada");
+  assert.equal(calculateResult(a, catalog, { ...calm, stressIndex: 9.4 }).biometric?.stress?.label, "Carga muy elevada");
+  assert.equal(stressed.biometric?.values.parasympatheticActivity, 40);
+});
+
 test("el esquema rechaza severidades de objetivos no elegidos y limpia 'none'", () => {
   assert.equal(answersSchema.safeParse({ ...baseInput, metrics: { ...baseInput.metrics, focus: 2 } }).success, false);
   assert.equal(answersSchema.safeParse({ ...baseInput, secondaryGoals: ["focus"] }).success, false);

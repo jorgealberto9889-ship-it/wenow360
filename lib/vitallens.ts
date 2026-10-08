@@ -15,7 +15,7 @@ export const MIN_CONFIDENCE = 0.8;
 // ~8 s de señal limpia. Se cuentan fragmentos buenos en vez de promediar, para que los primeros
 // segundos (mientras la cámara ubica el rostro) no invaliden un buen escaneo.
 const MIN_GOOD_CHUNKS = 40;
-const PLAUSIBLE = { heart: [35, 200], respiratory: [4, 40] } as const;
+const PLAUSIBLE = { heart: [35, 200], respiratory: [4, 40], hrv: [1, 400], stress: [0, 10], parasympathetic: [0, 100] } as const;
 
 export async function createScanSession() {
   const [row] = await db
@@ -23,6 +23,12 @@ export async function createScanSession() {
     .values({ expiresAt: new Date(Date.now() + SESSION_TTL_MS).toISOString() })
     .returning({ id: schema.scanSessions.id });
   return row.id;
+}
+
+export async function scansToday() {
+  const start = new Date();
+  start.setUTCHours(0, 0, 0, 0);
+  return db.$count(schema.scanSessions, sql`${schema.scanSessions.createdAt} >= ${start.toISOString()}`);
 }
 
 // Reserva un turno de la sesión de forma atómica: falla si no existe, expiró, terminó o llegó al tope.
@@ -113,6 +119,10 @@ export type ClientReading = {
   heartRateConfidence: number | null;
   respiratoryRateBpm: number | null;
   respiratoryRateConfidence: number | null;
+  hrvSdnnMs?: number | null;
+  hrvLnrmssdMs?: number | null;
+  stressIndex?: number | null;
+  parasympatheticActivity?: number | null;
 };
 
 export async function finishScanSession(sessionId: string, reading: ClientReading) {
@@ -130,9 +140,16 @@ export async function finishScanSession(sessionId: string, reading: ClientReadin
     value !== null && value >= lo && value <= hi && (onDevice || ((clientConf ?? 0) >= MIN_CONFIDENCE && goodChunks >= MIN_GOOD_CHUNKS))
       ? Math.round(value * 10) / 10
       : null;
+  // Las 3 mediciones extra solo existen con Shen.AI (en el dispositivo); con VitalLens se descartan.
+  const extra = (value: number | null | undefined, [lo, hi]: readonly [number, number]) =>
+    onDevice && typeof value === "number" && value >= lo && value <= hi ? Math.round(value * 10) / 10 : null;
   const accepted = {
     heartRateBpm: accept(reading.heartRateBpm, reading.heartRateConfidence, row.ppgGoodChunks, PLAUSIBLE.heart),
     respiratoryRateBpm: accept(reading.respiratoryRateBpm, reading.respiratoryRateConfidence, row.respGoodChunks, PLAUSIBLE.respiratory),
+    hrvSdnnMs: extra(reading.hrvSdnnMs, PLAUSIBLE.hrv),
+    hrvLnrmssdMs: extra(reading.hrvLnrmssdMs, PLAUSIBLE.hrv),
+    stressIndex: extra(reading.stressIndex, PLAUSIBLE.stress),
+    parasympatheticActivity: extra(reading.parasympatheticActivity, PLAUSIBLE.parasympathetic),
   };
 
   await db
@@ -145,12 +162,18 @@ export async function finishScanSession(sessionId: string, reading: ClientReadin
     })
     .where(eq(schema.scanSessions.id, sessionId));
 
-  if (accepted.heartRateBpm === null && accepted.respiratoryRateBpm === null) {
+  if (Object.values(accepted).every((v) => v === null)) {
     return { ok: false as const, reason: "low_confidence" as const };
   }
   return {
     ok: true as const,
     scanToken: await signScanToken(accepted),
-    readings: { heart: accepted.heartRateBpm !== null, respiratory: accepted.respiratoryRateBpm !== null },
+    readings: {
+      heart: accepted.heartRateBpm !== null,
+      respiratory: accepted.respiratoryRateBpm !== null,
+      hrv: accepted.hrvSdnnMs !== null || accepted.hrvLnrmssdMs !== null,
+      stress: accepted.stressIndex !== null,
+      parasympathetic: accepted.parasympatheticActivity !== null,
+    },
   };
 }

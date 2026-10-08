@@ -1,11 +1,16 @@
 import { scanProvider } from "@/lib/scan-provider";
 import { mintShenaiToken } from "@/lib/shenai";
-import { createScanSession } from "@/lib/vitallens";
+import { createScanSession, scansToday } from "@/lib/vitallens";
 
 // Abre una sesión de escaneo. Con Shen.AI también entrega el token temporal de una sola medición.
 export async function POST() {
   const provider = scanProvider();
   if (!provider) return Response.json({ error: "Escaneo no disponible." }, { status: 404 });
+  // Tope diario opcional (SCAN_DAILY_MAX): cada medición de Shen.AI pasado el plan mensual tiene costo.
+  const dailyMax = Number(process.env.SCAN_DAILY_MAX);
+  if (dailyMax > 0 && (await scansToday()) >= dailyMax) {
+    return Response.json({ error: "El escaneo no está disponible por hoy. Puedes continuar sin este paso." }, { status: 429 });
+  }
   let token: string | undefined;
   if (provider === "shenai") {
     try {

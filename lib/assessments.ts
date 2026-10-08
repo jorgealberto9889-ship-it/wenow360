@@ -115,7 +115,8 @@ export async function submitAssessment(input: Submission): Promise<SubmitResult>
     }
 
     if (biometric) {
-      await tx.insert(schema.biometricReadings).values({ assessmentId: id, ...biometric });
+      const shenai = [biometric.hrvSdnnMs, biometric.hrvLnrmssdMs, biometric.stressIndex, biometric.parasympatheticActivity].some((v) => v != null);
+      await tx.insert(schema.biometricReadings).values({ assessmentId: id, provider: shenai ? "shenai" : "vitallens", ...biometric });
     }
 
     const consent = (consentType: typeof schema.consents.$inferInsert.consentType, accepted: boolean) => ({

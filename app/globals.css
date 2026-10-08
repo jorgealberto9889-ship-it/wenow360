@@ -145,3 +145,8 @@ body {
 @keyframes pulse-scroll {
   to { transform: translateX(-50%); }
 }
+
+/* Panel clínico: la aguja del índice de estrés llega desde el cero. */
+@keyframes needle {
+  from { transform: rotate(-90deg); }
+}

@@ -222,7 +222,7 @@ function SignalCard({ live }: { live: boolean }) {
 const STEPS = [
   ["01", "Enciende tu cámara", "Con buena luz y de frente, desde tu celular o computadora."],
   ["02", "Mírala unos segundos", "Sin tocar nada: la cámara observa tu rostro, menos de un minuto."],
-  ["03", "Recibe tu lectura", "Frecuencia cardiaca y respiratoria que enriquecen tu evaluación."],
+  ["03", "Recibe tu lectura", "Cinco mediciones en un panel clínico propio, que además enriquecen tu evaluación."],
 ];
 
 export function RppgSection({ children }: { children?: ReactNode }) {
@@ -247,7 +247,7 @@ export function RppgSection({ children }: { children?: ReactNode }) {
               Tu pulso, leído <span className="text-[#ff6fb0]">con la cámara</span>
             </h2>
             <p className="mt-4 max-w-[520px] text-[15px] leading-[1.65] text-[#d9d2d5]">
-              La <strong className="font-bold text-white">fotopletismografía remota (rPPG)</strong> detecta los cambios casi invisibles de color que el flujo de sangre provoca en tu piel con cada latido. Con eso, una cámara común estima tu frecuencia cardiaca y respiratoria: sin sensores, sin pulseras y sin tocar nada.
+              La <strong className="font-bold text-white">fotopletismografía remota (rPPG)</strong> detecta los cambios casi invisibles de color que el flujo de sangre provoca en tu piel con cada latido. Con eso, una cámara común estima tu frecuencia cardiaca y respiratoria, tu variabilidad cardiaca, un índice de estrés y tu actividad parasimpática: sin sensores, sin pulseras y sin tocar nada.
             </p>
 
             <ol className="mt-7 flex flex-col gap-4">

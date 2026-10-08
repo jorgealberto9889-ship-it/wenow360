@@ -17,7 +17,7 @@ const TOOLS: { title: string; text: string; icon: ReactNode }[] = [
   },
   {
     title: "Escaneo facial rPPG",
-    text: "Tecnología que lee frecuencia cardiaca y respiratoria con la cámara. Un diferenciador que tus clientes recuerdan.",
+    text: "Cinco mediciones con la cámara (pulso, variabilidad, respiración, estrés y actividad parasimpática) en un panel clínico que tus clientes recuerdan.",
     icon: <><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2" /><path d="M3 12h4l2-4 3 8 2-4h7" /></>,
   },
   {

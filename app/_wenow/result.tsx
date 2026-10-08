@@ -7,9 +7,10 @@ import { BRAND } from "@/lib/brand";
 import { MEMBERSHIP_PITCH } from "@/lib/labels";
 import type { PriorityLabel } from "@/lib/engine/engine";
 import {
-  AREAS_INTRO, areaReason, areaStatus, areaWhy, biometricInsights, bridgeText, firstName, introText, offerNumbers, productContent, productTip, reasonText, recap,
+  AREAS_INTRO, areaReason, areaStatus, areaWhy, bridgeText, firstName, introText, offerNumbers, productContent, productTip, reasonText, recap,
 } from "./copy";
 import { Assistant, WinnieInvite } from "./assistant";
+import { ClinicalPanel } from "./clinical-panel";
 import { IngredientDossier } from "./ingredients";
 import { SealsRow } from "./trust";
 import { ListenButton, NarrationProvider, sectionAnchor, useNarration } from "./narration";
@@ -17,13 +18,14 @@ import type { Distributor, Draft } from "./questions";
 import { ActLabel, ArrowRight, Card, CheckCircle, CheckIcon, Chevron, Collapse, cx, initials, money, PrimaryButton, Screen } from "./ui";
 
 type Props = { saved: SubmitResult; draft: Draft; name: string; distributor: Distributor; narrationToken?: string | null; assistantToken?: string | null; storeToken?: string | null; fresh?: boolean };
-type Sequences = { act1: string[]; act2: string[]; act3: string[] };
+type Sequences = { act1: string[]; panel: string[]; act2: string[]; act3: string[] };
 
 function sequencesFor(saved: SubmitResult): Sequences {
   const hasProducts = !saved.result.stopped && saved.products.length > 0;
   return {
     act1: ["recap"],
-    act2: ["areas", ...(saved.result.biometric ? ["biometric"] : []), "analysis", "habits", ...(hasProducts ? ["bridge"] : [])],
+    panel: saved.result.biometric ? ["biometric"] : [],
+    act2: ["areas", "analysis", "habits", ...(hasProducts ? ["bridge"] : [])],
     act3: [
       "intro",
       ...(hasProducts ? [...saved.products.map((p) => `product-${p.id}`), "offer"] : []),
@@ -35,7 +37,7 @@ function titlesFor(saved: SubmitResult): Record<string, string> {
   return {
     recap: "Lo que nos contaste",
     areas: "Tu resumen de bienestar",
-    biometric: "Tu lectura biométrica",
+    biometric: "Tu panel de mediciones",
     analysis: "¿Qué significa tu resultado?",
     habits: "Hábitos sugeridos",
     bridge: "Lo que sigue",
@@ -96,7 +98,7 @@ function ResultFlow(props: Props) {
 }
 
 function ResultActs({ saved, draft, name, distributor, voice, seq, assistantToken, storeToken }: Props & { voice: boolean; seq: Sequences }) {
-  const [act, setAct] = useState<1 | 2 | 3>(1);
+  const [act, setAct] = useState<1 | "panel" | 2 | 3>(1);
   const narration = useNarration();
   const hasProducts = !saved.result.stopped && saved.products.length > 0;
   useEffect(() => {
@@ -104,18 +106,28 @@ function ResultActs({ saved, draft, name, distributor, voice, seq, assistantToke
   }, [act]);
 
   // La reproducción arranca dentro del clic (gesto del usuario) para que el navegador la permita.
-  const goTo = (next: 2 | 3) => {
+  const goTo = (next: "panel" | 2 | 3) => {
     setAct(next);
-    if (voice) narration?.playSequence(next === 2 ? seq.act2 : seq.act3);
+    if (voice) narration?.playSequence(next === "panel" ? seq.panel : next === 2 ? seq.act2 : seq.act3);
     else narration?.stop();
   };
 
   if (act === 1) {
     return (
-      <Screen footer={<NextButton key="act1" voice={voice} onClick={() => goTo(2)}>Ver lo que encontramos</NextButton>}>
+      <Screen footer={<NextButton key="act1" voice={voice} onClick={() => goTo(saved.result.biometric ? "panel" : 2)}>{saved.result.biometric ? "Ver mi panel de mediciones" : "Ver lo que encontramos"}</NextButton>}>
         <ActLabel>Acto 1 de 3 · Antes de tu resultado</ActLabel>
         <ActOne draft={draft} name={name} seq={seq.act1} />
       </Screen>
+    );
+  }
+  if (act === "panel" && saved.result.biometric) {
+    return (
+      <ClinicalPanel
+        bio={saved.result.biometric}
+        completedAt={saved.completedAt}
+        code={saved.assessmentId}
+        footer={<NextButton key="panel" voice={voice} onClick={() => goTo(2)}>Ver lo que encontramos</NextButton>}
+      />
     );
   }
   const assistant = assistantToken ? (
@@ -125,7 +137,7 @@ function ResultActs({ saved, draft, name, distributor, voice, seq, assistantToke
     return (
       <Screen footer={<NextButton key="act2" voice={voice} onClick={() => goTo(3)}>{hasProducts ? bridgeText(saved.result.areas).cta : "Ver mis siguientes pasos"}</NextButton>}>
         <ActLabel>Acto 2 de 3 · Lo que encontramos</ActLabel>
-        <ActTwo saved={saved} draft={draft} seq={seq.act2} />
+        <ActTwo saved={saved} seq={seq.act2} />
       </Screen>
     );
   }
@@ -221,9 +233,8 @@ function Section({ id, title, seq, children, className }: { id: string; title: s
   );
 }
 
-function ActTwo({ saved, draft, seq }: { saved: SubmitResult; draft: Draft; seq: string[] }) {
+function ActTwo({ saved, seq }: { saved: SubmitResult; seq: string[] }) {
   const { result } = saved;
-  const bio = result.biometric ? biometricInsights(result.biometric, draft) : null;
   const hasProducts = !result.stopped && saved.products.length > 0;
   const bridge = bridgeText(result.areas);
 
@@ -262,25 +273,6 @@ function ActTwo({ saved, draft, seq }: { saved: SubmitResult; draft: Draft; seq:
           ))}
         </div>
       </Section>
-
-      {result.biometric && bio && (
-        <Section id="biometric" title="Tu lectura biométrica" seq={seq}>
-          <p className="mt-2 text-[11.5px] leading-normal text-[#8a8587]">A partir de tu escaneo — orientativo, no reemplaza un estudio clínico.</p>
-          <div className="mt-3.5 flex flex-col gap-2.5">
-            {bio.items.map((i) => (
-              <div key={i.label} className="rounded-[14px] bg-[#fbeef4] p-3.5">
-                <div className="flex items-baseline justify-between gap-2">
-                  <span className="text-[10.5px] font-bold tracking-[0.03em] text-[var(--muted)] uppercase">{i.label}</span>
-                  <span className="text-[14px] font-extrabold text-[var(--navy)]">{i.reading}</span>
-                </div>
-                <p className="mt-1.5 text-[12px] leading-normal text-[#4a4547]">{i.context}</p>
-                <p className="mt-1 text-[11.5px] leading-normal text-[var(--muted)]">{i.what}</p>
-              </div>
-            ))}
-            {bio.note && <p className="text-[11.5px] leading-normal text-[var(--muted)]">{bio.note}</p>}
-          </div>
-        </Section>
-      )}
 
       <Section id="analysis" title="¿Qué significa tu resultado?" seq={seq}>
         <div className="mt-3 flex flex-col gap-3">

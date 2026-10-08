@@ -45,7 +45,7 @@ export function narrationParagraphs(section: string, saved: SubmitResult, draft:
         r.first ? `Hola, ${r.first}.` : "Hola.",
         `Nos dijiste que tu prioridad hoy es ${r.primary}${r.secondaryClause}. ${r.closing}`,
         `${r.notes}${r.outro}`,
-        `${r.next} Toca «Ver lo que encontramos» para continuar.`,
+        `${r.next} Toca «${result.biometric ? "Ver mi panel de mediciones" : "Ver lo que encontramos"}» para continuar.`,
       ];
     }
     case "areas":
@@ -58,7 +58,7 @@ export function narrationParagraphs(section: string, saved: SubmitResult, draft:
       if (!result.biometric) return [];
       const { items, note } = biometricInsights(result.biometric, draft);
       return [
-        "Ahora, tu lectura biométrica, a partir de tu escaneo. Es orientativa y no reemplaza un estudio clínico.",
+        "Este es tu panel de mediciones, a partir de tu escaneo. Es orientativo y no reemplaza un estudio clínico.",
         ...items.map((i) => `${i.label}: ${i.reading.toLowerCase()}. ${i.what} ${i.context}`),
         ...(note ? [note] : []),
       ];

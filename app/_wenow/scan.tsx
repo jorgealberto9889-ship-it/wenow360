@@ -19,7 +19,7 @@ type Status =
   | { kind: "intro" }
   | { kind: "scanning"; elapsed: number; hint: Hint | null }
   | { kind: "finishing" }
-  | { kind: "done"; token: string; readings: { heart: boolean; respiratory: boolean } }
+  | { kind: "done"; token: string; readings: Taken }
   | { kind: "failed"; message: string };
 
 type Estimate = { value?: number; confidence?: number | number[] };
@@ -37,7 +37,11 @@ type VitalLensInstance = {
   addEventListener(event: string, cb: (data: VitalsEvent) => void): void;
 };
 
-type Reading = { heartRateBpm: number | null; heartRateConfidence: number | null; respiratoryRateBpm: number | null; respiratoryRateConfidence: number | null };
+type Reading = {
+  heartRateBpm: number | null; heartRateConfidence: number | null; respiratoryRateBpm: number | null; respiratoryRateConfidence: number | null;
+  hrvSdnnMs?: number | null; hrvLnrmssdMs?: number | null; stressIndex?: number | null; parasympatheticActivity?: number | null;
+};
+type Taken = { heart: boolean; respiratory: boolean; hrv?: boolean; stress?: boolean; parasympathetic?: boolean };
 
 const FACE_HINT: Hint = { title: "Acomoda tu rostro dentro del óvalo", detail: "Busca luz de frente y acerca un poco el teléfono." };
 
@@ -58,6 +62,10 @@ type ShenaiSdk = {
   getMeasurementResults(): {
     heart_rate_bpm: number | null;
     breathing_rate_bpm: number | null;
+    hrv_sdnn_ms: number | null;
+    hrv_lnrmssd_ms: number | null;
+    stress_index: number | null;
+    parasympathetic_activity: number | null;
     average_signal_quality: number | null;
     quality_metrics: { ppg_quality_index: number | null; breathing_quality_index: number | null } | null;
   } | null;
@@ -95,7 +103,7 @@ export function ScanStep({
       headers: { "content-type": "application/json" },
       body: JSON.stringify(reading),
     }).catch(() => null);
-    const body = (await done?.json().catch(() => null)) as { ok: boolean; scanToken?: string; readings?: { heart: boolean; respiratory: boolean } } | null;
+    const body = (await done?.json().catch(() => null)) as { ok: boolean; scanToken?: string; readings?: Taken } | null;
     if (body?.ok && body.scanToken) setStatus({ kind: "done", token: body.scanToken, readings: body.readings ?? { heart: true, respiratory: false } });
     else fail(UNCLEAR);
   };
@@ -239,6 +247,10 @@ export function ScanStep({
           heartRateConfidence: q?.ppg_quality_index ?? r.average_signal_quality ?? null,
           respiratoryRateBpm: r.breathing_rate_bpm ?? null,
           respiratoryRateConfidence: q?.breathing_quality_index ?? null,
+          hrvSdnnMs: r.hrv_sdnn_ms ?? null,
+          hrvLnrmssdMs: r.hrv_lnrmssd_ms ?? null,
+          stressIndex: r.stress_index ?? null,
+          parasympatheticActivity: r.parasympathetic_activity ?? null,
         });
         return;
       }
@@ -252,8 +264,9 @@ export function ScanStep({
   };
 
   if (status.kind === "done") {
-    const { heart, respiratory } = status.readings;
-    const read = [heart && "tu pulso", respiratory && "tu respiración"].filter(Boolean).join(" y ");
+    const { heart, respiratory, hrv, stress, parasympathetic } = status.readings;
+    const parts = [heart && "tu pulso", hrv && "tu variabilidad cardiaca", respiratory && "tu respiración", stress && "tu índice de estrés", parasympathetic && "tu actividad parasimpática"].filter(Boolean) as string[];
+    const read = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} y ${parts.at(-1)}` : (parts[0] ?? "tus mediciones");
     return (
       <Screen
         top={<TopBar progress={0.94} label="Opcional" />}
@@ -265,7 +278,7 @@ export function ScanStep({
           </span>
           <h1 className="mt-5 text-[23px] font-extrabold tracking-[-0.015em] text-[var(--navy)]">¡Escaneo completado!</h1>
           <p className="mt-2.5 max-w-[300px] text-[14px] leading-[1.55] text-[#4a4547]">
-            Leímos {read} con claridad y ya forma parte de tu evaluación. Verás tu lectura en tu resultado.
+            Leímos {read} con claridad y ya forma parte de tu evaluación. Verás tu panel de mediciones en tu resultado.
           </p>
           {!respiratory && (
             <p className="mt-3 max-w-[300px] text-[12.5px] leading-normal text-[var(--muted)]">
@@ -333,7 +346,9 @@ export function ScanStep({
             Un dato opcional que puede hacer tu resultado más preciso
           </h1>
           <p className="mt-2.5 text-[13.5px] leading-[1.55] text-[#4a4547]">
-            Con la cámara de tu teléfono podemos leer tu frecuencia cardiaca y tu frecuencia respiratoria en {seconds} segundos, sin tocar nada.
+            {provider === "shenai"
+              ? `Con la cámara de tu teléfono medimos tu pulso, tu variabilidad cardiaca, tu respiración, tu índice de estrés y tu actividad parasimpática en ${seconds} segundos, sin tocar nada.`
+              : `Con la cámara de tu teléfono podemos leer tu frecuencia cardiaca y tu frecuencia respiratoria en ${seconds} segundos, sin tocar nada.`}
           </p>
           {status.kind === "failed" && (
             <p role="alert" className="mt-4 rounded-xl bg-[#fff8ec] px-3.5 py-3 text-[12.5px] leading-normal text-[#5a4a2e]">{status.message}</p>
@@ -357,7 +372,7 @@ export function ScanStep({
             </div>
           ))}
           <p className="mt-4 text-[11px] leading-normal text-[#8a8587]">
-            Al tocar «Escanear», autorizas este uso de tu cámara para medir estos dos datos. {provider === "shenai"
+            Al tocar «Escanear», autorizas este uso de tu cámara para medir {provider === "shenai" ? "estos cinco datos" : "estos dos datos"}. {provider === "shenai"
               ? "El video se procesa en tu propio teléfono con la tecnología de Shen.AI, nuestro proveedor, y no se almacena."
               : "El video se procesa con VitalLens, nuestro proveedor, y no se almacena."}
           </p>
