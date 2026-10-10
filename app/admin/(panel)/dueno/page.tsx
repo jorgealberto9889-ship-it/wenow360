@@ -62,6 +62,7 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
             <li key={x.label}>
               <div className="flex justify-between text-[12.5px]"><span className="font-semibold text-[#4a4547]">{x.label}</span><span className="text-[var(--muted)]">{x.used.toLocaleString("es-MX")} / {x.limit.toLocaleString("es-MX")}</span></div>
               <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-[#f2efef]"><div className="h-full rounded-full" style={{ width: `${Math.min(100, x.pct)}%`, background: x.pct >= 100 ? "var(--red)" : x.pct >= 80 ? "#e0a100" : "var(--blue)" }} /></div>
+              {x.reference && x.pct >= 100 && <p className="mt-1 text-[11px] font-semibold text-[var(--red)]">Superó la referencia: sirve para justificar una revisión del plan.</p>}
             </li>
           ))}
         </ul>
@@ -141,7 +142,7 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
             <label><span className={label}>IVA (%)</span><input name="planIva" type="number" step="any" min="0" defaultValue={s.plan.ivaPct} className={fieldClass} /></label>
             <label><span className={label}>Cupo: escaneos faciales al mes</span><input name="planScans" type="number" min="0" defaultValue={s.plan.scans} className={fieldClass} /></label>
             <label><span className={label}>Cupo: correos automáticos al mes</span><input name="planEmails" type="number" min="0" defaultValue={s.plan.emails} className={fieldClass} /></label>
-            <label><span className={label}>Cupo: conversaciones con IA al mes</span><input name="planConversations" type="number" min="0" defaultValue={s.plan.conversations} className={fieldClass} /></label>
+            <label><span className={label}>Referencia: respuestas de Winnie al mes (no es tope)</span><input name="planWinnie" type="number" min="0" defaultValue={s.plan.winnieReference} className={fieldClass} /></label>
             <label><span className={label}>USD → MXN</span><input name="usdMxn" type="number" step="any" min="0" defaultValue={s.usdMxn} className={fieldClass} /></label>
             <label><span className={label}>EUR → MXN</span><input name="eurMxn" type="number" step="any" min="0" defaultValue={s.eurMxn} className={fieldClass} /></label>
             <label><span className={label}>Escaneos incluidos en su plan de Shen.AI</span><input name="shenIncluded" type="number" min="0" defaultValue={s.shen.included} className={fieldClass} /></label>

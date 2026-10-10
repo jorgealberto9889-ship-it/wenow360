@@ -26,7 +26,7 @@ export async function saveOwnerSettings(formData: FormData) {
     ivaPct: num(formData.get("planIva"), cur.plan.ivaPct),
     scans: Math.round(num(formData.get("planScans"), cur.plan.scans)),
     emails: Math.round(num(formData.get("planEmails"), cur.plan.emails)),
-    conversations: Math.round(num(formData.get("planConversations"), cur.plan.conversations)),
+    winnieReference: Math.round(num(formData.get("planWinnie"), cur.plan.winnieReference)),
   };
   const next: OwnerSettings = {
     aiBudgetPct: Math.min(100, num(formData.get("aiBudgetPct"), cur.aiBudgetPct)),

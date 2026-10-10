@@ -92,8 +92,9 @@ export default async function Operacion() {
         <ul className="mt-3.5 grid gap-4 md:grid-cols-3">
           {report.costs.planUsage.map((x) => (
             <li key={x.label}>
-              <div className="flex justify-between text-[12.5px]"><span className="font-semibold text-[#4a4547]">{x.label}</span><span className="text-[var(--muted)]">{x.used.toLocaleString("es-MX")} de {x.limit.toLocaleString("es-MX")}</span></div>
-              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-[#f2efef]"><div className="h-full rounded-full" style={{ width: `${Math.min(100, x.pct)}%`, background: x.pct >= 100 ? "var(--red)" : x.pct >= 80 ? "#e0a100" : "var(--blue)" }} /></div>
+              <div className="flex justify-between text-[12.5px]"><span className="font-semibold text-[#4a4547]">{x.label}</span><span className="text-[var(--muted)]">{x.used.toLocaleString("es-MX")} {x.reference ? "· aprox." : "de"} {x.limit.toLocaleString("es-MX")}</span></div>
+              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-[#f2efef]"><div className="h-full rounded-full" style={{ width: `${Math.min(100, x.pct)}%`, background: x.reference ? "var(--blue)" : x.pct >= 100 ? "var(--red)" : x.pct >= 80 ? "#e0a100" : "var(--blue)" }} /></div>
+              {x.reference && <p className="mt-1 text-[11px] text-[var(--muted)]">Uso de referencia, no es un límite. Si el consumo supera de forma sostenida lo previsto, se revisa el plan.</p>}
             </li>
           ))}
         </ul>

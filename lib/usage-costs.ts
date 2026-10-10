@@ -19,7 +19,9 @@ export type OwnerSettings = {
   // `passThrough`: lo paga el cliente (o se cobra y se paga igual a Hostinger), así que no es ingreso ni costo de Órbita.
   annual: { name: string; amountMxn: number; startDate: string; freeYears: number; passThrough: boolean };
   // Plan que contrata el cliente: precio mensual con IVA y cupos incluidos.
-  plan: { priceWithIva: number; ivaPct: number; scans: number; emails: number; conversations: number };
+  // `winnieReference`: respuestas de Winnie al mes como uso de REFERENCIA (no es un tope): sirve para orientar al cliente y
+  // para justificar una revisión del plan si el consumo la supera de forma sostenida.
+  plan: { priceWithIva: number; ivaPct: number; scans: number; emails: number; winnieReference: number };
   // Presupuesto mensual de IA (Gemini) como % de la cuota neta: lo que Órbita acepta gastar en Winnie sin recortar el servicio.
   aiBudgetPct: number;
 };
@@ -39,7 +41,7 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   tts: { usdPerMChars: 16, freeChars: 1_000_000 },
   email: { freePerMonth: 3000, usdPerEmail: 0.0004 },
   annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-02", freeYears: 1, passThrough: true },
-  plan: { priceWithIva: 406, ivaPct: 16, scans: 1000, emails: 1500, conversations: 500 },
+  plan: { priceWithIva: 406, ivaPct: 16, scans: 1000, emails: 1500, winnieReference: 3000 },
   aiBudgetPct: 20,
 };
 
@@ -63,7 +65,7 @@ export type MonthCosts = {
   marginMxn: number;
   marginPct: number | null; // null si no hay cuota registrada
   shenQuotaUsedPct: number;
-  planUsage: { label: string; used: number; limit: number; pct: number }[];
+  planUsage: { label: string; used: number; limit: number; pct: number; reference?: boolean }[];
   ai: { responses: number; costMxn: number; costPerResponseMxn: number; budgetMxn: number; usedPct: number; projectedMxn: number; projectedResponses: number; capacityResponses: number | null };
   // Cuota mensual mínima (con IVA) para no perder dinero con todo el cupo del plan usado.
   breakEvenWithIva: number;
@@ -120,7 +122,7 @@ export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: s
     planUsage: [
       { label: "Escaneos faciales", used: u.scans, limit: s.plan.scans },
       { label: "Correos automáticos", used: u.emails, limit: s.plan.emails },
-      { label: "Conversaciones con IA", used: u.conversations, limit: s.plan.conversations },
+      { label: "Respuestas de Winnie (uso de referencia)", used: u.winnieResponses, limit: s.plan.winnieReference, reference: true },
     ].map((x) => ({ ...x, pct: x.limit > 0 ? Math.round((x.used / x.limit) * 100) : 0 })),
     ai: {
       responses: u.winnieResponses, costMxn: aiCost, costPerResponseMxn: Math.round(perResponse * 10000) / 10000, budgetMxn,

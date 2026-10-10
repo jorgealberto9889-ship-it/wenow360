@@ -50,7 +50,8 @@ test("sin cuota no hay porcentaje de margen y sin consumo no hay costo variable"
 test("plan de 406 pesos con IVA: cuota neta de 350, cupos y cuota de equilibrio", () => {
   const c = computeMonthCosts({ ...usage, scans: 400, emails: 600, conversations: 250 }, DEFAULT_SETTINGS);
   assert.equal(c.feeMxn, 350);
-  assert.deepEqual(c.planUsage.map((x) => [x.limit, x.pct]), [[1000, 40], [1500, 40], [500, 50]]);
+  assert.deepEqual(c.planUsage.map((x) => [x.limit, x.pct]), [[1000, 40], [1500, 40], [3000, 27]]);
+  assert.equal(c.planUsage[2].reference, true);
   // Sin costos fijos propios, con 350 netos el margen es positivo salvo el consumo variable
   assert.equal(c.fixedMxn, 0);
   const idle = computeMonthCosts({ ...usage, geminiIn: 0, geminiOut: 0, ttsChars: 0, scans: 400, emails: 600 }, DEFAULT_SETTINGS);
