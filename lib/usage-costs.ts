@@ -36,7 +36,7 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   gemini: { inputUsdPerM: 0.1, outputUsdPerM: 0.4 },
   tts: { usdPerMChars: 16, freeChars: 1_000_000 },
   email: { freePerMonth: 3000, usdPerEmail: 0.0004 },
-  annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-10", freeYears: 1, passThrough: true },
+  annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-02", freeYears: 1, passThrough: true },
   plan: { priceWithIva: 406, ivaPct: 16, scans: 1000, emails: 1500, conversations: 500 },
 };
 

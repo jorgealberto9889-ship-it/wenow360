@@ -28,7 +28,7 @@ test("costos del mes: fijos, variables y margen contra la cuota", () => {
 test("renovación anual: gratis el primer año y luego 1/12 al mes de ingreso", () => {
   const s = { ...DEFAULT_SETTINGS, plan: { ...DEFAULT_SETTINGS.plan, priceWithIva: 23200 } };
   const zero: MonthUsage = { scans: 0, emails: 0, geminiIn: 0, geminiOut: 0, ttsChars: 0, assessments: 0, winnieQuestions: 0, conversations: 0 };
-  assert.equal(renewalDate(s.annual).toISOString().slice(0, 10), "2027-10-10");
+  assert.equal(renewalDate(s.annual).toISOString().slice(0, 10), "2027-10-02");
   assert.equal(computeMonthCosts(zero, s, "2026-11-01T00:00:00Z").annualMonthlyMxn, 0);
   // Por omisión la renovación pasa directo al cliente: no cuenta como ingreso.
   assert.equal(computeMonthCosts(zero, s, "2027-11-01T00:00:00Z").annualMonthlyMxn, 0);
