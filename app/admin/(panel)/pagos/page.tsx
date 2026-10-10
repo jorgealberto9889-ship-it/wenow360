@@ -1,10 +1,9 @@
-import { loadBillingProfile, listPayments } from "@/lib/billing";
+import { listPayments } from "@/lib/billing";
 import { nextCharge, type ChargeState } from "@/lib/billing-status";
 import { requireAdmin } from "@/lib/dal";
 import { loadSettings } from "@/lib/usage";
 import { netFee, renewalDate } from "@/lib/usage-costs";
 import { PageHeader, Panel } from "../ui";
-import { ProfileForm } from "./profile-form";
 
 const mxn = (n: number) => `$${n.toLocaleString("es-MX", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
 const date = (d: Date) => d.toLocaleString("es-MX", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
@@ -21,7 +20,7 @@ const PAY_CHIP = { pagado: "bg-[#e5f8ef] text-[#087748]", pendiente: "bg-[#fff3d
 
 export default async function Pagos() {
   await requireAdmin();
-  const [settings, profile, history] = await Promise.all([loadSettings(), loadBillingProfile(), listPayments()]);
+  const [settings, history] = await Promise.all([loadSettings(), listPayments()]);
   const p = settings.plan;
   const net = netFee(p.priceWithIva > 0 ? p : { ...p, priceWithIva: 0 });
   const iva = p.priceWithIva - net;
@@ -32,7 +31,7 @@ export default async function Pagos() {
 
   return (
     <>
-      <PageHeader title="Pagos y facturación" subtitle="Tu plan, próximo pago, historial y datos para tu factura." />
+      <PageHeader title="Pagos y facturación" subtitle="Tu plan, próximo pago e historial de pagos." />
 
       <div className="mt-6 grid gap-4 lg:grid-cols-3">
         <Panel className="p-5">
@@ -101,11 +100,7 @@ export default async function Pagos() {
         )}
       </Panel>
 
-      <Panel className="mt-4 p-5">
-        <h2 className="text-[14px] font-bold text-[var(--navy)]">Datos de facturación</h2>
-        <p className="mt-1 text-[12px] text-[var(--muted)]">Con estos datos se emite tu factura (CFDI) cada mes. Solo los ve el equipo administrador.</p>
-        <ProfileForm profile={profile} />
-      </Panel>
+      <p className="mt-4 text-[12px] text-[var(--muted)]">¿Necesitas factura? Solicítala a Órbita Digital indicando tus datos fiscales y el periodo.</p>
     </>
   );
 }
