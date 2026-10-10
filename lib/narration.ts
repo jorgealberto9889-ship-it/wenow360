@@ -1,7 +1,7 @@
 import "server-only";
 import {
   AREAS_INTRO, areaReason, areaStatus, areaWhy, biometricInsights, bridgeText, introText, offerSpeech,
-  PRIORITY_WORD, productContent, productTip, reasonText, recap,
+  PRIORITY_WORD, howToTake, kitPairs, productContent, productTip, reasonText, recap, topBenefits,
 } from "@/app/_wenow/copy";
 import type { Draft } from "@/app/_wenow/questions";
 import type { SubmitResult } from "./assessments";
@@ -26,16 +26,18 @@ export function narrationParagraphs(section: string, saved: SubmitResult, draft:
     const rec = result.recommendations.find((r) => r.productId === p.id);
     const tip = productTip(p.id, draft);
     const c = productContent(p);
+    const { top, total } = topBenefits(p);
+    const pairs = kitPairs(p, products);
+    // Mismo orden que la tarjeta en pantalla: por qué para ti, cómo te apoya, lo que más destaca, cómo tomarlo y con qué combina.
     return [
       `${ORDINALS[index] ?? ""}: ${p.name}, ${rec ? PRIORITY_WORD[rec.priorityLabel] : "complementaria"}.`,
       reasonText(rec),
+      tip,
       `Cómo puede apoyarte: ${c.summary}`,
-      ...(c.catalog.length
-        ? ["Esto es lo que puede aportarte:", ...c.catalog.map((b) => `${b}.`)]
-        : c.benefits.length ? ["Esto es lo que puede aportarte:", ...c.benefits.map((b) => `${b.title}. ${b.detail}`)] : []),
-      ...(c.timeline.length ? [`Lo que podrías empezar a notar: ${c.timeline.slice(0, 2).map((t) => `${t.label.toLowerCase()}, ${t.text}`).join(" Y ")}`] : []),
-      ...(tip ? [tip] : []),
-    ].filter(Boolean);
+      top.length ? `Lo que más destaca: ${top.join(". ")}.${total > top.length ? " El resto lo ves en tu pantalla." : ""}` : "",
+      `Cómo tomarlo: ${howToTake(p)}`,
+      pairs.length ? `En tu kit, combina bien con ${pairs.map((x) => x.name).join(" y ")}.` : "",
+    ].filter((x): x is string => Boolean(x));
   }
 
   switch (section) {

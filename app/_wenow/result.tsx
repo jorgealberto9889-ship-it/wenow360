@@ -7,7 +7,7 @@ import { BRAND } from "@/lib/brand";
 import { MEMBERSHIP_PITCH } from "@/lib/labels";
 import type { PriorityLabel } from "@/lib/engine/engine";
 import {
-  AREAS_INTRO, areaReason, areaStatus, areaWhy, bridgeText, firstName, introText, offerNumbers, productContent, productTip, reasonText, recap,
+  AREAS_INTRO, areaReason, areaStatus, areaWhy, bridgeText, firstName, introText, kitPairs, offerNumbers, productContent, productTip, reasonText, recap,
 } from "./copy";
 import { Assistant, WinnieInvite } from "./assistant";
 import { ClinicalPanel } from "./clinical-panel";
@@ -322,6 +322,7 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
   const priority = new Map(result.recommendations.map((r) => [r.productId, r.priorityLabel]));
   const recs = new Map(result.recommendations.map((r) => [r.productId, r]));
   const careNotes = [...(result.medicalAttention && !result.medicalAttention.critical ? [result.medicalAttention.detail] : []), ...result.reviewNotes];
+  const [allBenefits, setAllBenefits] = useState<Record<string, boolean>>({});
   const [checked, setChecked] = useState<Record<string, boolean>>(() => Object.fromEntries(products.map((p) => [p.id, true])));
   const [openId, setOpenId] = useState<string | null>(products[0]?.id ?? null);
 
@@ -424,13 +425,18 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
                 <div className="mt-3">
                   <div className="mb-2 text-[10px] font-bold tracking-[0.05em] text-[#8a8587] uppercase">Beneficios · catálogo {BRAND.shortName}</div>
                   <ul className="flex flex-col gap-2">
-                    {productContent(p).catalog.map((b) => (
+                    {(allBenefits[p.id] ? productContent(p).catalog : productContent(p).catalog.slice(0, 4)).map((b) => (
                       <li key={b} className="flex items-start gap-2">
                         <CheckCircle />
                         <span className="text-[12.5px] leading-snug text-[#4a4547]">{b}</span>
                       </li>
                     ))}
                   </ul>
+                  {productContent(p).catalog.length > 4 && (
+                    <button type="button" onClick={() => setAllBenefits((m) => ({ ...m, [p.id]: !m[p.id] }))} className="press mt-2 text-[11.5px] font-bold text-[var(--blue)]">
+                      {allBenefits[p.id] ? "Ver menos" : `Ver los ${productContent(p).catalog.length} beneficios`}
+                    </button>
+                  )}
                 </div>
               ) : (
                 productContent(p).benefits.length > 0 && (
@@ -451,29 +457,37 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
               )}
 
               <button type="button" aria-expanded={open} onClick={() => setOpenId(open ? null : p.id)} className="press mt-3 flex items-center gap-1.5 text-[11.5px] font-bold text-[var(--blue)]">
-                {productContent(p).timeline.length ? "Qué podrías notar, ingredientes y modo de uso" : "Ingredientes y modo de uso"} <Chevron open={open} />
+                Cómo tomarlo, ingredientes y consideraciones <Chevron open={open} />
               </button>
               <Collapse open={open}>
                 <div className="mt-3 flex flex-col gap-2.5">
-                  {productContent(p).timeline.length > 0 && (
-                    <div className="rounded-xl border border-[var(--line)] p-3">
-                      <div className="mb-2.5 text-[11px] font-bold text-[var(--navy)]">Lo que podrías empezar a notar</div>
-                      <ol className="relative flex flex-col gap-3 before:absolute before:top-1.5 before:bottom-1.5 before:left-[5px] before:w-0.5 before:bg-[var(--line)]">
-                        {productContent(p).timeline.map((s, j) => (
-                          <li key={s.label} className="relative flex gap-2.5">
-                            <span className={cx("mt-0.5 size-3 shrink-0 rounded-full", j === 0 ? "bg-[var(--blue)]" : "border-2 bg-white", j === 1 && "border-[#e285ac]", j === 2 && "border-[#efc9da]")} />
-                            <div>
-                              <div className={cx("text-[10.5px] font-bold tracking-[0.03em] uppercase", j === 0 ? "text-[var(--blue)]" : j === 1 ? "text-[#d03475]" : "text-[#8a8587]")}>{s.label}</div>
-                              <p className="mt-0.5 text-[12px] leading-normal text-[#4a4547]">{s.text}</p>
-                            </div>
+                  <div className="rounded-xl border border-[var(--line)] p-3">
+                    <div className="mb-2 text-[11px] font-bold text-[var(--navy)]">Cómo tomarlo</div>
+                    {productContent(p).ficha && productContent(p).ficha!.ritual.filter(([, t]) => !t.startsWith("[")).length > 0 ? (
+                      <ol className="flex flex-col gap-2">
+                        {productContent(p).ficha!.ritual.filter(([, t]) => !t.startsWith("[")).map(([step, text], j) => (
+                          <li key={step} className="flex items-start gap-2.5">
+                            <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#fbeef4] text-[10.5px] font-extrabold text-[var(--blue)]">{j + 1}</span>
+                            <p className="text-[12px] leading-normal text-[#4a4547]"><strong className="font-bold text-[var(--navy)]">{step}.</strong> {text}</p>
                           </li>
                         ))}
                       </ol>
+                    ) : (
+                      <p className="text-[12px] leading-normal text-[#4a4547]">{p.usage}</p>
+                    )}
+                    {productContent(p).ficha?.ritual_note && <p className="mt-2 text-[11.5px] leading-normal text-[var(--muted)]">{productContent(p).ficha!.ritual_note}</p>}
+                  </div>
+                  {kitPairs(p, products).length > 0 && (
+                    <div className="rounded-xl bg-[#fbeef4] p-3">
+                      <div className="mb-1 text-[11px] font-bold text-[var(--navy)]">En tu kit, combina bien con</div>
+                      {kitPairs(p, products).map((x) => (
+                        <p key={x.name} className="text-[12px] leading-normal text-[#4a4547]"><strong className="font-bold text-[var(--navy)]">{x.name}</strong> · {x.text}</p>
+                      ))}
                     </div>
                   )}
                   {(productContent(p).ficha
-                    ? [["Modo de uso", p.usage], ["Consideraciones", p.note]]
-                    : [["Ingredientes destacados", p.ingredients], ["Modo de uso", p.usage], ["Consideraciones", p.note]]
+                    ? [["Consideraciones", p.note]]
+                    : [["Ingredientes destacados", p.ingredients], ["Consideraciones", p.note]]
                   ).map(([t, v]) => (
                     <div key={t}>
                       <div className="mb-0.5 text-[11px] font-bold text-[var(--navy)]">{t}</div>

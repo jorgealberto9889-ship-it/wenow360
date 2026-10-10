@@ -172,6 +172,42 @@ export function reasonText(rec: Recommendation | undefined) {
   return phrases.length ? `Te lo recomendamos por ${list(phrases.slice(0, 3))}.` : "";
 }
 
+// Lo que más destaca de un producto (voz y resumen): 3 beneficios del catálogo; la lista completa queda en pantalla.
+export const TOP_BENEFITS = 3;
+export function topBenefits(p: ResultProduct) {
+  const c = productContent(p);
+  const all = c.catalog.length ? c.catalog : c.benefits.map((b) => `${b.title}: ${b.detail}`.replace(/\.$/, ""));
+  return { top: all.slice(0, TOP_BENEFITS), total: all.length };
+}
+
+// Cómo tomarlo: la indicación del producto y, si hay ficha, su nota de preparación (sin repetir lo ya dicho).
+export function howToTake(p: ResultProduct) {
+  const usage = p.usage.trim().replace(/\.$/, "");
+  const low = usage.toLowerCase();
+  // De la nota de la ficha solo se agregan las frases que la indicación no dice ya (p. ej. cuánto dura la bolsa).
+  const extra = (productContent(p).ficha?.ritual_note ?? "")
+    .split(/(?<=\.)\s+/)
+    .map((x) => x.trim())
+    .filter((x) => {
+      // Se omite la frase si todas sus palabras importantes ya aparecen en la indicación.
+      const words = x.toLowerCase().match(/[a-záéíóúñ0-9]{5,}/g) ?? [];
+      return x && words.some((w) => !low.includes(w));
+    });
+  return [usage ? `${usage}.` : "", ...extra].filter(Boolean).join(" ");
+}
+
+// Productos del MISMO kit con los que este combina según su ficha («Combina bien con»).
+const key = (n: string) => n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+export function kitPairs(p: ResultProduct, kit: ResultProduct[]) {
+  const combo = productContent(p).ficha?.combo ?? [];
+  return kit
+    .filter((o) => o.id !== p.id)
+    .flatMap((o) => {
+      const hit = combo.find(([name]) => key(name) === key(o.name) || key(o.name).startsWith(key(name)) || key(name).startsWith(key(o.name)));
+      return hit ? [{ name: o.name, text: hit[1] }] : [];
+    });
+}
+
 // Normaliza el contenido de beneficios (los resultados guardados antes de sep-2026 usaban solo textos).
 export function productContent(p: ResultProduct) {
   const h = p.highlights as unknown as { ficha?: Ficha; summary?: string; catalogBenefits?: string[]; benefits?: (string | { title: string; detail: string })[]; timeline?: { label: string; text: string }[] } | null;
