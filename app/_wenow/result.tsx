@@ -130,7 +130,7 @@ function ResultActs({ saved, draft, name, distributor, voice, seq, assistantToke
     );
   }
   const assistant = assistantToken ? (
-    <Assistant token={assistantToken} saved={saved} name={name} distributor={distributor} voiceEnabled={narration !== null} />
+    <Assistant token={assistantToken} saved={saved} name={name} distributor={distributor} voiceEnabled={false} />
   ) : null;
   if (act === 2) {
     return (
