@@ -7,8 +7,8 @@ const usage: MonthUsage = { scans: 520, emails: 3500, geminiIn: 2_000_000, gemin
 test("costos del mes: fijos, variables y margen contra la cuota", () => {
   const s = { ...DEFAULT_SETTINGS, plan: { ...DEFAULT_SETTINGS.plan, priceWithIva: 29000 } };
   const c = computeMonthCosts(usage, s);
-  // Vercel 20 USD en pesos (Shen.AI lo paga el cliente)
-  assert.equal(c.fixedMxn, 20 * 18.5);
+  // Vercel es un plan compartido de Órbita (sin costo para este proyecto) y Shen.AI lo paga el cliente
+  assert.equal(c.fixedMxn, 0);
   assert.equal(c.variableLines[0].costMxn, 0);
   // Si Shen.AI fuera costo propio: 20 escaneos extra a 0,20 EUR
   const own = computeMonthCosts(usage, { ...s, shen: { ...s.shen, paidByClient: false } });
@@ -35,23 +35,23 @@ test("renovación anual: gratis el primer año y luego 1/12 al mes de ingreso", 
   assert.equal(after.revenueMxn, Math.round((20000 + 1780 / 12) * 100) / 100);
 });
 
-test("sin cuota no hay porcentaje de margen; sin consumo solo hay costos fijos; el plan de 406 pesos pierde dinero", () => {
+test("sin cuota no hay porcentaje de margen y sin consumo no hay costo variable", () => {
   const c = computeMonthCosts({ ...usage, scans: 0, emails: 0, geminiIn: 0, geminiOut: 0, ttsChars: 0 }, { ...DEFAULT_SETTINGS, plan: { ...DEFAULT_SETTINGS.plan, priceWithIva: 0 } });
   assert.equal(c.marginPct, null);
   assert.equal(c.variableMxn, 0);
-  assert.ok(c.fixedMxn > 0);
+  const withFixed = computeMonthCosts({ ...usage, scans: 0, emails: 0, geminiIn: 0, geminiOut: 0, ttsChars: 0 }, { ...DEFAULT_SETTINGS, fixed: [{ name: "Dominio", amount: 30, currency: "MXN" }] });
+  assert.equal(withFixed.fixedMxn, 30);
 });
 
 test("plan de 406 pesos con IVA: cuota neta de 350, cupos y cuota de equilibrio", () => {
   const c = computeMonthCosts({ ...usage, scans: 400, emails: 600, conversations: 250 }, DEFAULT_SETTINGS);
   assert.equal(c.feeMxn, 350);
   assert.deepEqual(c.planUsage.map((x) => [x.limit, x.pct]), [[1000, 40], [1500, 40], [500, 50]]);
-  // Solo Vercel (20 USD) + dominio: con 350 netos queda casi en equilibrio
-  assert.equal(c.fixedMxn, 20 * 18.5);
-  assert.ok(c.marginMxn < 0);
+  // Sin costos fijos propios, con 350 netos el margen es positivo salvo el consumo variable
+  assert.equal(c.fixedMxn, 0);
   const idle = computeMonthCosts({ ...usage, geminiIn: 0, geminiOut: 0, ttsChars: 0, scans: 400, emails: 600 }, DEFAULT_SETTINGS);
-  assert.equal(idle.marginMxn, 350 - 370);
-  assert.equal(c.breakEvenWithIva, Math.ceil(c.fixedMxn * 1.16));
+  assert.equal(idle.marginMxn, 350);
+  assert.equal(c.breakEvenWithIva, 0);
   const own = computeMonthCosts({ ...usage, scans: 400 }, { ...DEFAULT_SETTINGS, shen: { ...DEFAULT_SETTINGS.shen, paidByClient: false } });
   assert.equal(own.breakEvenWithIva, Math.ceil((own.fixedMxn + 500 * 0.2 * 21.5) * 1.16));
 });

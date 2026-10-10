@@ -28,7 +28,7 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   usdMxn: 18.5,
   eurMxn: 21.5,
   fixed: [
-    { name: "Vercel (alojamiento)", amount: 20, currency: "USD" },
+    { name: "Vercel (plan compartido de Órbita, sin costo para este proyecto)", amount: 0, currency: "USD" },
     { name: "Turso (base de datos)", amount: 0, currency: "USD" },
     { name: "Dominio", amount: 0, currency: "MXN" },
   ],
