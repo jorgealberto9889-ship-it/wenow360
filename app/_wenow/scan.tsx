@@ -45,6 +45,8 @@ type Taken = { heart: boolean; respiratory: boolean; hrv?: boolean; stress?: boo
 
 const FACE_HINT: Hint = { title: "Acomoda tu rostro dentro del óvalo", detail: "Busca luz de frente y acerca un poco el teléfono." };
 
+const SAVE_TIMEOUT_MS = 20000;
+const SAVE_FAILED = "No pudimos guardar tu lectura por un problema de conexión. Puedes intentarlo de nuevo o continuar sin este paso.";
 const NO_CAMERA = "No pudimos acceder a tu cámara. Revisa el permiso de cámara de tu navegador, o continúa sin este paso.";
 const UNAVAILABLE = "El escaneo no está disponible en este momento. Puedes continuar sin este paso.";
 const UNCLEAR = "No logramos una lectura clara esta vez. Suele ayudar más luz de frente y mantenerte quiet@. Puedes intentarlo de nuevo o continuar sin este paso.";
@@ -104,14 +106,19 @@ export function ScanStep({
 
   const submit = async (sessionId: string, reading: Reading) => {
     setStatus({ kind: "finishing" });
+    // Si la red se queda colgada, no dejamos la pantalla esperando para siempre.
+    const abort = new AbortController();
+    const timeout = setTimeout(() => abort.abort(), SAVE_TIMEOUT_MS);
     const done = await fetch(`/api/scan/sessions/${sessionId}/finish`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(reading),
-    }).catch(() => null);
+      signal: abort.signal,
+    }).catch((e) => { console.error("scan_finish", e); return null; });
+    clearTimeout(timeout);
     const body = (await done?.json().catch(() => null)) as { ok: boolean; scanToken?: string; readings?: Taken } | null;
     if (body?.ok && body.scanToken) setStatus({ kind: "done", token: body.scanToken, readings: body.readings ?? { heart: true, respiratory: false } });
-    else fail(UNCLEAR);
+    else fail(done && !done.ok && done.status !== 422 ? SAVE_FAILED : UNCLEAR);
   };
 
   const start = async () => {
@@ -259,25 +266,31 @@ export function ScanStep({
       }
       if (state === S.FINISHED.value) {
         finished = true;
-        const r = sdk.getMeasurementResults();
-        let hrSeries: number[] | null = null;
         try {
-          hrSeries = sdk.getHeartRateHistory10s?.(70)?.map((m) => m.hr_bpm).filter((n) => Number.isFinite(n)) ?? null;
-        } catch {}
-        stopAll();
-        if (!r) return fail(UNCLEAR);
-        const q = r.quality_metrics;
-        void submit(sessionId, {
-          heartRateBpm: r.heart_rate_bpm ?? null,
-          heartRateConfidence: q?.ppg_quality_index ?? r.average_signal_quality ?? null,
-          respiratoryRateBpm: r.breathing_rate_bpm ?? null,
-          respiratoryRateConfidence: q?.breathing_quality_index ?? null,
-          hrvSdnnMs: r.hrv_sdnn_ms ?? null,
-          hrvLnrmssdMs: r.hrv_lnrmssd_ms ?? null,
-          stressIndex: r.stress_index ?? null,
-          parasympatheticActivity: r.parasympathetic_activity ?? null,
-          hrSeries,
-        });
+          const r = sdk.getMeasurementResults();
+          let hrSeries: number[] | null = null;
+          try {
+            hrSeries = sdk.getHeartRateHistory10s?.(70)?.map((m) => m.hr_bpm).filter((n) => Number.isFinite(n)) ?? null;
+          } catch {}
+          stopAll();
+          if (!r) return fail(UNCLEAR);
+          const q = r.quality_metrics;
+          void submit(sessionId, {
+            heartRateBpm: r.heart_rate_bpm ?? null,
+            heartRateConfidence: q?.ppg_quality_index ?? r.average_signal_quality ?? null,
+            respiratoryRateBpm: r.breathing_rate_bpm ?? null,
+            respiratoryRateConfidence: q?.breathing_quality_index ?? null,
+            hrvSdnnMs: r.hrv_sdnn_ms ?? null,
+            hrvLnrmssdMs: r.hrv_lnrmssd_ms ?? null,
+            stressIndex: r.stress_index ?? null,
+            parasympatheticActivity: r.parasympathetic_activity ?? null,
+            hrSeries,
+          });
+        } catch (e) {
+          // Cualquier error al leer el resultado: avisamos en lugar de dejar la pantalla congelada.
+          console.error("scan_results", e);
+          fail(UNCLEAR);
+        }
         return;
       }
       if (state === S.FAILED.value) {
@@ -420,6 +433,16 @@ function ShenaiView({ finishing, loading }: { finishing: boolean; loading: { ste
       </p>
       <div className="relative mt-3 w-full overflow-hidden rounded-[22px] bg-[#2b2b2b]" style={{ height: "clamp(340px, calc(100dvh - 240px), 720px)" }}>
         <canvas id={SHENAI_CANVAS} className="block size-full" />
+        {finishing && !loading && (
+          <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#1d1d1d]/95 px-6 text-center">
+            <span className="relative flex size-14 items-center justify-center">
+              <span className="absolute inset-0 rounded-full border-2 border-white/10" />
+              <span className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#ff6fb0] motion-safe:animate-[orbit_1s_linear_infinite]" />
+            </span>
+            <div className="text-[16px] font-bold text-white">Guardando tu lectura…</div>
+            <p className="max-w-[250px] text-[12.5px] leading-[1.55] text-[#c9c2c5]">Medición completa. Estamos validando tus resultados; solo toma unos segundos.</p>
+          </div>
+        )}
         {loading && (
           <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#1d1d1d] px-6 text-center">
             <span className="relative flex size-16 items-center justify-center">
