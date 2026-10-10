@@ -456,6 +456,15 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
                 )
               )}
 
+              {storeToken && (
+                <a
+                  href={`/tienda/${storeToken}/${p.id}`} target="_blank" rel="noopener noreferrer"
+                  className="press mt-3 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[var(--blue)] bg-white px-3.5 py-2 text-[12.5px] font-bold text-[var(--blue)]"
+                >
+                  Ver en la tienda <ArrowRight />
+                </a>
+              )}
+
               <button type="button" aria-expanded={open} onClick={() => setOpenId(open ? null : p.id)} className="press mt-3 flex items-center gap-1.5 text-[11.5px] font-bold text-[var(--blue)]">
                 Cómo tomarlo, ingredientes y consideraciones <Chevron open={open} />
               </button>
