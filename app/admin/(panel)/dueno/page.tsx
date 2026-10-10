@@ -39,9 +39,13 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
       />
 
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <Stat label="Ingreso del mes" value={c.revenueMxn > 0 ? mxn(c.revenueMxn) : "—"} note={c.feeMxn > 0 ? `Cuota neta ${mxn(c.feeMxn)}${c.annualMonthlyMxn ? ` + ${mxn(c.annualMonthlyMxn)} de renovación anual (1/12)` : ""} · sin IVA` : "Captura la cuota abajo"} />
+        <Stat
+          label="Ingreso del mes (con IVA)"
+          value={c.revenueMxn > 0 ? mxn(c.revenueMxn * (1 + s.plan.ivaPct / 100)) : "—"}
+          note={c.feeMxn > 0 ? `Neto ${mxn(c.revenueMxn)} + IVA ${mxn(c.revenueMxn * (s.plan.ivaPct / 100))}${c.annualMonthlyMxn ? " · incluye 1/12 de la renovación anual" : ""}` : "Captura la cuota abajo"}
+        />
         <Stat label="Costo del mes" value={mxn(c.totalMxn)} note={`${mxn(c.fixedMxn)} fijo · ${mxn(c.variableMxn)} variable`} />
-        <Stat label="Margen estimado" value={c.revenueMxn > 0 ? mxn(c.marginMxn) : "—"} tone={c.revenueMxn > 0 ? (c.marginMxn >= 0 ? "good" : "bad") : undefined} note={c.marginPct !== null ? `${c.marginPct}% del ingreso` : "Sin cuota registrada"} />
+        <Stat label="Margen estimado" value={c.revenueMxn > 0 ? mxn(c.marginMxn) : "—"} tone={c.revenueMxn > 0 ? (c.marginMxn >= 0 ? "good" : "bad") : undefined} note={c.marginPct !== null ? `${c.marginPct}% del ingreso neto (sin IVA)` : "Sin cuota registrada"} />
         <Stat label="Plan de Shen.AI del cliente" value={`${usage.scans} / ${s.shen.included}`} tone={c.shenQuotaUsedPct >= 100 ? "bad" : c.shenQuotaUsedPct >= 80 ? undefined : "good"} note={c.shenQuotaUsedPct >= 100 ? "Sobre su cupo: ellos pagan el extra" : `${c.shenQuotaUsedPct}% de su cupo`} />
       </div>
 
