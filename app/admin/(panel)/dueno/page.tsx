@@ -3,7 +3,8 @@ import { requireOwner } from "@/lib/dal";
 import { monthReport } from "@/lib/usage";
 import { renewalDate } from "@/lib/usage-costs";
 import { PageHeader, Panel, Stat, fieldClass } from "../ui";
-import { saveOwnerSettings } from "./actions";
+import { listPayments } from "@/lib/billing";
+import { deletePayment, recordPayment, saveOwnerSettings } from "./actions";
 
 const mxn = (n: number) => `$${n.toLocaleString("es-MX", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
@@ -19,7 +20,7 @@ const label = "block text-[11px] font-semibold text-[var(--muted)]";
 export default async function Dueno({ searchParams }: { searchParams: Promise<{ mes?: string }> }) {
   await requireOwner();
   const { mes } = await searchParams;
-  const { range, usage, settings: s, costs: c, daysToRenewal } = await monthReport(mes);
+  const [{ range, usage, settings: s, costs: c, daysToRenewal }, payments] = await Promise.all([monthReport(mes), listPayments()]);
   const [y, m] = range.key.split("-").map(Number);
   const nowKey = new Date().toISOString().slice(0, 7);
   const renewal = renewalDate(s.annual);
@@ -134,6 +135,34 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
       </div>
 
       <Panel className="mt-4 p-5">
+        <h2 className="text-[14px] font-bold text-[var(--navy)]">Pagos del cliente</h2>
+        <p className="mt-1 text-[12px] text-[var(--muted)]">Regístralos cuando los recibas; el administrador del cliente los ve en su sección «Pagos». Montos con IVA.</p>
+        <form action={recordPayment} className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+          <label className="col-span-2"><span className={label}>Concepto</span><input name="concept" required maxLength={120} defaultValue={`Plan mensual ${range.key}`} className={fieldClass} /></label>
+          <label><span className={label}>Periodo (2026-11 o 2027-anual)</span><input name="periodKey" required defaultValue={range.key} className={fieldClass} /></label>
+          <label><span className={label}>Monto con IVA (MXN)</span><input name="amount" type="number" step="any" min="0" required defaultValue={s.plan.priceWithIva} className={fieldClass} /></label>
+          <label><span className={label}>Estado</span><select name="status" defaultValue="pagado" className={fieldClass}><option value="pagado">Pagado</option><option value="pendiente">Pendiente</option><option value="vencido">Vencido</option></select></label>
+          <label><span className={label}>Fecha de pago</span><input name="paidAt" type="date" className={fieldClass} /></label>
+          <label><span className={label}>Método</span><input name="method" maxLength={40} placeholder="Tarjeta, transferencia…" className={fieldClass} /></label>
+          <label><span className={label}>Referencia</span><input name="reference" maxLength={80} className={fieldClass} /></label>
+          <label className="col-span-2 md:col-span-3"><span className={label}>Enlace de la factura (https, opcional)</span><input name="invoiceUrl" type="url" placeholder="https://…" className={fieldClass} /></label>
+          <div className="flex items-end"><button className="press rounded-[10px] bg-[var(--blue)] px-5 py-2.5 text-[13px] font-bold text-white">Registrar pago</button></div>
+        </form>
+        {payments.length > 0 && (
+          <ul className="mt-4">
+            {payments.map((p) => (
+              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 border-t border-[#f2efef] py-2.5 text-[12.5px]">
+                <span><span className="font-semibold text-[#4a4547]">{p.concept}</span><span className="block text-[11px] text-[var(--muted)]">{p.periodKey} · {p.status}{p.method ? ` · ${p.method}` : ""}{p.reference ? ` · ${p.reference}` : ""}</span></span>
+                <span className="flex items-center gap-3"><strong className="text-[var(--navy)]">{mxn(p.amountMxn)}</strong>
+                  <form action={deletePayment.bind(null, p.id)}><button className="press text-[11.5px] font-semibold text-[var(--red)]">Quitar</button></form>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Panel>
+
+      <Panel className="mt-4 p-5">
         <h2 className="text-[14px] font-bold text-[var(--navy)]">Cuota, tipo de cambio y tarifas</h2>
         <p className="mt-1 text-[12px] text-[var(--muted)]">Las tarifas son estimadas: verifícalas en las páginas de precios de cada proveedor y ajústalas aquí. Cambian el cálculo de todos los meses.</p>
         <form action={saveOwnerSettings} className="mt-4 grid gap-4">
@@ -148,6 +177,9 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
             <label><span className={label}>Escaneos incluidos en su plan de Shen.AI</span><input name="shenIncluded" type="number" min="0" defaultValue={s.shen.included} className={fieldClass} /></label>
             <label><span className={label}>Escaneo extra de Shen.AI (EUR)</span><input name="shenExtraEur" type="number" step="any" min="0" defaultValue={s.shen.extraEur} className={fieldClass} /></label>
             <label className="flex items-end gap-2 pb-2.5"><input name="shenPaidByClient" type="checkbox" defaultChecked={s.shen.paidByClient} className="size-4" /><span className="text-[12px] font-semibold text-[#4a4547]">Shen.AI lo paga el cliente (no es mi costo)</span></label>
+            <label><span className={label}>Primer mes con cobro</span><input name="billingStart" type="month" defaultValue={s.billing.startMonth} className={fieldClass} /></label>
+            <label><span className={label}>Día límite de pago (1-28)</span><input name="dueDay" type="number" min="1" max="28" defaultValue={s.billing.dueDay} className={fieldClass} /></label>
+            <label className="md:col-span-2"><span className={label}>Enlace de pago (https) de Mercado Pago o Conekta</span><input name="paymentLink" type="url" defaultValue={s.billing.paymentLink} placeholder="https://…" className={fieldClass} /></label>
             <label><span className={label}>Presupuesto de IA (% de la cuota neta)</span><input name="aiBudgetPct" type="number" step="any" min="0" max="100" defaultValue={s.aiBudgetPct} className={fieldClass} /></label>
             <label><span className={label}>Gemini entrada (USD / 1M tokens)</span><input name="geminiIn" type="number" step="any" min="0" defaultValue={s.gemini.inputUsdPerM} className={fieldClass} /></label>
             <label><span className={label}>Gemini salida (USD / 1M tokens)</span><input name="geminiOut" type="number" step="any" min="0" defaultValue={s.gemini.outputUsdPerM} className={fieldClass} /></label>

@@ -1,5 +1,6 @@
 "use server";
 
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db, schema } from "@/db";
 import { requireOwner } from "@/lib/dal";
@@ -28,7 +29,14 @@ export async function saveOwnerSettings(formData: FormData) {
     emails: Math.round(num(formData.get("planEmails"), cur.plan.emails)),
     winnieReference: Math.round(num(formData.get("planWinnie"), cur.plan.winnieReference)),
   };
+  const link = String(formData.get("paymentLink") ?? "").trim().slice(0, 500);
   const next: OwnerSettings = {
+    billing: {
+      startMonth: /^\d{4}-(0[1-9]|1[0-2])$/.test(String(formData.get("billingStart"))) ? String(formData.get("billingStart")) : cur.billing.startMonth,
+      dueDay: Math.min(28, Math.max(1, Math.round(num(formData.get("dueDay"), cur.billing.dueDay)))),
+      // Solo enlaces https (el cliente los abre desde su panel).
+      paymentLink: /^https:\/\//.test(link) ? link : "",
+    },
     aiBudgetPct: Math.min(100, num(formData.get("aiBudgetPct"), cur.aiBudgetPct)),
     plan,
     feeMxn: netFee(plan),
@@ -50,4 +58,36 @@ export async function saveOwnerSettings(formData: FormData) {
   await saveSettings(next);
   await db.insert(schema.auditLogs).values({ actorId: owner.id, actorType: "admin", action: "owner_settings_updated", entity: "owner_settings", entityId: "settings" });
   revalidatePath("/admin/dueno");
+}
+
+// ---------- Pagos del cliente ----------
+
+const text = (v: FormDataEntryValue | null, max: number) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, max);
+
+export async function recordPayment(formData: FormData) {
+  const owner = await requireOwner();
+  const concept = text(formData.get("concept"), 120);
+  const periodKey = text(formData.get("periodKey"), 12);
+  const amount = num(formData.get("amount"), -1);
+  const status = String(formData.get("status"));
+  if (!concept || !/^(\d{4}-(0[1-9]|1[0-2])|\d{4}-anual)$/.test(periodKey) || amount < 0) return;
+  const paidAt = /^\d{4}-\d{2}-\d{2}$/.test(String(formData.get("paidAt"))) ? new Date(`${formData.get("paidAt")}T12:00:00Z`).toISOString() : null;
+  const invoice = text(formData.get("invoiceUrl"), 500);
+  await db.insert(schema.payments).values({
+    concept, periodKey, amountMxn: amount,
+    status: status === "pendiente" || status === "vencido" ? status : "pagado",
+    paidAt, method: text(formData.get("method"), 40), reference: text(formData.get("reference"), 80),
+    invoiceUrl: /^https:\/\//.test(invoice) ? invoice : "",
+  });
+  await db.insert(schema.auditLogs).values({ actorId: owner.id, actorType: "admin", action: "payment_recorded", entity: "payments", entityId: periodKey });
+  revalidatePath("/admin/dueno");
+  revalidatePath("/admin/pagos");
+}
+
+export async function deletePayment(id: string) {
+  const owner = await requireOwner();
+  await db.delete(schema.payments).where(eq(schema.payments.id, id));
+  await db.insert(schema.auditLogs).values({ actorId: owner.id, actorType: "admin", action: "payment_deleted", entity: "payments", entityId: id });
+  revalidatePath("/admin/dueno");
+  revalidatePath("/admin/pagos");
 }

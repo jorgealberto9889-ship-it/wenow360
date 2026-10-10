@@ -6,18 +6,18 @@ import { renewalDate } from "@/lib/usage-costs";
 import { scanProvider } from "@/lib/scan-provider";
 import { PageHeader, Panel, Stat } from "../ui";
 
-// Servicios que hacen funcionar WeNow 360. Se muestran con su función y su proveedor para que se vea el valor de la
-// plataforma; la configuración (claves, variables, cuentas) nunca se expone en pantalla.
-type Service = { name: string; provider: string; value: string; active: boolean };
+// Servicios que hacen funcionar WeNow 360. Se muestran con su función para que se vea el valor de la plataforma; los
+// proveedores y la configuración (claves, variables, cuentas) nunca se exponen en pantalla.
+type Service = { name: string; value: string; active: boolean };
 const SERVICES = (domainNote: string): Service[] => [
-  { name: "Alojamiento y entrega", provider: "Vercel", value: "La plataforma está en línea 24/7, con entrega rápida y actualizaciones sin interrupciones.", active: true },
-  { name: "Dominio y seguridad HTTPS", provider: "360.wenowglobal.com", value: `Dirección propia con certificado de seguridad que protege los datos de cada persona. ${domainNote}`, active: true },
-  { name: "Base de datos", provider: "Turso", value: "Resguarda evaluaciones, prospectos y resultados de forma segura y con alta disponibilidad.", active: Boolean(process.env.TURSO_DATABASE_URL) },
-  { name: "Escaneo facial con la cámara (rPPG)", provider: process.env.SCAN_PROVIDER === "shenai" ? "Shen.AI" : "VitalLens", value: "Mide pulso, variabilidad, respiración, estrés y actividad parasimpática sin sensores ni contacto.", active: scanProvider() !== null },
-  { name: "Winnie, asistente con IA", provider: "Google Gemini", value: "Resuelve dudas sobre productos, ingredientes y hábitos, a cualquier hora.", active: Boolean(process.env.GEMINI_API_KEY) },
-  { name: "Narración del resultado con voz", provider: "Google Cloud Text-to-Speech", value: "Explica el resultado en voz alta, sección por sección, para una experiencia más cercana.", active: Boolean(process.env.GOOGLE_TTS_API_KEY) },
-  { name: "Correos automáticos", provider: "Resend", value: "Envía el resultado a cada persona, avisa a los asesores y programa recordatorios.", active: Boolean(process.env.RESEND_API_KEY) },
-  { name: "Respaldo del código", provider: "GitHub (repositorio privado)", value: "Cada versión del sistema queda guardada y se puede restaurar.", active: true },
+  { name: "Alojamiento y entrega", value: "La plataforma está en línea 24/7, con entrega rápida y actualizaciones sin interrupciones.", active: true },
+  { name: "Dominio y seguridad HTTPS", value: `Dirección propia con certificado de seguridad que protege los datos de cada persona. ${domainNote}`, active: true },
+  { name: "Base de datos", value: "Resguarda evaluaciones, prospectos y resultados de forma segura y con alta disponibilidad.", active: Boolean(process.env.TURSO_DATABASE_URL) },
+  { name: "Escaneo facial con la cámara (rPPG)", value: "Mide pulso, variabilidad, respiración, estrés y actividad parasimpática sin sensores ni contacto.", active: scanProvider() !== null },
+  { name: "Winnie, asistente con IA", value: "Resuelve dudas sobre productos, ingredientes y hábitos, a cualquier hora.", active: Boolean(process.env.GEMINI_API_KEY) },
+  { name: "Narración del resultado con voz", value: "Explica el resultado en voz alta, sección por sección, para una experiencia más cercana.", active: Boolean(process.env.GOOGLE_TTS_API_KEY) },
+  { name: "Correos automáticos", value: "Envía el resultado a cada persona, avisa a los asesores y programa recordatorios.", active: Boolean(process.env.RESEND_API_KEY) },
+  { name: "Respaldo del código", value: "Cada versión del sistema queda guardada y se puede restaurar.", active: true },
 ];
 
 const ACTIONS: Record<string, string> = {
@@ -78,7 +78,6 @@ export default async function Operacion() {
                   <span className="text-[13px] font-bold text-[var(--navy)]">{s.name}</span>
                   <span className={`rounded-full px-2 py-0.5 text-[10.5px] font-bold ${s.active ? "bg-[#e5f8ef] text-[#087748]" : "bg-[#fff3d6] text-[#8a5a00]"}`}>{s.active ? "Activo" : "En activación"}</span>
                 </span>
-                <span className="mt-0.5 block text-[11.5px] font-semibold text-[#8a8587]">{s.provider}</span>
                 <span className="mt-1 block text-[12px] leading-snug text-[#4a4547]">{s.value}</span>
               </span>
             </li>

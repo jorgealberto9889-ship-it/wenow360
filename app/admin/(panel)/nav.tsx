@@ -8,6 +8,7 @@ const ICONS = {
   prospectos: <path d="M4 4h16v13H8l-4 4V4Z" strokeLinejoin="round" />,
   distribuidores: <><circle cx="9" cy="8" r="3.2" /><path d="M3.5 19c1-3.5 3.5-5 5.5-5s4.5 1.5 5.5 5" strokeLinecap="round" /><circle cx="17" cy="8" r="2.6" /><path d="M15.5 12c2.3 0 4.4 1.4 5.3 4.6" strokeLinecap="round" /></>,
   catalogo: <><rect x="4" y="4" width="7" height="7" rx="1.5" /><rect x="13" y="4" width="7" height="7" rx="1.5" /><rect x="4" y="13" width="7" height="7" rx="1.5" /><rect x="13" y="13" width="7" height="7" rx="1.5" /></>,
+  pagos: <><rect x="3" y="6" width="18" height="13" rx="2" /><path d="M3 10h18M7 15h4" strokeLinecap="round" /></>,
   dueno: <><path d="M4 19V9l4 3 4-6 4 5 4-3v11Z" strokeLinejoin="round" /></>,
   operacion: <><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" strokeLinecap="round" /></>,
 };
@@ -18,6 +19,7 @@ const ITEMS = [
   { href: "/admin/distribuidores", label: "Distribuidores", icon: ICONS.distribuidores },
   { href: "/admin/catalogo", label: "Catálogo", icon: ICONS.catalogo },
   { href: "/admin/operacion", label: "Operación", icon: ICONS.operacion },
+  { href: "/admin/pagos", label: "Pagos", icon: ICONS.pagos },
 ];
 
 export function AdminNav({ owner }: { owner?: boolean }) {

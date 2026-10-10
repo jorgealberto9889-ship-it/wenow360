@@ -406,6 +406,25 @@ export const usageEvents = sqliteTable(
   (t) => [index("usage_events_service_idx").on(t.service, t.createdAt)],
 );
 
+// Pagos del cliente a Órbita Digital (plan mensual y renovación anual). Los registra el dueño; el administrador del
+// cliente los ve en «Pagos». Montos con IVA.
+export const payments = sqliteTable(
+  "payments",
+  {
+    id: id(),
+    createdAt: now("created_at"),
+    concept: text("concept").notNull(),
+    periodKey: text("period_key").notNull(), // «2026-11» (mensual) o «2027-anual» (dominio y hosting)
+    amountMxn: real("amount_mxn").notNull(),
+    status: text("status", { enum: ["pendiente", "pagado", "vencido"] }).notNull().default("pagado"),
+    paidAt: text("paid_at"),
+    method: text("method").notNull().default(""),
+    reference: text("reference").notNull().default(""),
+    invoiceUrl: text("invoice_url").notNull().default(""),
+  },
+  (t) => [index("payments_period_idx").on(t.periodKey)],
+);
+
 // Tarifas, costos fijos y cuota mensual del cliente (solo la ve y edita el dueño del desarrollo).
 export const ownerSettings = sqliteTable("owner_settings", {
   key: text("key").primaryKey(),

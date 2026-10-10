@@ -24,6 +24,8 @@ export type OwnerSettings = {
   plan: { priceWithIva: number; ivaPct: number; scans: number; emails: number; winnieReference: number };
   // Presupuesto mensual de IA (Gemini) como % de la cuota neta: lo que Órbita acepta gastar en Winnie sin recortar el servicio.
   aiBudgetPct: number;
+  // Cobro mensual al cliente: primer mes con cobro, día de pago y enlace de pago (Mercado Pago o Conekta).
+  billing: { startMonth: string; dueDay: number; paymentLink: string };
 };
 
 export const netFee = (p: OwnerSettings["plan"]) => Math.round((p.priceWithIva / (1 + p.ivaPct / 100)) * 100) / 100;
@@ -43,6 +45,7 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-02", freeYears: 1, passThrough: true },
   plan: { priceWithIva: 406, ivaPct: 16, scans: 1000, emails: 1500, winnieReference: 3000 },
   aiBudgetPct: 20,
+  billing: { startMonth: "2026-11", dueDay: 10, paymentLink: "" },
 };
 
 export type MonthUsage = {
@@ -148,6 +151,7 @@ export function mergeSettings(saved: Partial<OwnerSettings> | null): OwnerSettin
     annual: { ...d.annual, ...saved?.annual },
     plan: { ...d.plan, ...saved?.plan },
     aiBudgetPct: saved?.aiBudgetPct ?? d.aiBudgetPct,
+    billing: { ...d.billing, ...saved?.billing },
     fixed: saved?.fixed?.length ? saved.fixed : d.fixed,
   };
 }
