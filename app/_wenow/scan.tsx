@@ -59,6 +59,7 @@ type ShenaiSdk = {
   startMeasurement(): void;
   getMeasurementState(): Enum;
   getMeasurementProgressPercentage(): number;
+  getRequiredModelsDownloadProgressPercentage?(): number;
   getHeartRateHistory10s?(maxTimeSec?: number): { hr_bpm: number }[];
   getMeasurementResults(): {
     heart_rate_bpm: number | null;
@@ -87,7 +88,11 @@ export function ScanStep({
 
   useEffect(() => () => cleanupRef.current(), []);
 
+  // Mientras Shen.AI se prepara (conexión, motor, modelos, cámara) se muestra un aviso con pasos y avance.
+  const [loading, setLoading] = useState<{ step: number; pct: number | null } | null>(null);
+
   const stopAll = () => {
+    setLoading(null);
     cleanupRef.current();
     cleanupRef.current = () => {};
   };
@@ -111,6 +116,7 @@ export function ScanStep({
 
   const start = async () => {
     setStatus({ kind: "scanning", elapsed: 0, hint: FACE_HINT });
+    if (provider === "shenai") setLoading({ step: 0, pct: null });
     const session = await fetch("/api/scan/sessions", { method: "POST" })
       .then((r) => (r.ok ? (r.json() as Promise<{ sessionId: string; provider: ScanProvider; token?: string }>) : null))
       .catch(() => null);
@@ -187,7 +193,11 @@ export function ScanStep({
     let sdk: ShenaiSdk;
     try {
       const { default: CreateShenaiSDK } = (await import(/* webpackIgnore: true */ /* turbopackIgnore: true */ SHENAI_URL)) as { default: (args: object) => Promise<ShenaiSdk> };
-      sdk = await CreateShenaiSDK({ enableErrorReporting: false, enablePreloadDisplay: false });
+      setLoading({ step: 1, pct: null });
+      sdk = await CreateShenaiSDK({
+        enableErrorReporting: false, enablePreloadDisplay: false,
+        wasmLoadingProgressCallback: (p: number) => setLoading((l) => (l && l.step <= 1 ? { step: 1, pct: Math.round(Math.min(1, Math.max(0, p > 1 ? p / 100 : p)) * 100) } : l)),
+      });
     } catch (e) {
       // Sin cámara o navegador incompatible (la librería lanza antes de iniciar).
       return fail(e instanceof DOMException || /camera|permission/i.test(String(e)) ? NO_CAMERA : UNAVAILABLE);
@@ -221,12 +231,22 @@ export function ScanStep({
     );
     if (result.value !== sdk.InitializationResult.OK.value) return fail(UNAVAILABLE);
     sdk.attachToCanvas(`#${SHENAI_CANVAS}`);
+    setLoading({ step: 2, pct: null });
+    let modelsReadyAt = 0;
 
     const S = sdk.MeasurementState;
     const began = Date.now();
     let finished = false;
     timer.id = setInterval(() => {
       if (finished) return;
+      // Avance de la preparación: modelos de lectura y, al terminar, la cámara; después se retira el aviso y
+      // queda la guía propia de Shen.AI.
+      const models = sdk.getRequiredModelsDownloadProgressPercentage?.() ?? 100;
+      if (models < 100) setLoading((l) => (l ? { step: 2, pct: Math.round(models) } : l));
+      else {
+        modelsReadyAt ||= Date.now();
+        setLoading((l) => (l && Date.now() - modelsReadyAt > 1500 ? null : l ? { step: 3, pct: null } : l));
+      }
       const state = sdk.getMeasurementState().value;
       // La medición arranca cuando Shen.AI confirma rostro bien colocado y luz suficiente; mientras tanto se
       // muestran sus avisos. Si en 3 minutos no lo logra, se ofrece continuar sin el escaneo.
@@ -329,7 +349,7 @@ export function ScanStep({
       }
     >
       {scanning && provider === "shenai" ? (
-        <ShenaiView finishing={status.kind === "finishing"} />
+        <ShenaiView finishing={status.kind === "finishing"} loading={loading} />
       ) : scanning ? (
         <ScanningView
           media={<video ref={videoRef} muted playsInline className="size-full -scale-x-100 object-cover" />}
@@ -390,14 +410,44 @@ export function ScanStep({
 
 // Pantalla de Shen.AI: su propia interfaz dibujada en un canvas, a todo lo ancho y sin empujar el botón fuera de
 // la vista (≈240 px de barra superior, texto y botón).
-function ShenaiView({ finishing }: { finishing: boolean }) {
+const LOADING_STEPS = ["Conectando con Shen.AI", "Cargando el motor de medición", "Preparando los modelos de lectura", "Activando tu cámara"];
+
+function ShenaiView({ finishing, loading }: { finishing: boolean; loading: { step: number; pct: number | null } | null }) {
   return (
     <div className="flex flex-col items-center pt-1">
       <p aria-live="polite" className="text-center text-[13px] leading-snug font-semibold text-[var(--navy)]">
-        {finishing ? "¡Listo! Estamos preparando tu lectura…" : "Sigue las indicaciones en pantalla y mantente quiet@ hasta terminar."}
+        {finishing ? "¡Listo! Estamos preparando tu lectura…" : loading ? "Estamos preparando tu escaneo…" : "Sigue las indicaciones en pantalla y mantente quiet@ hasta terminar."}
       </p>
-      <div className="mt-3 w-full overflow-hidden rounded-[22px] bg-[#2b2b2b]" style={{ height: "clamp(340px, calc(100dvh - 240px), 720px)" }}>
+      <div className="relative mt-3 w-full overflow-hidden rounded-[22px] bg-[#2b2b2b]" style={{ height: "clamp(340px, calc(100dvh - 240px), 720px)" }}>
         <canvas id={SHENAI_CANVAS} className="block size-full" />
+        {loading && (
+          <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#1d1d1d] px-6 text-center">
+            <span className="relative flex size-16 items-center justify-center">
+              <span className="absolute inset-0 rounded-full border-2 border-white/10" />
+              <span className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#ff6fb0] motion-safe:animate-[orbit_1s_linear_infinite]" />
+              <svg viewBox="0 0 24 24" className="size-6 text-[#ffd3e8]" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M3 12h4l2-5 4 10 2-5h6" /></svg>
+            </span>
+            <div>
+              <div className="text-[16px] font-bold text-white">Conectando con el analizador</div>
+              <p className="mx-auto mt-1.5 max-w-[260px] text-[12.5px] leading-[1.55] text-[#c9c2c5]">Puede tardar unos segundos. No cierres esta pantalla: en cuanto esté listo te guiamos para colocar tu rostro.</p>
+            </div>
+            <ol className="flex w-full max-w-[280px] flex-col gap-2 text-left">
+              {LOADING_STEPS.map((label, i) => {
+                const done = i < loading.step;
+                const active = i === loading.step;
+                return (
+                  <li key={label} className={cx("flex items-center gap-2.5 text-[12.5px]", done ? "text-[#ffd3e8]" : active ? "font-semibold text-white" : "text-[#7d7679]")}>
+                    <span className={cx("flex size-5 shrink-0 items-center justify-center rounded-full border", done ? "border-[#ff6fb0] bg-[#ff6fb0]/20" : active ? "border-white/60" : "border-white/15")}>
+                      {done ? <svg viewBox="0 0 24 24" className="size-3" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12.5l4.5 4.5L19 7.5" /></svg> : active ? <span className="size-1.5 rounded-full bg-white motion-safe:animate-pulse" /> : null}
+                    </span>
+                    <span className="flex-1">{label}{active && loading.pct !== null ? ` · ${loading.pct}%` : "…"}</span>
+                  </li>
+                );
+              })}
+            </ol>
+            <p className="max-w-[260px] text-[11.5px] leading-snug text-[#8f878b]">Consejo: busca buena luz de frente y sostén el teléfono a la altura de tu rostro.</p>
+          </div>
+        )}
       </div>
     </div>
   );
