@@ -391,22 +391,6 @@ export const emailEvents = sqliteTable("email_events", {
   createdAt: now("created_at"),
 });
 
-// Tabla heredada de V1, solo para importar el histórico de leads.
-export const legacyBioCheckLeads = sqliteTable("legacy_biocheck_leads", {
-  id: integer("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone").notNull().default(""),
-  distributorSlug: text("distributor_slug").notNull(),
-  acceptedResultEmail: bool("accepted_result_email").notNull(),
-  acceptedMarketing: bool("accepted_marketing").notNull().default(false),
-  acceptedAdvisorContact: bool("accepted_advisor_contact").notNull().default(false),
-  resultSummary: text("result_summary").notNull(),
-  emailStatus: text("email_status").notNull(),
-  advisorEmailStatus: text("advisor_email_status").notNull(),
-  createdAt: text("created_at").notNull(),
-});
-
 // Embudo del enlace de cada distribuidor: visitas e inicios de cuestionario. Sin datos personales.
 export const funnelEvents = sqliteTable(
   "funnel_events",

@@ -85,6 +85,13 @@
       "when": 1791433393645,
       "tag": "0011_shenai_mediciones",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1791646745302,
+      "tag": "0012_quitar_historico_v1",
+      "breakpoints": true
     }
   ]
 }

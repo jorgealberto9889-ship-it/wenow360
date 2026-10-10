@@ -114,38 +114,11 @@ export async function prospectList(f: ProspectFilters) {
 }
 
 export async function prospectTotals() {
-  return one<{ total: number; authorized: number; legacy: number }>(
+  return one<{ total: number; authorized: number }>(
     `select (select count(*) from prospects) as total,
       (select count(distinct a.prospect_id) from consents c join assessments a on a.id = c.assessment_id
-        where c.consent_type = 'contacto_asesor' and c.accepted = 1) as authorized,
-      (select count(*) from legacy_biocheck_leads) as legacy`,
+        where c.consent_type = 'contacto_asesor' and c.accepted = 1) as authorized`,
   );
-}
-
-export async function legacyLeads(q: string | undefined, page: number, perPage = 25, distributorSlug?: string) {
-  const conds: string[] = [];
-  const args: string[] = [];
-  if (q?.trim()) {
-    conds.push("(l.name like ? or l.email like ? or l.phone like ?)");
-    const like = `%${q.trim()}%`;
-    args.push(like, like, like);
-  }
-  if (distributorSlug) {
-    conds.push("l.distributor_slug = ?");
-    args.push(distributorSlug);
-  }
-  const where = conds.length ? `where ${conds.join(" and ")}` : "";
-  const [total, items] = await Promise.all([
-    one<{ n: number }>(`select count(*) as n from legacy_biocheck_leads l ${where}`, args),
-    rows<{ id: number; name: string; email: string; phone: string; distributorName: string | null; createdAt: string; summary: string; advisor: number }>(
-      `select l.id, l.name, l.email, l.phone, d.display_name as distributorName, l.created_at as createdAt,
-        l.result_summary as summary, l.accepted_advisor_contact as advisor
-       from legacy_biocheck_leads l left join distributors d on d.slug = l.distributor_slug ${where}
-       order by l.created_at desc limit ${perPage} offset ${(page - 1) * perPage}`,
-      args,
-    ),
-  ]);
-  return { total: Number(total?.n ?? 0), perPage, items };
 }
 
 export async function prospectDetail(id: string) {
@@ -206,18 +179,17 @@ export async function distributorList(f: { q?: string; state?: string; sort?: st
   }
   if (f.state === "activos") where.push("d.active = 1");
   if (f.state === "inactivos") where.push("d.active = 0");
-  const order = f.sort === "nombre" ? "d.display_name collate nocase" : f.sort === "recientes" ? "d.created_at desc" : "biochecks desc, legacy desc, d.display_name";
+  const order = f.sort === "nombre" ? "d.display_name collate nocase" : f.sort === "recientes" ? "d.created_at desc" : "biochecks desc, d.display_name";
   return rows<{
     id: number; slug: string; displayName: string; email: string | null; whatsapp: string; storeUrl: string;
-    registrationUrl: string | null; distributorId: string | null; active: number; createdAt: string; biochecks: number; contacts: number; legacy: number; portal: number;
+    registrationUrl: string | null; distributorId: string | null; active: number; createdAt: string; biochecks: number; contacts: number; portal: number;
   }>(
     `select d.id, d.slug, d.display_name as displayName, d.email, d.whatsapp, d.store_url as storeUrl,
       d.registration_url as registrationUrl, d.distributor_id as distributorId, d.active, d.created_at as createdAt,
       d.portal_password_hash is not null as portal,
       (select count(*) from assessments a where a.distributor_slug = d.slug and a.status = 'completed') as biochecks,
       (select count(*) from consents c join assessments a on a.id = c.assessment_id
-        where a.distributor_slug = d.slug and c.consent_type = 'contacto_asesor' and c.accepted = 1) as contacts,
-      (select count(*) from legacy_biocheck_leads l where l.distributor_slug = d.slug) as legacy
+        where a.distributor_slug = d.slug and c.consent_type = 'contacto_asesor' and c.accepted = 1) as contacts
      from distributors d ${where.length ? `where ${where.join(" and ")}` : ""} order by ${order}`,
     args,
   );
@@ -276,20 +248,19 @@ export async function operations() {
 
 export async function distributorFunnel(slug: string, period: Period) {
   const since = periodStart(period);
-  const r = await one<{ visits: number; starts: number; completed: number; authorized: number; store: number; legacy: number }>(
+  const r = await one<{ visits: number; starts: number; completed: number; authorized: number; store: number }>(
     `select
       (select count(*) from funnel_events where distributor_slug = ?1 and kind = 'visita' and created_at >= ?2) as visits,
       (select count(*) from funnel_events where distributor_slug = ?1 and kind = 'inicio' and created_at >= ?2) as starts,
       (select count(*) from assessments where distributor_slug = ?1 and status = 'completed' and completed_at >= ?2) as completed,
       (select count(*) from consents c join assessments a on a.id = c.assessment_id
         where a.distributor_slug = ?1 and c.consent_type = 'contacto_asesor' and c.accepted = 1 and a.completed_at >= ?2) as authorized,
-      (select count(*) from funnel_events where distributor_slug = ?1 and kind = 'tienda' and created_at >= ?2) as store,
-      (select count(*) from legacy_biocheck_leads where distributor_slug = ?1) as legacy`,
+      (select count(*) from funnel_events where distributor_slug = ?1 and kind = 'tienda' and created_at >= ?2) as store`,
     [slug, since],
   );
   return {
     visits: Number(r?.visits ?? 0), starts: Number(r?.starts ?? 0), completed: Number(r?.completed ?? 0),
-    authorized: Number(r?.authorized ?? 0), store: Number(r?.store ?? 0), legacy: Number(r?.legacy ?? 0),
+    authorized: Number(r?.authorized ?? 0), store: Number(r?.store ?? 0),
   };
 }
 

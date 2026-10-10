@@ -64,7 +64,6 @@ export default async function Distribuidores({ searchParams }: { searchParams: P
           <span>Enlaces</span>
           <span className="text-center">Evaluaciones</span>
           <span className="text-center">Contactos</span>
-          <span className="text-center">V1</span>
           <span>Portal</span>
           <span>Activo</span>
           <span className="sr-only">Editar</span>
@@ -101,12 +100,10 @@ export default async function Distribuidores({ searchParams }: { searchParams: P
                 <div className="mt-2.5 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 pl-[45px] text-[12px] text-[var(--muted)] xl:hidden">
                   <span><b className="text-[var(--navy)]">{d.biochecks}</b> evaluaciones</span>
                   <span><b className="text-[var(--navy)]">{d.contacts}</b> contactos</span>
-                  <span>{d.legacy} históricos V1</span>
                   {portal}
                 </div>
                 <div className="hidden text-center text-[13px] font-bold text-[var(--navy)] xl:block">{d.biochecks}</div>
                 <div className="hidden text-center text-[13px] font-bold text-[var(--navy)] xl:block">{d.contacts}</div>
-                <div className="hidden text-center text-[13px] text-[var(--muted)] xl:block">{d.legacy}</div>
                 <div className="hidden xl:block">{portal}</div>
                 <div className="hidden xl:block">{toggle}</div>
                 <div className="hidden xl:block">{edit}</div>

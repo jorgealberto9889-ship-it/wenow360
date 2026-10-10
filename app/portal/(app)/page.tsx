@@ -126,16 +126,6 @@ export default async function PortalHome({ searchParams }: { searchParams: Promi
           </Link>
         )}
       </section>
-
-      {funnel.legacy > 0 && (
-        <Link href="/portal/historicos" className="press mt-5 flex items-center justify-between rounded-2xl bg-white px-4 py-3.5 ring-1 ring-[var(--line)]">
-          <span>
-            <span className="block text-[13.5px] font-bold text-[var(--navy)]">Tus prospectos de la versión anterior</span>
-            <span className="block text-[11.5px] text-[var(--muted)]">{funnel.legacy} personas que hicieron su WeNow 360 en V1</span>
-          </span>
-          <span className="text-[var(--blue)]">→</span>
-        </Link>
-      )}
     </>
   );
 }

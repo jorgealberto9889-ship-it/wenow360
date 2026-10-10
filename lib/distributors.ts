@@ -3,7 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { CORPORATE_SLUG } from "./submission";
 
-// Si el slug no existe o está inactivo, la sesión se atribuye al distribuidor corporativo (igual que V1).
+// Si el slug no existe o está inactivo, la sesión se atribuye al distribuidor corporativo.
 export async function getPublicDistributor(slug: string) {
   const pick = (s: string) =>
     db
