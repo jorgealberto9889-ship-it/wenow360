@@ -4,7 +4,8 @@ import { requireAdmin } from "@/lib/dal";
 import { monthReport } from "@/lib/usage";
 import { renewalDate } from "@/lib/usage-costs";
 import { scanProvider } from "@/lib/scan-provider";
-import { PageHeader, Panel, Stat } from "../ui";
+import { PlanUsagePanel, ServiceStats } from "../plan-sections";
+import { PageHeader, Panel } from "../ui";
 
 // Servicios que hacen funcionar WeNow 360. Se muestran con su función para que se vea el valor de la plataforma; los
 // proveedores y la configuración (claves, variables, cuentas) nunca se exponen en pantalla.
@@ -56,12 +57,11 @@ const describe = (action: string, entityId: string | null) => {
 
 export default async function Operacion() {
   await requireAdmin();
-  const [{ emails, scans, audit, celia }, report] = await Promise.all([operations(), monthReport()]);
+  const [ops, report] = await Promise.all([operations(), monthReport()]);
+  const { audit } = ops;
   const settings = report.settings;
   const a = settings.annual;
   const domainNote = a.amountMxn > 0 ? `Incluido${a.freeYears > 0 ? ` el primer año; renovación anual de $${a.amountMxn.toLocaleString("es-MX")} MXN a partir del ${renewalDate(a).toLocaleString("es-MX", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}` : ""}.` : "";
-  const sent = emails.sent ?? 0;
-  const failed = (emails.failed ?? 0) + (emails.bounced ?? 0);
 
   return (
     <>
@@ -86,26 +86,8 @@ export default async function Operacion() {
         </ul>
       </Panel>
 
-      <Panel className="mt-4 p-5">
-        <h2 className="text-[14px] font-bold text-[var(--navy)]">Tu plan este mes</h2>
-        <p className="mt-1 text-[12.5px] text-[var(--muted)]">Consumo de los cupos incluidos. Se reinicia cada mes.</p>
-        <ul className="mt-3.5 grid gap-4 md:grid-cols-3">
-          {report.costs.planUsage.map((x) => (
-            <li key={x.label}>
-              <div className="flex justify-between text-[12.5px]"><span className="font-semibold text-[#4a4547]">{x.label}</span><span className="text-[var(--muted)]">{x.used.toLocaleString("es-MX")} {x.reference ? "· aprox." : "de"} {x.limit.toLocaleString("es-MX")}</span></div>
-              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-[#f2efef]"><div className="h-full rounded-full" style={{ width: `${Math.min(100, x.pct)}%`, background: x.reference ? "var(--blue)" : x.pct >= 100 ? "var(--red)" : x.pct >= 80 ? "#e0a100" : "var(--blue)" }} /></div>
-              {x.reference && <p className="mt-1 text-[11px] text-[var(--muted)]">Uso de referencia, no es un límite. Si el consumo supera de forma sostenida lo previsto, se revisa el plan.</p>}
-            </li>
-          ))}
-        </ul>
-      </Panel>
-
-      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <Stat label="Correos enviados" value={sent} />
-        <Stat label="Correos con error" value={failed} tone={failed ? "bad" : "good"} note={failed ? "Revisa la ficha del prospecto" : "Sin errores"} />
-        <Stat label="Escaneos completados" value={scans.finished} note={`${scans.sessions} iniciados · últimos 30 días`} />
-                <Stat label="Conversaciones con Winnie" value={celia.conversations} note={`${celia.questions} ${celia.questions === 1 ? "pregunta" : "preguntas"}`} />
-      </div>
+      <PlanUsagePanel className="mt-4" report={report} />
+      <ServiceStats className="mt-4" data={ops} />
 
       <Panel className="mt-4 p-5">
         <h2 className="text-[14px] font-bold text-[var(--navy)]">Registro de cambios</h2>

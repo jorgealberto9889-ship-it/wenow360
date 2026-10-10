@@ -2,6 +2,7 @@ import Link from "next/link";
 import { overview } from "@/lib/admin/queries";
 import { parsePeriod, pct, PERIODS, shortDate } from "@/lib/admin/format";
 import { requireAdmin } from "@/lib/dal";
+import { PaymentCards, PlanUsagePanel, SectionTitle, ServiceStats } from "./plan-sections";
 import { Avatar, Bars, PageHeader, Panel, PeriodSelect, Stat, StatusBadge } from "./ui";
 
 export default async function AdminHome({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
@@ -47,6 +48,9 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
         />
       </div>
 
+      <PlanUsagePanel className="mt-5" />
+      <ServiceStats className="mt-4" />
+
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
         <Bars title="Áreas de bienestar más frecuentes" items={areas} empty="Aún no hay evaluaciones en este periodo." />
         <Bars
@@ -79,6 +83,11 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
           </ul>
         )}
       </Panel>
+
+      <section className="mt-8">
+        <SectionTitle title="Pagos y facturación" href="/admin/pagos" cta="Ver historial" />
+        <PaymentCards className="mt-3" />
+      </section>
     </>
   );
 }
