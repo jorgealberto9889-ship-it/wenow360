@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { computeMonthCosts, DEFAULT_SETTINGS, mergeSettings, type MonthUsage } from "./usage-costs";
+import { computeMonthCosts, DEFAULT_SETTINGS, mergeSettings, renewalDate, type MonthUsage } from "./usage-costs";
 
 const usage: MonthUsage = { scans: 520, emails: 3500, geminiIn: 2_000_000, geminiOut: 500_000, ttsChars: 1_500_000, assessments: 100, winnieQuestions: 300 };
 
@@ -19,6 +19,16 @@ test("costos del mes: fijos, variables y margen contra la cuota", () => {
   assert.equal(c.marginMxn, Math.round((25000 - c.totalMxn) * 100) / 100);
   assert.ok((c.marginPct ?? 0) > 0);
   assert.equal(c.shenQuotaUsedPct, 104);
+});
+
+test("renovación anual: gratis el primer año y luego 1/12 al mes de ingreso", () => {
+  const s = { ...DEFAULT_SETTINGS, feeMxn: 20000 };
+  const zero: MonthUsage = { scans: 0, emails: 0, geminiIn: 0, geminiOut: 0, ttsChars: 0, assessments: 0, winnieQuestions: 0 };
+  assert.equal(renewalDate(s.annual).toISOString().slice(0, 10), "2027-10-10");
+  assert.equal(computeMonthCosts(zero, s, "2026-11-01T00:00:00Z").annualMonthlyMxn, 0);
+  const after = computeMonthCosts(zero, s, "2027-11-01T00:00:00Z");
+  assert.equal(after.annualMonthlyMxn, Math.round((1780 / 12) * 100) / 100);
+  assert.equal(after.revenueMxn, Math.round((20000 + 1780 / 12) * 100) / 100);
 });
 
 test("sin cuota registrada no hay porcentaje de margen; sin consumo solo hay costos fijos", () => {

@@ -1,7 +1,7 @@
 import "server-only";
 import { and, eq, gte, lt, sql } from "drizzle-orm";
 import { db, schema } from "@/db";
-import { computeMonthCosts, DEFAULT_SETTINGS, mergeSettings, type MonthUsage, type OwnerSettings } from "./usage-costs";
+import { computeMonthCosts, DEFAULT_SETTINGS, mergeSettings, renewalDate, type MonthUsage, type OwnerSettings } from "./usage-costs";
 
 // Registra el consumo de un servicio con costo variable. Nunca interrumpe la respuesta al usuario: si falla, se ignora.
 export async function recordUsage(e: { service: "gemini" | "tts"; scope: string; model?: string; inputUnits: number; outputUnits?: number }) {
@@ -68,5 +68,6 @@ export async function monthUsage(start: string, end: string): Promise<MonthUsage
 export async function monthReport(month?: string) {
   const range = monthRange(month);
   const [usage, settings] = await Promise.all([monthUsage(range.start, range.end), loadSettings()]);
-  return { range, usage, settings, costs: computeMonthCosts(usage, settings) };
+  const daysToRenewal = Math.ceil((renewalDate(settings.annual).getTime() - Date.now()) / 86_400_000);
+  return { range, usage, settings, daysToRenewal, costs: computeMonthCosts(usage, settings, range.start) };
 }

@@ -1,15 +1,17 @@
 import { LEAD_STATUS, shortDate } from "@/lib/admin/format";
 import { operations } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/dal";
+import { loadSettings } from "@/lib/usage";
+import { renewalDate } from "@/lib/usage-costs";
 import { scanProvider } from "@/lib/scan-provider";
 import { PageHeader, Panel, Stat } from "../ui";
 
 // Servicios que hacen funcionar WeNow 360. Se muestran con su función y su proveedor para que se vea el valor de la
 // plataforma; la configuración (claves, variables, cuentas) nunca se expone en pantalla.
 type Service = { name: string; provider: string; value: string; active: boolean };
-const SERVICES = (): Service[] => [
+const SERVICES = (domainNote: string): Service[] => [
   { name: "Alojamiento y entrega", provider: "Vercel", value: "La plataforma está en línea 24/7, con entrega rápida y actualizaciones sin interrupciones.", active: true },
-  { name: "Dominio y seguridad HTTPS", provider: "360.wenowglobal.com", value: "Dirección propia con certificado de seguridad que protege los datos de cada persona.", active: true },
+  { name: "Dominio y seguridad HTTPS", provider: "360.wenowglobal.com", value: `Dirección propia con certificado de seguridad que protege los datos de cada persona. ${domainNote}`, active: true },
   { name: "Base de datos", provider: "Turso", value: "Resguarda evaluaciones, prospectos y resultados de forma segura y con alta disponibilidad.", active: Boolean(process.env.TURSO_DATABASE_URL) },
   { name: "Escaneo facial con la cámara (rPPG)", provider: process.env.SCAN_PROVIDER === "shenai" ? "Shen.AI" : "VitalLens", value: "Mide pulso, variabilidad, respiración, estrés y actividad parasimpática sin sensores ni contacto.", active: scanProvider() !== null },
   { name: "Winnie, asistente con IA", provider: "Google Gemini", value: "Resuelve dudas sobre productos, ingredientes y hábitos, a cualquier hora.", active: Boolean(process.env.GEMINI_API_KEY) },
@@ -53,7 +55,9 @@ const describe = (action: string, entityId: string | null) => {
 
 export default async function Operacion() {
   await requireAdmin();
-  const { emails, scans, audit, celia, monthScans } = await operations();
+  const [{ emails, scans, audit, celia, monthScans }, settings] = await Promise.all([operations(), loadSettings()]);
+  const a = settings.annual;
+  const domainNote = a.amountMxn > 0 ? `Incluido${a.freeYears > 0 ? ` el primer año; renovación anual de $${a.amountMxn.toLocaleString("es-MX")} MXN a partir del ${renewalDate(a).toLocaleString("es-MX", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}` : ""}.` : "";
   const sent = emails.sent ?? 0;
   const failed = (emails.failed ?? 0) + (emails.bounced ?? 0);
 
@@ -65,7 +69,7 @@ export default async function Operacion() {
         <h2 className="text-[14px] font-bold text-[var(--navy)]">Servicios incluidos en tu plan</h2>
         <p className="mt-1 text-[12.5px] text-[var(--muted)]">Tecnología que opera WeNow 360 todos los días, mantenida y monitoreada por Órbita Digital.</p>
         <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-          {SERVICES().map((s) => (
+          {SERVICES(domainNote).map((s) => (
             <li key={s.name} className="flex items-start gap-3 rounded-xl border border-[#f2efef] p-3.5">
               <span className={`mt-1.5 size-2.5 shrink-0 rounded-full ${s.active ? "bg-[var(--green)]" : "bg-[#e0a100]"}`} aria-hidden />
               <span className="min-w-0">

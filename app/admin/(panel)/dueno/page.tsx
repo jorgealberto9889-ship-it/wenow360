@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireOwner } from "@/lib/dal";
 import { monthReport } from "@/lib/usage";
+import { renewalDate } from "@/lib/usage-costs";
 import { PageHeader, Panel, Stat, fieldClass } from "../ui";
 import { saveOwnerSettings } from "./actions";
 
@@ -18,9 +19,10 @@ const label = "block text-[11px] font-semibold text-[var(--muted)]";
 export default async function Dueno({ searchParams }: { searchParams: Promise<{ mes?: string }> }) {
   await requireOwner();
   const { mes } = await searchParams;
-  const { range, usage, settings: s, costs: c } = await monthReport(mes);
+  const { range, usage, settings: s, costs: c, daysToRenewal } = await monthReport(mes);
   const [y, m] = range.key.split("-").map(Number);
   const nowKey = new Date().toISOString().slice(0, 7);
+  const renewal = renewalDate(s.annual);
 
   return (
     <>
@@ -37,11 +39,25 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
       />
 
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <Stat label="Cuota del cliente" value={s.feeMxn > 0 ? mxn(s.feeMxn) : "—"} note={s.feeMxn > 0 ? "Sin IVA, por mes" : "Captúrala abajo"} />
+        <Stat label="Ingreso del mes" value={c.revenueMxn > 0 ? mxn(c.revenueMxn) : "—"} note={s.feeMxn > 0 ? `Cuota ${mxn(s.feeMxn)}${c.annualMonthlyMxn ? ` + ${mxn(c.annualMonthlyMxn)} de renovación anual (1/12)` : ""} · sin IVA` : "Captura la cuota abajo"} />
         <Stat label="Costo del mes" value={mxn(c.totalMxn)} note={`${mxn(c.fixedMxn)} fijo · ${mxn(c.variableMxn)} variable`} />
-        <Stat label="Margen estimado" value={s.feeMxn > 0 ? mxn(c.marginMxn) : "—"} tone={s.feeMxn > 0 ? (c.marginMxn >= 0 ? "good" : "bad") : undefined} note={c.marginPct !== null ? `${c.marginPct}% de la cuota` : "Sin cuota registrada"} />
+        <Stat label="Margen estimado" value={c.revenueMxn > 0 ? mxn(c.marginMxn) : "—"} tone={c.revenueMxn > 0 ? (c.marginMxn >= 0 ? "good" : "bad") : undefined} note={c.marginPct !== null ? `${c.marginPct}% del ingreso` : "Sin cuota registrada"} />
         <Stat label="Cupo de escaneos" value={`${usage.scans} / ${s.shen.included}`} tone={c.shenQuotaUsedPct >= 100 ? "bad" : c.shenQuotaUsedPct >= 80 ? undefined : "good"} note={c.shenQuotaUsedPct >= 100 ? "Cupo agotado: cada extra tiene costo" : `${c.shenQuotaUsedPct}% usado`} />
       </div>
+
+      <Panel className="mt-4 flex flex-wrap items-center justify-between gap-3 p-5">
+        <div>
+          <h2 className="text-[14px] font-bold text-[var(--navy)]">Cobro anual · {s.annual.name}</h2>
+          <p className="mt-1 text-[12.5px] text-[#4a4547]">
+            {s.annual.freeYears > 0 ? `Gratis los primeros ${s.annual.freeYears} año${s.annual.freeYears > 1 ? "s" : ""} (desde ${s.annual.startDate}). ` : ""}Renovación de <strong>{mxn(s.annual.amountMxn)}</strong> al año, equivalente a {mxn(s.annual.amountMxn / 12)} al mes.
+          </p>
+        </div>
+        <div className="text-right">
+          <div className="text-[11.5px] text-[var(--muted)]">Próxima renovación</div>
+          <div className="text-[15px] font-extrabold text-[var(--navy)]">{renewal.toLocaleString("es-MX", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}</div>
+          <div className={`text-[11.5px] font-semibold ${daysToRenewal <= 30 ? "text-[var(--red)]" : "text-[var(--muted)]"}`}>{daysToRenewal > 0 ? `En ${daysToRenewal} días` : "Ya corresponde cobrarla"}</div>
+        </div>
+      </Panel>
 
       <Panel className="mt-4 p-5">
         <h2 className="text-[14px] font-bold text-[var(--navy)]">Actividad del mes</h2>
@@ -93,6 +109,11 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
             <label><span className={label}>Voz: caracteres gratis al mes</span><input name="ttsFree" type="number" min="0" defaultValue={s.tts.freeChars} className={fieldClass} /></label>
             <label><span className={label}>Correos gratis al mes</span><input name="emailFree" type="number" min="0" defaultValue={s.email.freePerMonth} className={fieldClass} /></label>
             <label><span className={label}>Correo extra (USD c/u)</span><input name="emailRate" type="number" step="any" min="0" defaultValue={s.email.usdPerEmail} className={fieldClass} /></label>
+          </div>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <label><span className={label}>Renovación anual dominio + hosting (MXN)</span><input name="annualAmount" type="number" step="any" min="0" defaultValue={s.annual.amountMxn} className={fieldClass} /></label>
+            <label><span className={label}>Inicio del servicio</span><input name="annualStart" type="date" defaultValue={s.annual.startDate} className={fieldClass} /></label>
+            <label><span className={label}>Años gratis</span><input name="annualFree" type="number" min="0" step="1" defaultValue={s.annual.freeYears} className={fieldClass} /></label>
           </div>
           <div>
             <div className={label}>Costos fijos mensuales (deja el nombre vacío para quitar una fila)</div>

@@ -30,6 +30,12 @@ export async function saveOwnerSettings(formData: FormData) {
     gemini: { inputUsdPerM: num(formData.get("geminiIn"), cur.gemini.inputUsdPerM), outputUsdPerM: num(formData.get("geminiOut"), cur.gemini.outputUsdPerM) },
     tts: { usdPerMChars: num(formData.get("ttsRate"), cur.tts.usdPerMChars), freeChars: num(formData.get("ttsFree"), cur.tts.freeChars) },
     email: { freePerMonth: num(formData.get("emailFree"), cur.email.freePerMonth), usdPerEmail: num(formData.get("emailRate"), cur.email.usdPerEmail) },
+    annual: {
+      name: cur.annual.name,
+      amountMxn: num(formData.get("annualAmount"), cur.annual.amountMxn),
+      startDate: /^\d{4}-\d{2}-\d{2}$/.test(String(formData.get("annualStart"))) ? String(formData.get("annualStart")) : cur.annual.startDate,
+      freeYears: Math.round(num(formData.get("annualFree"), cur.annual.freeYears)),
+    },
   };
   await saveSettings(next);
   await db.insert(schema.auditLogs).values({ actorId: owner.id, actorType: "admin", action: "owner_settings_updated", entity: "owner_settings", entityId: "settings" });

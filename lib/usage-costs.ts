@@ -13,6 +13,8 @@ export type OwnerSettings = {
   gemini: { inputUsdPerM: number; outputUsdPerM: number };
   tts: { usdPerMChars: number; freeChars: number };
   email: { freePerMonth: number; usdPerEmail: number };
+  // Cobro anual al cliente por dominio y hosting: gratis los primeros años y después una renovación fija.
+  annual: { name: string; amountMxn: number; startDate: string; freeYears: number };
 };
 
 export const DEFAULT_SETTINGS: OwnerSettings = {
@@ -29,6 +31,7 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   gemini: { inputUsdPerM: 0.1, outputUsdPerM: 0.4 },
   tts: { usdPerMChars: 16, freeChars: 1_000_000 },
   email: { freePerMonth: 3000, usdPerEmail: 0.0004 },
+  annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-10", freeYears: 1 },
 };
 
 export type MonthUsage = {
@@ -44,6 +47,8 @@ export type MonthCosts = {
   variableMxn: number;
   totalMxn: number;
   feeMxn: number;
+  annualMonthlyMxn: number; // 1/12 de la renovación anual, solo cuando ya terminó el periodo gratis
+  revenueMxn: number;
   marginMxn: number;
   marginPct: number | null; // null si no hay cuota registrada
   shenQuotaUsedPct: number;
@@ -53,7 +58,14 @@ const toMxn = (amount: number, currency: FixedCost["currency"], s: OwnerSettings
   currency === "USD" ? amount * s.usdMxn : currency === "EUR" ? amount * s.eurMxn : amount;
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
-export function computeMonthCosts(u: MonthUsage, s: OwnerSettings): MonthCosts {
+// Fecha en que se cobra la primera renovación anual (inicio + años gratis).
+export function renewalDate(a: OwnerSettings["annual"]) {
+  const d = new Date(`${a.startDate}T00:00:00Z`);
+  d.setUTCFullYear(d.getUTCFullYear() + a.freeYears);
+  return d;
+}
+
+export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: string = new Date().toISOString()): MonthCosts {
   const fixedLines = s.fixed.map((f) => ({
     service: f.name, usage: `${f.amount.toLocaleString("es-MX")} ${f.currency}/mes`, costMxn: round2(toMxn(f.amount, f.currency, s)),
   }));
@@ -74,10 +86,12 @@ export function computeMonthCosts(u: MonthUsage, s: OwnerSettings): MonthCosts {
   const fixedMxn = round2(fixedLines.reduce((a, l) => a + l.costMxn, 0));
   const variableMxn = round2(variableLines.reduce((a, l) => a + l.costMxn, 0));
   const totalMxn = round2(fixedMxn + variableMxn);
-  const marginMxn = round2(s.feeMxn - totalMxn);
+  const annualMonthlyMxn = new Date(monthStart) >= renewalDate(s.annual) ? round2(s.annual.amountMxn / 12) : 0;
+  const revenueMxn = round2(s.feeMxn + annualMonthlyMxn);
+  const marginMxn = round2(revenueMxn - totalMxn);
   return {
-    fixedLines, variableLines, fixedMxn, variableMxn, totalMxn, feeMxn: s.feeMxn, marginMxn,
-    marginPct: s.feeMxn > 0 ? Math.round((marginMxn / s.feeMxn) * 1000) / 10 : null,
+    fixedLines, variableLines, fixedMxn, variableMxn, totalMxn, feeMxn: s.feeMxn, annualMonthlyMxn, revenueMxn, marginMxn,
+    marginPct: revenueMxn > 0 ? Math.round((marginMxn / revenueMxn) * 1000) / 10 : null,
     shenQuotaUsedPct: s.shen.included > 0 ? Math.round((u.scans / s.shen.included) * 100) : 0,
   };
 }
@@ -91,6 +105,7 @@ export function mergeSettings(saved: Partial<OwnerSettings> | null): OwnerSettin
     gemini: { ...d.gemini, ...saved?.gemini },
     tts: { ...d.tts, ...saved?.tts },
     email: { ...d.email, ...saved?.email },
+    annual: { ...d.annual, ...saved?.annual },
     fixed: saved?.fixed?.length ? saved.fixed : d.fixed,
   };
 }
