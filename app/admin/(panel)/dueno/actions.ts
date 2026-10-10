@@ -34,7 +34,7 @@ export async function saveOwnerSettings(formData: FormData) {
     usdMxn: num(formData.get("usdMxn"), cur.usdMxn),
     eurMxn: num(formData.get("eurMxn"), cur.eurMxn),
     fixed,
-    shen: { included: num(formData.get("shenIncluded"), cur.shen.included), extraEur: num(formData.get("shenExtraEur"), cur.shen.extraEur) },
+    shen: { included: num(formData.get("shenIncluded"), cur.shen.included), extraEur: num(formData.get("shenExtraEur"), cur.shen.extraEur), paidByClient: formData.get("shenPaidByClient") === "on" },
     gemini: { inputUsdPerM: num(formData.get("geminiIn"), cur.gemini.inputUsdPerM), outputUsdPerM: num(formData.get("geminiOut"), cur.gemini.outputUsdPerM) },
     tts: { usdPerMChars: num(formData.get("ttsRate"), cur.tts.usdPerMChars), freeChars: num(formData.get("ttsFree"), cur.tts.freeChars) },
     email: { freePerMonth: num(formData.get("emailFree"), cur.email.freePerMonth), usdPerEmail: num(formData.get("emailRate"), cur.email.usdPerEmail) },

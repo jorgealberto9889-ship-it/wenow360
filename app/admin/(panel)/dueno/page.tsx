@@ -42,7 +42,7 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
         <Stat label="Ingreso del mes" value={c.revenueMxn > 0 ? mxn(c.revenueMxn) : "—"} note={c.feeMxn > 0 ? `Cuota neta ${mxn(c.feeMxn)}${c.annualMonthlyMxn ? ` + ${mxn(c.annualMonthlyMxn)} de renovación anual (1/12)` : ""} · sin IVA` : "Captura la cuota abajo"} />
         <Stat label="Costo del mes" value={mxn(c.totalMxn)} note={`${mxn(c.fixedMxn)} fijo · ${mxn(c.variableMxn)} variable`} />
         <Stat label="Margen estimado" value={c.revenueMxn > 0 ? mxn(c.marginMxn) : "—"} tone={c.revenueMxn > 0 ? (c.marginMxn >= 0 ? "good" : "bad") : undefined} note={c.marginPct !== null ? `${c.marginPct}% del ingreso` : "Sin cuota registrada"} />
-        <Stat label="Cupo de escaneos" value={`${usage.scans} / ${s.shen.included}`} tone={c.shenQuotaUsedPct >= 100 ? "bad" : c.shenQuotaUsedPct >= 80 ? undefined : "good"} note={c.shenQuotaUsedPct >= 100 ? "Cupo agotado: cada extra tiene costo" : `${c.shenQuotaUsedPct}% usado`} />
+        <Stat label="Plan de Shen.AI del cliente" value={`${usage.scans} / ${s.shen.included}`} tone={c.shenQuotaUsedPct >= 100 ? "bad" : c.shenQuotaUsedPct >= 80 ? undefined : "good"} note={c.shenQuotaUsedPct >= 100 ? "Sobre su cupo: ellos pagan el extra" : `${c.shenQuotaUsedPct}% de su cupo`} />
       </div>
 
       {c.marginMxn < 0 && (
@@ -123,8 +123,9 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
             <label><span className={label}>Cupo: conversaciones con IA al mes</span><input name="planConversations" type="number" min="0" defaultValue={s.plan.conversations} className={fieldClass} /></label>
             <label><span className={label}>USD → MXN</span><input name="usdMxn" type="number" step="any" min="0" defaultValue={s.usdMxn} className={fieldClass} /></label>
             <label><span className={label}>EUR → MXN</span><input name="eurMxn" type="number" step="any" min="0" defaultValue={s.eurMxn} className={fieldClass} /></label>
-            <label><span className={label}>Escaneos incluidos en el plan</span><input name="shenIncluded" type="number" min="0" defaultValue={s.shen.included} className={fieldClass} /></label>
-            <label><span className={label}>Escaneo extra (EUR)</span><input name="shenExtraEur" type="number" step="any" min="0" defaultValue={s.shen.extraEur} className={fieldClass} /></label>
+            <label><span className={label}>Escaneos incluidos en su plan de Shen.AI</span><input name="shenIncluded" type="number" min="0" defaultValue={s.shen.included} className={fieldClass} /></label>
+            <label><span className={label}>Escaneo extra de Shen.AI (EUR)</span><input name="shenExtraEur" type="number" step="any" min="0" defaultValue={s.shen.extraEur} className={fieldClass} /></label>
+            <label className="flex items-end gap-2 pb-2.5"><input name="shenPaidByClient" type="checkbox" defaultChecked={s.shen.paidByClient} className="size-4" /><span className="text-[12px] font-semibold text-[#4a4547]">Shen.AI lo paga el cliente (no es mi costo)</span></label>
             <label><span className={label}>Gemini entrada (USD / 1M tokens)</span><input name="geminiIn" type="number" step="any" min="0" defaultValue={s.gemini.inputUsdPerM} className={fieldClass} /></label>
             <label><span className={label}>Gemini salida (USD / 1M tokens)</span><input name="geminiOut" type="number" step="any" min="0" defaultValue={s.gemini.outputUsdPerM} className={fieldClass} /></label>
             <label><span className={label}>Voz (USD / 1M caracteres)</span><input name="ttsRate" type="number" step="any" min="0" defaultValue={s.tts.usdPerMChars} className={fieldClass} /></label>

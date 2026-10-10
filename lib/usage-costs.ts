@@ -9,7 +9,9 @@ export type OwnerSettings = {
   usdMxn: number;
   eurMxn: number;
   fixed: FixedCost[]; // Vercel, dominio, Turso, plan de Shen.AI…
-  shen: { included: number; extraEur: number }; // escaneos incluidos en el plan y precio por escaneo extra (EUR)
+  // Plan de Shen.AI: escaneos incluidos, precio por escaneo extra (EUR) y si lo paga el cliente desde su propia cuenta
+  // (en ese caso no cuenta como costo de Órbita Digital).
+  shen: { included: number; extraEur: number; paidByClient: boolean };
   gemini: { inputUsdPerM: number; outputUsdPerM: number };
   tts: { usdPerMChars: number; freeChars: number };
   email: { freePerMonth: number; usdPerEmail: number };
@@ -26,12 +28,11 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   usdMxn: 18.5,
   eurMxn: 21.5,
   fixed: [
-    { name: "Plan de Shen.AI (500 escaneos)", amount: 500, currency: "EUR" },
     { name: "Vercel (alojamiento)", amount: 20, currency: "USD" },
     { name: "Turso (base de datos)", amount: 0, currency: "USD" },
     { name: "Dominio", amount: 0, currency: "MXN" },
   ],
-  shen: { included: 500, extraEur: 0.2 },
+  shen: { included: 500, extraEur: 0.2, paidByClient: true },
   gemini: { inputUsdPerM: 0.1, outputUsdPerM: 0.4 },
   tts: { usdPerMChars: 16, freeChars: 1_000_000 },
   email: { freePerMonth: 3000, usdPerEmail: 0.0004 },
@@ -86,7 +87,11 @@ export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: s
   const emailsBilled = Math.max(0, u.emails - s.email.freePerMonth);
 
   const variableLines: CostLine[] = [
-    { service: "Escaneos extra de Shen.AI", usage: `${u.scans} escaneos · ${shenExtra} sobre el cupo`, costMxn: round2(shenExtra * s.shen.extraEur * s.eurMxn), note: `Cupo incluido: ${s.shen.included}` },
+    {
+      service: "Escaneos de Shen.AI", usage: `${u.scans} escaneos · ${shenExtra} sobre el cupo de su plan`,
+      costMxn: s.shen.paidByClient ? 0 : round2(shenExtra * s.shen.extraEur * s.eurMxn),
+      note: s.shen.paidByClient ? "Lo paga el cliente en su cuenta de Shen.AI" : `Cupo incluido: ${s.shen.included}`,
+    },
     { service: "Winnie (Gemini)", usage: `${u.geminiIn.toLocaleString("es-MX")} tokens de entrada · ${u.geminiOut.toLocaleString("es-MX")} de salida`, costMxn: round2(gemini * s.usdMxn) },
     { service: "Voz del resultado (Google TTS)", usage: `${u.ttsChars.toLocaleString("es-MX")} caracteres`, costMxn: round2(tts * s.usdMxn), note: `Gratis hasta ${s.tts.freeChars.toLocaleString("es-MX")}` },
     { service: "Correos (Resend)", usage: `${u.emails.toLocaleString("es-MX")} enviados`, costMxn: round2(emailsBilled * s.email.usdPerEmail * s.usdMxn), note: `Gratis hasta ${s.email.freePerMonth.toLocaleString("es-MX")}` },
@@ -109,7 +114,7 @@ export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: s
       { label: "Conversaciones con IA", used: u.conversations, limit: s.plan.conversations },
     ].map((x) => ({ ...x, pct: x.limit > 0 ? Math.round((x.used / x.limit) * 100) : 0 })),
     breakEvenWithIva: Math.ceil(
-      (fixedMxn + Math.max(0, s.plan.scans - s.shen.included) * s.shen.extraEur * s.eurMxn) * (1 + s.plan.ivaPct / 100),
+      (fixedMxn + (s.shen.paidByClient ? 0 : Math.max(0, s.plan.scans - s.shen.included) * s.shen.extraEur * s.eurMxn)) * (1 + s.plan.ivaPct / 100),
     ),
   };
 }

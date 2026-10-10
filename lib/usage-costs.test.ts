@@ -7,10 +7,12 @@ const usage: MonthUsage = { scans: 520, emails: 3500, geminiIn: 2_000_000, gemin
 test("costos del mes: fijos, variables y margen contra la cuota", () => {
   const s = { ...DEFAULT_SETTINGS, plan: { ...DEFAULT_SETTINGS.plan, priceWithIva: 29000 } };
   const c = computeMonthCosts(usage, s);
-  // Shen 500 EUR + Vercel 20 USD en pesos
-  assert.equal(c.fixedMxn, 500 * 21.5 + 20 * 18.5);
-  // 20 escaneos extra a 0,20 EUR
-  assert.equal(c.variableLines[0].costMxn, 20 * 0.2 * 21.5);
+  // Vercel 20 USD en pesos (Shen.AI lo paga el cliente)
+  assert.equal(c.fixedMxn, 20 * 18.5);
+  assert.equal(c.variableLines[0].costMxn, 0);
+  // Si Shen.AI fuera costo propio: 20 escaneos extra a 0,20 EUR
+  const own = computeMonthCosts(usage, { ...s, shen: { ...s.shen, paidByClient: false } });
+  assert.equal(own.variableLines[0].costMxn, 20 * 0.2 * 21.5);
   // Gemini: 2M*0.10 + 0.5M*0.40 = 0.40 USD; TTS: 0.5M*16/1M = 8 USD; correos: 500*0.0004 = 0.2 USD
   assert.equal(c.variableLines[1].costMxn, 0.4 * 18.5);
   assert.equal(c.variableLines[2].costMxn, 8 * 18.5);
@@ -20,6 +22,7 @@ test("costos del mes: fijos, variables y margen contra la cuota", () => {
   assert.equal(c.marginMxn, Math.round((25000 - c.totalMxn) * 100) / 100);
   assert.ok((c.marginPct ?? 0) > 0);
   assert.equal(c.shenQuotaUsedPct, 104);
+  assert.ok(c.marginMxn > 0);
 });
 
 test("renovación anual: gratis el primer año y luego 1/12 al mes de ingreso", () => {
@@ -43,13 +46,18 @@ test("plan de 406 pesos con IVA: cuota neta de 350, cupos y cuota de equilibrio"
   const c = computeMonthCosts({ ...usage, scans: 400, emails: 600, conversations: 250 }, DEFAULT_SETTINGS);
   assert.equal(c.feeMxn, 350);
   assert.deepEqual(c.planUsage.map((x) => [x.limit, x.pct]), [[1000, 40], [1500, 40], [500, 50]]);
+  // Solo Vercel (20 USD) + dominio: con 350 netos queda casi en equilibrio
+  assert.equal(c.fixedMxn, 20 * 18.5);
   assert.ok(c.marginMxn < 0);
-  // costos fijos + 500 escaneos extra a 0,20 EUR, con IVA
-  assert.equal(c.breakEvenWithIva, Math.ceil((c.fixedMxn + 500 * 0.2 * 21.5) * 1.16));
+  const idle = computeMonthCosts({ ...usage, geminiIn: 0, geminiOut: 0, ttsChars: 0, scans: 400, emails: 600 }, DEFAULT_SETTINGS);
+  assert.equal(idle.marginMxn, 350 - 370);
+  assert.equal(c.breakEvenWithIva, Math.ceil(c.fixedMxn * 1.16));
+  const own = computeMonthCosts({ ...usage, scans: 400 }, { ...DEFAULT_SETTINGS, shen: { ...DEFAULT_SETTINGS.shen, paidByClient: false } });
+  assert.equal(own.breakEvenWithIva, Math.ceil((own.fixedMxn + 500 * 0.2 * 21.5) * 1.16));
 });
 
 test("mergeSettings completa lo que falte con los valores por omisión", () => {
-  const s = mergeSettings({ feeMxn: 1000, shen: { included: 300, extraEur: 0.25 } });
+  const s = mergeSettings({ feeMxn: 1000, shen: { included: 300, extraEur: 0.25, paidByClient: false } });
   assert.equal(s.feeMxn, 1000);
   assert.equal(s.shen.included, 300);
   assert.equal(s.gemini.inputUsdPerM, DEFAULT_SETTINGS.gemini.inputUsdPerM);
