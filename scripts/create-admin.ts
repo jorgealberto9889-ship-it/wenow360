@@ -6,11 +6,13 @@ import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import * as s from "../db/schema";
 
-// Uso: npm run admin:create -- correo@dominio.com
+// Uso: npm run admin:create -- correo@dominio.com [owner]
+// Sin «owner» la cuenta es del equipo del cliente (rol staff: no ve «Dueño · Consumo»). Con «owner» es super_admin (Órbita Digital).
 async function main() {
   const email = process.argv[2]?.trim().toLowerCase();
   if (!email || !email.includes("@")) throw new Error("Indica el correo: npm run admin:create -- correo@dominio.com");
 
+  const role = process.argv[3] === "owner" ? ("super_admin" as const) : ("staff" as const);
   const password = process.env.ADMIN_PASSWORD ?? (await ask("Contraseña (mínimo 12 caracteres): "));
   if (password.length < 12) throw new Error("La contraseña debe tener al menos 12 caracteres.");
 
@@ -20,9 +22,9 @@ async function main() {
   const passwordHash = await bcrypt.hash(password, 12);
   await db
     .insert(s.adminUsers)
-    .values({ email, passwordHash, role: "super_admin" })
+    .values({ email, passwordHash, role })
     .onConflictDoUpdate({ target: s.adminUsers.email, set: { passwordHash, active: true } });
-  console.log(`Admin listo: ${email}`);
+  console.log(`Admin listo: ${email} (${role === "super_admin" ? "dueño" : "equipo"})`);
 }
 
 async function ask(q: string): Promise<string> {

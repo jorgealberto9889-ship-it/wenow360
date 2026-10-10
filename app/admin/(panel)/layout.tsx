@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { requireAdmin } from "@/lib/dal";
 import { initials } from "@/lib/admin/format";
 import { logout } from "../login/actions";
@@ -33,9 +34,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <div className="text-[10.5px] text-[#c58aa5]">{admin.role === "super_admin" ? "Super admin" : "Equipo"}</div>
           </div>
         </div>
-        <form action={logout} className="px-2 pt-3">
-          <button className="press text-[12px] font-semibold text-[#c58aa5] hover:text-white">Cerrar sesión</button>
-        </form>
+        <div className="flex items-center gap-4 px-2 pt-3">
+          <Link href="/admin/cuenta" className="press text-[12px] font-semibold text-[#c58aa5] hover:text-white">Mi cuenta</Link>
+          <form action={logout}><button className="press text-[12px] font-semibold text-[#c58aa5] hover:text-white">Cerrar sesión</button></form>
+        </div>
       </aside>
       <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-9 lg:py-8">
         <PaymentBanner />
