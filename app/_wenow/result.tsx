@@ -114,7 +114,7 @@ function ResultActs({ saved, draft, name, distributor, voice, seq, assistantToke
 
   if (act === 1) {
     return (
-      <Screen footer={<NextButton key="act1" voice={voice} onClick={() => goTo(saved.result.biometric ? "panel" : 2)}>{saved.result.biometric ? "Ver mi panel de mediciones" : "Ver lo que encontramos"}</NextButton>}>
+      <Screen fixedFooter footer={<NextButton key="act1" voice={voice} onClick={() => goTo(saved.result.biometric ? "panel" : 2)}>{saved.result.biometric ? "Ver mi panel de mediciones" : "Ver lo que encontramos"}</NextButton>}>
         <ActLabel>Acto 1 de 3 · Antes de tu resultado</ActLabel>
         <ActOne draft={draft} name={name} seq={seq.act1} />
       </Screen>
@@ -134,7 +134,7 @@ function ResultActs({ saved, draft, name, distributor, voice, seq, assistantToke
   ) : null;
   if (act === 2) {
     return (
-      <Screen footer={<NextButton key="act2" voice={voice} onClick={() => goTo(3)}>{hasProducts ? bridgeText(saved.result.areas).cta : "Ver mis siguientes pasos"}</NextButton>}>
+      <Screen fixedFooter footer={<NextButton key="act2" voice={voice} onClick={() => goTo(3)}>{hasProducts ? bridgeText(saved.result.areas).cta : "Ver mis siguientes pasos"}</NextButton>}>
         <ActLabel>Acto 2 de 3 · Lo que encontramos</ActLabel>
         <ActTwo saved={saved} seq={seq.act2} />
       </Screen>

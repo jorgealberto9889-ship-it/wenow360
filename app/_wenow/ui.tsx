@@ -44,12 +44,22 @@ export const CheckCircle = () => (
   </svg>
 );
 
-export function Screen({ top, footer, children }: { top?: ReactNode; footer?: ReactNode; children: ReactNode }) {
+// `fixedFooter`: la barra inferior queda fija a la pantalla (en lugar de «sticky»). En iPhone el `sticky` pegado al borde
+// inferior puede dejar el botón visible pero sin recibir el toque hasta llegar al final del scroll.
+export function Screen({ top, footer, fixedFooter, children }: { top?: ReactNode; footer?: ReactNode; fixedFooter?: boolean; children: ReactNode }) {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[440px] flex-col bg-[var(--bg)]">
       {top}
       <div className="flex flex-1 flex-col px-5 pb-6">{children}</div>
-      {footer && (
+      {footer && fixedFooter && (
+        <>
+          <div aria-hidden className="h-[104px] shrink-0" />
+          <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[var(--line)] bg-[var(--bg)]">
+            <div className="mx-auto w-full max-w-[440px] px-5 pt-3.5 pb-[max(20px,env(safe-area-inset-bottom))]">{footer}</div>
+          </div>
+        </>
+      )}
+      {footer && !fixedFooter && (
         <div className="sticky bottom-0 border-t border-[var(--line)] bg-[var(--bg)] px-5 pt-3.5 pb-[max(20px,env(safe-area-inset-bottom))]">
           {footer}
         </div>

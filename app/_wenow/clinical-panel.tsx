@@ -360,9 +360,12 @@ export function ClinicalPanel({ bio, completedAt, footer }: { bio: BiometricRead
       </div>
 
       {footer && (
-        <div className="sticky bottom-0 border-t border-[var(--line)] bg-[var(--bg)] px-5 pt-3.5 pb-[max(20px,env(safe-area-inset-bottom))]">
-          <div className="mx-auto max-w-[440px]">{footer}</div>
-        </div>
+        <>
+          <div aria-hidden className="h-[104px]" />
+          <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[var(--line)] bg-[var(--bg)]">
+            <div className="mx-auto max-w-[440px] px-5 pt-3.5 pb-[max(20px,env(safe-area-inset-bottom))]">{footer}</div>
+          </div>
+        </>
       )}
     </div>
   );
