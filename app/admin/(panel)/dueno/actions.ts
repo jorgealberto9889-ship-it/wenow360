@@ -29,6 +29,7 @@ export async function saveOwnerSettings(formData: FormData) {
     conversations: Math.round(num(formData.get("planConversations"), cur.plan.conversations)),
   };
   const next: OwnerSettings = {
+    aiBudgetPct: Math.min(100, num(formData.get("aiBudgetPct"), cur.aiBudgetPct)),
     plan,
     feeMxn: netFee(plan),
     usdMxn: num(formData.get("usdMxn"), cur.usdMxn),

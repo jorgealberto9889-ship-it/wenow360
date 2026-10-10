@@ -82,6 +82,23 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
       </Panel>
 
       <Panel className="mt-4 p-5">
+        <h2 className="text-[14px] font-bold text-[var(--navy)]">Winnie · costo de IA y presupuesto</h2>
+        <p className="mt-1 text-[12px] text-[var(--muted)]">Presupuesto: {s.aiBudgetPct}% de la cuota neta = {mxn(c.ai.budgetMxn)} al mes. Mientras no lo superes, Winnie atiende sin recortes.</p>
+        <dl className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
+          {[
+            ["Respuestas este mes", c.ai.responses.toLocaleString("es-MX")],
+            ["Costo por respuesta", c.ai.responses > 0 ? `$${c.ai.costPerResponseMxn.toFixed(3)}` : "—"],
+            ["Gasto de IA / presupuesto", `${mxn(c.ai.costMxn)} / ${mxn(c.ai.budgetMxn)}`],
+            ["Respuestas que cabe en el presupuesto", c.ai.capacityResponses !== null ? c.ai.capacityResponses.toLocaleString("es-MX") : "Sin datos aún"],
+          ].map(([k, v]) => (
+            <div key={k}><dt className="text-[11.5px] text-[var(--muted)]">{k}</dt><dd className="text-[17px] font-extrabold text-[var(--navy)]">{v}</dd></div>
+          ))}
+        </dl>
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#f2efef]"><div className="h-full rounded-full" style={{ width: `${Math.min(100, c.ai.usedPct)}%`, background: c.ai.usedPct >= 100 ? "var(--red)" : c.ai.usedPct >= 70 ? "#e0a100" : "var(--blue)" }} /></div>
+        <p className="mt-2 text-[11.5px] text-[var(--muted)]">Proyección al cierre del mes: {c.ai.projectedResponses.toLocaleString("es-MX")} respuestas · {mxn(c.ai.projectedMxn)}. {c.ai.usedPct >= 100 ? "Superaste el presupuesto: conviene activar el modo económico de Winnie." : c.ai.usedPct >= 70 ? "Cerca del presupuesto." : "Dentro del presupuesto."}</p>
+      </Panel>
+
+      <Panel className="mt-4 p-5">
         <h2 className="text-[14px] font-bold text-[var(--navy)]">Actividad del mes</h2>
         <dl className="mt-3 grid grid-cols-2 gap-3 text-[13px] md:grid-cols-4">
           {[["Evaluaciones completadas", usage.assessments], ["Preguntas a Winnie", usage.winnieQuestions], ["Escaneos faciales", usage.scans], ["Correos enviados", usage.emails]].map(([k, v]) => (
@@ -130,6 +147,7 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
             <label><span className={label}>Escaneos incluidos en su plan de Shen.AI</span><input name="shenIncluded" type="number" min="0" defaultValue={s.shen.included} className={fieldClass} /></label>
             <label><span className={label}>Escaneo extra de Shen.AI (EUR)</span><input name="shenExtraEur" type="number" step="any" min="0" defaultValue={s.shen.extraEur} className={fieldClass} /></label>
             <label className="flex items-end gap-2 pb-2.5"><input name="shenPaidByClient" type="checkbox" defaultChecked={s.shen.paidByClient} className="size-4" /><span className="text-[12px] font-semibold text-[#4a4547]">Shen.AI lo paga el cliente (no es mi costo)</span></label>
+            <label><span className={label}>Presupuesto de IA (% de la cuota neta)</span><input name="aiBudgetPct" type="number" step="any" min="0" max="100" defaultValue={s.aiBudgetPct} className={fieldClass} /></label>
             <label><span className={label}>Gemini entrada (USD / 1M tokens)</span><input name="geminiIn" type="number" step="any" min="0" defaultValue={s.gemini.inputUsdPerM} className={fieldClass} /></label>
             <label><span className={label}>Gemini salida (USD / 1M tokens)</span><input name="geminiOut" type="number" step="any" min="0" defaultValue={s.gemini.outputUsdPerM} className={fieldClass} /></label>
             <label><span className={label}>Voz (USD / 1M caracteres)</span><input name="ttsRate" type="number" step="any" min="0" defaultValue={s.tts.usdPerMChars} className={fieldClass} /></label>

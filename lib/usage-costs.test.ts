@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { computeMonthCosts, DEFAULT_SETTINGS, mergeSettings, renewalDate, type MonthUsage } from "./usage-costs";
 
-const usage: MonthUsage = { scans: 520, emails: 3500, geminiIn: 2_000_000, geminiOut: 500_000, ttsChars: 1_500_000, assessments: 100, winnieQuestions: 300, conversations: 120 };
+const usage: MonthUsage = { scans: 520, emails: 3500, geminiIn: 2_000_000, geminiOut: 500_000, ttsChars: 1_500_000, assessments: 100, winnieQuestions: 300, conversations: 120, winnieResponses: 800 };
 
 test("costos del mes: fijos, variables y margen contra la cuota", () => {
   const s = { ...DEFAULT_SETTINGS, plan: { ...DEFAULT_SETTINGS.plan, priceWithIva: 29000 } };
@@ -27,7 +27,7 @@ test("costos del mes: fijos, variables y margen contra la cuota", () => {
 
 test("renovación anual: gratis el primer año y luego 1/12 al mes de ingreso", () => {
   const s = { ...DEFAULT_SETTINGS, plan: { ...DEFAULT_SETTINGS.plan, priceWithIva: 23200 } };
-  const zero: MonthUsage = { scans: 0, emails: 0, geminiIn: 0, geminiOut: 0, ttsChars: 0, assessments: 0, winnieQuestions: 0, conversations: 0 };
+  const zero: MonthUsage = { scans: 0, emails: 0, geminiIn: 0, geminiOut: 0, ttsChars: 0, assessments: 0, winnieQuestions: 0, conversations: 0, winnieResponses: 0 };
   assert.equal(renewalDate(s.annual).toISOString().slice(0, 10), "2027-10-02");
   assert.equal(computeMonthCosts(zero, s, "2026-11-01T00:00:00Z").annualMonthlyMxn, 0);
   // Por omisión la renovación pasa directo al cliente: no cuenta como ingreso.
@@ -58,6 +58,19 @@ test("plan de 406 pesos con IVA: cuota neta de 350, cupos y cuota de equilibrio"
   assert.equal(c.breakEvenWithIva, 0);
   const own = computeMonthCosts({ ...usage, scans: 400 }, { ...DEFAULT_SETTINGS, shen: { ...DEFAULT_SETTINGS.shen, paidByClient: false } });
   assert.equal(own.breakEvenWithIva, Math.ceil((own.fixedMxn + 500 * 0.2 * 21.5) * 1.16));
+});
+
+test("presupuesto de IA: costo por respuesta, uso del presupuesto, proyección y capacidad", () => {
+  // 2M tokens de entrada y 0,5M de salida = 0,40 USD = 7,4 MXN en 800 respuestas
+  const c = computeMonthCosts(usage, DEFAULT_SETTINGS, "2026-10-01T00:00:00Z", 0.5);
+  assert.equal(c.ai.budgetMxn, 70); // 20% de 350
+  assert.equal(c.ai.costMxn, 7.4);
+  assert.equal(c.ai.costPerResponseMxn, 0.0093);
+  assert.equal(c.ai.usedPct, 11);
+  assert.equal(c.ai.projectedMxn, 14.8);
+  assert.equal(c.ai.projectedResponses, 1600);
+  assert.equal(c.ai.capacityResponses, Math.floor(70 / (7.4 / 800)));
+  assert.equal(computeMonthCosts({ ...usage, winnieResponses: 0 }, DEFAULT_SETTINGS).ai.capacityResponses, null);
 });
 
 test("mergeSettings completa lo que falte con los valores por omisión", () => {

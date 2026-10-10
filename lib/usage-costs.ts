@@ -20,6 +20,8 @@ export type OwnerSettings = {
   annual: { name: string; amountMxn: number; startDate: string; freeYears: number; passThrough: boolean };
   // Plan que contrata el cliente: precio mensual con IVA y cupos incluidos.
   plan: { priceWithIva: number; ivaPct: number; scans: number; emails: number; conversations: number };
+  // Presupuesto mensual de IA (Gemini) como % de la cuota neta: lo que Órbita acepta gastar en Winnie sin recortar el servicio.
+  aiBudgetPct: number;
 };
 
 export const netFee = (p: OwnerSettings["plan"]) => Math.round((p.priceWithIva / (1 + p.ivaPct / 100)) * 100) / 100;
@@ -38,10 +40,12 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   email: { freePerMonth: 3000, usdPerEmail: 0.0004 },
   annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-02", freeYears: 1, passThrough: true },
   plan: { priceWithIva: 406, ivaPct: 16, scans: 1000, emails: 1500, conversations: 500 },
+  aiBudgetPct: 20,
 };
 
 export type MonthUsage = {
   scans: number; emails: number; geminiIn: number; geminiOut: number; ttsChars: number; assessments: number; winnieQuestions: number;
+  winnieResponses: number; // respuestas de Gemini (portada + resultado)
   conversations: number; // conversaciones activas con Winnie (en el resultado + visitantes de la portada)
 };
 
@@ -60,6 +64,7 @@ export type MonthCosts = {
   marginPct: number | null; // null si no hay cuota registrada
   shenQuotaUsedPct: number;
   planUsage: { label: string; used: number; limit: number; pct: number }[];
+  ai: { responses: number; costMxn: number; costPerResponseMxn: number; budgetMxn: number; usedPct: number; projectedMxn: number; projectedResponses: number; capacityResponses: number | null };
   // Cuota mensual mínima (con IVA) para no perder dinero con todo el cupo del plan usado.
   breakEvenWithIva: number;
 };
@@ -75,7 +80,7 @@ export function renewalDate(a: OwnerSettings["annual"]) {
   return d;
 }
 
-export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: string = new Date().toISOString()): MonthCosts {
+export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: string = new Date().toISOString(), elapsed = 1): MonthCosts {
   const fixedLines = s.fixed.map((f) => ({
     service: f.name, usage: `${f.amount.toLocaleString("es-MX")} ${f.currency}/mes`, costMxn: round2(toMxn(f.amount, f.currency, s)),
   }));
@@ -97,6 +102,10 @@ export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: s
     { service: "Correos (Resend)", usage: `${u.emails.toLocaleString("es-MX")} enviados`, costMxn: round2(emailsBilled * s.email.usdPerEmail * s.usdMxn), note: `Gratis hasta ${s.email.freePerMonth.toLocaleString("es-MX")}` },
   ];
 
+  const aiCost = round2(gemini * s.usdMxn);
+  const budgetMxn = round2(netFee(s.plan) * (s.aiBudgetPct / 100));
+  const perResponse = u.winnieResponses > 0 ? aiCost / u.winnieResponses : 0;
+  const frac = elapsed > 0 && elapsed < 1 ? elapsed : 1;
   const fixedMxn = round2(fixedLines.reduce((a, l) => a + l.costMxn, 0));
   const variableMxn = round2(variableLines.reduce((a, l) => a + l.costMxn, 0));
   const totalMxn = round2(fixedMxn + variableMxn);
@@ -113,6 +122,12 @@ export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: s
       { label: "Correos automáticos", used: u.emails, limit: s.plan.emails },
       { label: "Conversaciones con IA", used: u.conversations, limit: s.plan.conversations },
     ].map((x) => ({ ...x, pct: x.limit > 0 ? Math.round((x.used / x.limit) * 100) : 0 })),
+    ai: {
+      responses: u.winnieResponses, costMxn: aiCost, costPerResponseMxn: Math.round(perResponse * 10000) / 10000, budgetMxn,
+      usedPct: budgetMxn > 0 ? Math.round((aiCost / budgetMxn) * 100) : 0,
+      projectedMxn: round2(aiCost / frac), projectedResponses: Math.round(u.winnieResponses / frac),
+      capacityResponses: perResponse > 0 ? Math.floor(budgetMxn / perResponse) : null,
+    },
     breakEvenWithIva: Math.ceil(
       (fixedMxn + (s.shen.paidByClient ? 0 : Math.max(0, s.plan.scans - s.shen.included) * s.shen.extraEur * s.eurMxn)) * (1 + s.plan.ivaPct / 100),
     ),
@@ -130,6 +145,7 @@ export function mergeSettings(saved: Partial<OwnerSettings> | null): OwnerSettin
     email: { ...d.email, ...saved?.email },
     annual: { ...d.annual, ...saved?.annual },
     plan: { ...d.plan, ...saved?.plan },
+    aiBudgetPct: saved?.aiBudgetPct ?? d.aiBudgetPct,
     fixed: saved?.fixed?.length ? saved.fixed : d.fixed,
   };
 }

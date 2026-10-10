@@ -45,7 +45,7 @@ export function monthRange(month?: string) {
 
 export async function monthUsage(start: string, end: string): Promise<MonthUsage> {
   const n = async (q: ReturnType<typeof db.$count>) => Number(await q);
-  const [scans, emails, assessments, questions, gem, tts, convResult, convPublic] = await Promise.all([
+  const [scans, emails, assessments, questions, gem, tts, convResult, convPublic, responses] = await Promise.all([
     n(db.$count(schema.scanSessions, and(gte(schema.scanSessions.createdAt, start), lt(schema.scanSessions.createdAt, end)))),
     n(db.$count(schema.emailEvents, and(eq(schema.emailEvents.status, "sent"), gte(schema.emailEvents.createdAt, start), lt(schema.emailEvents.createdAt, end)))),
     n(db.$count(schema.assessments, and(eq(schema.assessments.status, "completed"), gte(schema.assessments.completedAt, start), lt(schema.assessments.completedAt, end)))),
@@ -68,9 +68,10 @@ export async function monthUsage(start: string, end: string): Promise<MonthUsage
       .select({ n: sql<number>`count(*)` })
       .from(schema.winnieUsage)
       .where(and(sql`${schema.winnieUsage.key} like 'v:%'`, gte(schema.winnieUsage.updatedAt, start), lt(schema.winnieUsage.updatedAt, end))),
+    n(db.$count(schema.usageEvents, and(eq(schema.usageEvents.service, "gemini"), gte(schema.usageEvents.createdAt, start), lt(schema.usageEvents.createdAt, end)))),
   ]);
   return {
-    scans, emails, assessments, winnieQuestions: questions, conversations: Number(convResult[0]?.n ?? 0) + Number(convPublic[0]?.n ?? 0),
+    winnieResponses: responses, scans, emails, assessments, winnieQuestions: questions, conversations: Number(convResult[0]?.n ?? 0) + Number(convPublic[0]?.n ?? 0),
     geminiIn: Number(gem[0]?.i ?? 0), geminiOut: Number(gem[0]?.o ?? 0), ttsChars: Number(tts[0]?.i ?? 0),
   };
 }
@@ -79,5 +80,8 @@ export async function monthReport(month?: string) {
   const range = monthRange(month);
   const [usage, settings] = await Promise.all([monthUsage(range.start, range.end), loadSettings()]);
   const daysToRenewal = Math.ceil((renewalDate(settings.annual).getTime() - Date.now()) / 86_400_000);
-  return { range, usage, settings, daysToRenewal, costs: computeMonthCosts(usage, settings, range.start) };
+  // Proporción del mes transcurrida (para proyectar el cierre del mes en curso).
+  const t0 = Date.parse(range.start);
+  const elapsed = Math.min(1, Math.max(0, (Date.now() - t0) / (Date.parse(range.end) - t0)));
+  return { range, usage, settings, daysToRenewal, costs: computeMonthCosts(usage, settings, range.start, elapsed) };
 }
