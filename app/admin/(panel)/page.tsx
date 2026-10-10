@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { overview } from "@/lib/admin/queries";
+import { operations, overview } from "@/lib/admin/queries";
 import { parsePeriod, pct, PERIODS, shortDate } from "@/lib/admin/format";
 import { requireAdmin } from "@/lib/dal";
-import { PaymentCards, PlanUsagePanel, SectionTitle, ServiceStats } from "./plan-sections";
+import { PaymentCards, PlanUsagePanel, SectionTitle } from "./plan-sections";
 import { Avatar, Bars, PageHeader, Panel, PeriodSelect, Stat, StatusBadge } from "./ui";
 
 export default async function AdminHome({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   await requireAdmin();
   const period = parsePeriod((await searchParams).dias);
-  const { counts, areas, products, recent } = await overview(period);
+  const [{ counts, areas, products, recent }, ops] = await Promise.all([overview(period), operations()]);
   const c = {
     completed: Number(counts?.completed ?? 0),
     authorized: Number(counts?.authorized ?? 0),
@@ -33,7 +33,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
         }
       />
 
-      <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-7">
+      <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         <Stat label="Evaluaciones completadas" value={c.completed} />
         <Stat label="Contactos autorizados" value={c.authorized} note={`${pct(c.authorized, c.completed)}% de completados`} />
         <Stat label="Hicieron escaneo" value={`${pct(c.scans, c.completed)}%`} note={`${c.scans} de ${c.completed}`} />
@@ -46,10 +46,10 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
           note={c.emailFailed ? <Link href="/admin/operacion" className="underline">Revisar en Operación</Link> : "Todo en orden"}
           tone={c.emailFailed ? "bad" : "good"}
         />
+        <Stat label="Escaneos de Shen.AI" value={ops.scans.finished} note={`Completados · ${ops.scans.sessions} iniciados · últimos 30 días`} />
       </div>
 
       <PlanUsagePanel className="mt-5" />
-      <ServiceStats className="mt-4" />
 
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
         <Bars title="Áreas de bienestar más frecuentes" items={areas} empty="Aún no hay evaluaciones en este periodo." />
