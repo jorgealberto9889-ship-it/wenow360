@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/dal";
 import { initials } from "@/lib/admin/format";
 import { logout } from "../login/actions";
 import { AdminNav } from "./nav";
+import { PaymentBanner } from "./payment-banner";
 
 export const metadata: Metadata = {
   title: "Panel · WeNow 360",
@@ -36,7 +37,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <button className="press text-[12px] font-semibold text-[#c58aa5] hover:text-white">Cerrar sesión</button>
         </form>
       </aside>
-      <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-9 lg:py-8">{children}</main>
+      <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-9 lg:py-8">
+        <PaymentBanner />
+        {children}
+      </main>
     </div>
   );
 }

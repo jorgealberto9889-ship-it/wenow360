@@ -34,6 +34,7 @@ export async function saveOwnerSettings(formData: FormData) {
     billing: {
       startMonth: /^\d{4}-(0[1-9]|1[0-2])$/.test(String(formData.get("billingStart"))) ? String(formData.get("billingStart")) : cur.billing.startMonth,
       dueDay: Math.min(28, Math.max(1, Math.round(num(formData.get("dueDay"), cur.billing.dueDay)))),
+      reminderDays: Math.min(15, Math.max(0, Math.round(num(formData.get("reminderDays"), cur.billing.reminderDays)))),
       // Solo enlaces https (el cliente los abre desde su panel).
       paymentLink: /^https:\/\//.test(link) ? link : "",
     },
