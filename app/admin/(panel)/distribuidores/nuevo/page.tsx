@@ -12,7 +12,7 @@ export default async function NuevoDistribuidor() {
       <div className="mt-3"><PageHeader title="Agregar distribuidor" subtitle="Tendrá su propio enlace de WeNow 360 y recibirá a sus prospectos." /></div>
       <DistributorForm
         origin={await publicOrigin()}
-        initial={{ displayName: "", slug: "", email: "", whatsapp: "", distributorId: "" }}
+        initial={{ displayName: "", slug: "", email: "", whatsapp: "", distributorId: "", storeUrl: "" }}
       />
     </>
   );

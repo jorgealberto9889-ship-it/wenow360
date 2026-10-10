@@ -676,7 +676,7 @@ export const CORPORATE_DISTRIBUTOR = {
   // WhatsApp: teléfono corporativo temporal. PENDIENTE: correo de avisos, tienda y registro.
   email: "",
   whatsapp: "525563970355",
-  storeUrl: "https://wenow.global",
+  storeUrl: "https://store.wenow.global/mx/products/paquete-de-lanzamiento",
   registrationUrl: "",
   active: true,
 };

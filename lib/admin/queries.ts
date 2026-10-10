@@ -292,6 +292,7 @@ export async function pendingApplications() {
       distributorNumber: schema.distributorApplications.distributorNumber,
       email: schema.distributorApplications.email,
       whatsapp: schema.distributorApplications.whatsapp,
+      storeUrl: schema.distributorApplications.storeUrl,
       createdAt: schema.distributorApplications.createdAt,
     })
     .from(schema.distributorApplications)

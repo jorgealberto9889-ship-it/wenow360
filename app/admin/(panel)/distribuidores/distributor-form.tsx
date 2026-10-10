@@ -7,7 +7,7 @@ import { saveDistributor, type FormState } from "../actions";
 import { fieldClass } from "../ui";
 
 export type DistributorValues = {
-  id?: number; displayName: string; slug: string; email: string; whatsapp: string; distributorId: string;
+  id?: number; displayName: string; slug: string; email: string; whatsapp: string; distributorId: string; storeUrl: string;
 };
 
 const slugify = (s: string) =>
@@ -63,6 +63,7 @@ export function DistributorForm({ initial, origin }: { initial: DistributorValue
       </label>
       {field("WhatsApp", "whatsapp", { required: true, inputMode: "tel", placeholder: "951 123 4567" }, "10 dígitos; agregamos la lada de México automáticamente.")}
       {field("Correo", "email", { type: "email", required: isNew, placeholder: isNew ? "Obligatorio" : "Opcional" }, isNew ? "Obligatorio: al registrarlo le llega en automático el correo para crear su contraseña y entrar a su portal. También recibe el aviso cuando un prospecto lo autoriza." : "Recibe el aviso cuando un prospecto lo autoriza.")}
+      <div className="sm:col-span-2">{field("Enlace de referido de la tienda", "storeUrl", { type: "url", required: isNew, placeholder: "https://store.wenow.global/…" }, "Es el enlace que lleva directo a su tienda de WeNow. A él llegan sus clientes desde «Comprar ahora».")}</div>
       {field("ID de distribuidor", "distributorId", { placeholder: "Opcional" }, "Su número de distribuidor WeNow.")}
 
       {state?.ok && state.emailed === false && (

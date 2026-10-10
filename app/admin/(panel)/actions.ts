@@ -8,6 +8,7 @@ import { db, schema } from "@/db";
 import { isLeadStatus } from "@/lib/admin/format";
 import { publicOrigin } from "@/lib/admin/origin";
 import { requireAdmin } from "@/lib/dal";
+import { parseStoreUrl } from "@/lib/store-url";
 import { CORPORATE_SLUG } from "@/lib/submission";
 import { LAUNCH_TTL, sendLaunchEmail } from "@/lib/launch-email";
 import { RESET_TTL, sendPasswordEmail, signPasswordLink } from "@/lib/portal";
@@ -61,6 +62,7 @@ const distributorSchema = z.object({
   email: z.string().trim().toLowerCase().email("Revisa el correo.").or(z.literal("")).transform((s) => s || null),
   whatsapp: phone,
   distributorId: z.string().trim().max(40).transform((s) => s || null),
+  storeUrl: z.string().trim().max(500),
 });
 
 export async function saveDistributor(_: FormState, formData: FormData): Promise<FormState> {
@@ -71,6 +73,14 @@ export async function saveDistributor(_: FormState, formData: FormData): Promise
   const now = new Date().toISOString();
   // El correo es obligatorio al registrar: ahí le llega el acceso a su portal.
   if (!id && !parsed.data.email) return { error: "El correo es obligatorio: ahí recibirá el acceso a su portal." };
+  // Enlace de referido de la tienda: obligatorio al registrar; al editar, vacío = conservar el actual.
+  const { storeUrl: rawStore, ...fields } = parsed.data;
+  let storeUrl: string | undefined;
+  if (rawStore || !id) {
+    const r = parseStoreUrl(rawStore);
+    if (!r.ok) return { error: r.error };
+    storeUrl = r.url;
+  }
 
   const [taken] = await db.select({ id: schema.distributors.id }).from(schema.distributors).where(eq(schema.distributors.slug, parsed.data.slug));
   if (taken && taken.id !== id) return { error: "Ese enlace ya lo usa otro distribuidor." };
@@ -78,13 +88,13 @@ export async function saveDistributor(_: FormState, formData: FormData): Promise
   let created: { id: number; email: string; name: string; slug: string } | null = null;
   try {
     if (id) {
-      await db.update(schema.distributors).set({ ...parsed.data, updatedAt: now }).where(eq(schema.distributors.id, id));
+      await db.update(schema.distributors).set({ ...fields, ...(storeUrl ? { storeUrl } : {}), updatedAt: now }).where(eq(schema.distributors.id, id));
       await audit(admin.id, "distributor_updated", "distributors", String(id));
     } else {
       const [row] = await db
         .insert(schema.distributors)
         // store_url es obligatoria en la tabla heredada; la tienda del backoffice ya no se usa.
-        .values({ ...parsed.data, storeUrl: "", active: true, createdAt: now, updatedAt: now })
+        .values({ ...fields, storeUrl: storeUrl!, active: true, createdAt: now, updatedAt: now })
         .returning({ id: schema.distributors.id });
       await audit(admin.id, "distributor_created", "distributors", String(row!.id));
       created = { id: row!.id, email: parsed.data.email!, name: parsed.data.displayName, slug: parsed.data.slug };
@@ -230,7 +240,7 @@ export async function approveApplication(id: string): Promise<ReviewState> {
     .insert(schema.distributors)
     .values({
       displayName: app.displayName, slug, email: app.email, whatsapp: app.whatsapp, distributorId: app.distributorNumber,
-      storeUrl: "", active: true, createdAt: now, updatedAt: now,
+      storeUrl: app.storeUrl, active: true, createdAt: now, updatedAt: now,
     })
     .returning({ id: schema.distributors.id });
   await db

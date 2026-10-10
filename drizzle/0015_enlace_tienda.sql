@@ -1,0 +1,1 @@
+ALTER TABLE `distributor_applications` ADD `store_url` text DEFAULT '' NOT NULL;

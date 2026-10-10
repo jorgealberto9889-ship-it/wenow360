@@ -5,6 +5,7 @@ import { z } from "zod";
 import { db, schema } from "@/db";
 import { esc, sendViaResend } from "./email";
 import { CORPORATE_SLUG } from "./submission";
+import { parseStoreUrl } from "./store-url";
 
 // Enlace de registro para distribuidores: /registro/<código>. El código va firmado para que solo llegue quien
 // recibió el enlace de WeNow; aun así, cada solicitud se aprueba a mano en el panel.
@@ -37,6 +38,11 @@ export const applicationSchema = z.object({
     .transform((s) => (s.length === 10 ? `52${s}` : s))
     .pipe(z.string().regex(/^\d{11,15}$/, "Tu WhatsApp debe tener 10 dígitos.")),
   email: z.string().trim().toLowerCase().email("Revisa tu correo."),
+  storeUrl: z.string().transform((v, ctx) => {
+    const r = parseStoreUrl(v);
+    if (!r.ok) ctx.addIssue({ code: "custom", message: r.error });
+    return r.ok ? r.url : "";
+  }),
   privacy: z.literal("on", { message: "Necesitamos tu autorización para usar tus datos." }),
 });
 
@@ -60,6 +66,7 @@ export async function createApplication(input: ApplicationInput, origin: string)
     email: input.email,
     whatsapp: input.whatsapp,
     distributorNumber: input.distributorNumber,
+    storeUrl: input.storeUrl,
   });
   await notifyCorporate(input, origin).catch((e) => console.error("registro: aviso fallido", e instanceof Error ? e.name : e));
   return { ok: true as const };
@@ -75,6 +82,7 @@ async function notifyCorporate(input: ApplicationInput, origin: string) {
     ["Número de distribuidor", input.distributorNumber],
     ["WhatsApp", `+${input.whatsapp}`],
     ["Correo", input.email],
+    ["Enlace de la tienda", input.storeUrl],
   ];
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;background:#fbf6f8;padding:24px"><div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:16px;padding:24px;color:#383838">
 <h1 style="margin:0;font-size:20px">Nueva solicitud de WeNow 360</h1>

@@ -59,6 +59,7 @@ export const distributorApplications = sqliteTable(
     email: text("email").notNull(),
     whatsapp: text("whatsapp").notNull(),
     distributorNumber: text("distributor_number").notNull(),
+    storeUrl: text("store_url").notNull().default(""),
     status: text("status", { enum: ["pendiente", "aprobada", "rechazada"] }).notNull().default("pendiente"),
     createdAt: now("created_at"),
     reviewedAt: text("reviewed_at"),

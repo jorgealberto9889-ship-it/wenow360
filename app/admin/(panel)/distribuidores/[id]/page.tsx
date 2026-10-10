@@ -24,12 +24,12 @@ export default async function EditarDistribuidor({ params }: { params: Promise<{
         origin={origin}
         initial={{
           id: d.id, displayName: d.displayName, slug: d.slug, email: d.email ?? "", whatsapp: d.whatsapp,
-          distributorId: d.distributorId ?? "",
+          distributorId: d.distributorId ?? "", storeUrl: d.storeUrl ?? "",
         }}
       />
       <div className="mt-5 max-w-[720px] rounded-2xl border border-[var(--line)] bg-white p-6">
         <h2 className="text-[15px] font-bold text-[var(--navy)]">Enlace de la tienda</h2>
-        <div className="mt-2"><CopyButton text={distributorStoreUrl(d.slug)}>{distributorStoreUrl(d.slug)}</CopyButton></div>
+        <div className="mt-2"><CopyButton text={distributorStoreUrl(d.slug, d.storeUrl)}>{distributorStoreUrl(d.slug, d.storeUrl)}</CopyButton></div>
         <p className="mt-2 text-[12.5px] leading-snug text-[var(--muted)]">
           Comparte este enlace. Las compras quedan registradas a su nombre.
         </p>

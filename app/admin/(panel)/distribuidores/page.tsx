@@ -95,7 +95,7 @@ export default async function Distribuidores({ searchParams }: { searchParams: P
                 </div>
                 <div className="mt-2.5 min-w-0 space-y-1 pl-[45px] xl:mt-0 xl:pl-0">
                   <CopyButton text={`${origin}/d/${d.slug}`}>/d/{d.slug}</CopyButton>
-                  <CopyButton text={distributorStoreUrl(d.slug)}>tienda ?asesor={d.slug}</CopyButton>
+                  <CopyButton text={distributorStoreUrl(d.slug, d.storeUrl)}>enlace de la tienda</CopyButton>
                 </div>
                 <div className="mt-2.5 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 pl-[45px] text-[12px] text-[var(--muted)] xl:hidden">
                   <span><b className="text-[var(--navy)]">{d.biochecks}</b> evaluaciones</span>

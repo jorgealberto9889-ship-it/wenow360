@@ -51,7 +51,7 @@ export const requireDistributor = cache(async () => {
   const [d] = await db
     .select({
       id: schema.distributors.id, slug: schema.distributors.slug, displayName: schema.distributors.displayName,
-      email: schema.distributors.email, whatsapp: schema.distributors.whatsapp, hasPassword: schema.distributors.portalPasswordHash,
+      email: schema.distributors.email, whatsapp: schema.distributors.whatsapp, storeUrl: schema.distributors.storeUrl, hasPassword: schema.distributors.portalPasswordHash,
     })
     .from(schema.distributors)
     .where(and(eq(schema.distributors.id, id), eq(schema.distributors.active, true)));

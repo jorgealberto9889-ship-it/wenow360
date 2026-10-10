@@ -6,7 +6,7 @@ import { CopyButton } from "../controls";
 
 const btn = "press rounded-[10px] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60";
 
-export type PendingApplication = { id: string; displayName: string; distributorNumber: string; email: string; whatsapp: string; createdAt: string };
+export type PendingApplication = { id: string; displayName: string; distributorNumber: string; email: string; whatsapp: string; storeUrl: string; createdAt: string };
 
 // Enlace de registro para mandar a los distribuidores y solicitudes pendientes de revisión.
 export function Applications({ link, pending }: { link: string; pending: PendingApplication[] }) {
@@ -60,6 +60,7 @@ function ApplicationRow({ app, onDone }: { app: PendingApplication; onDone: (n: 
           <div className="text-[11.5px] break-words text-[#8a8587]">
             N.º {app.distributorNumber} · {app.email} · WhatsApp +{app.whatsapp} · {new Date(app.createdAt).toLocaleDateString("es-MX", { day: "numeric", month: "short" })}
           </div>
+          <div className="mt-0.5 text-[11.5px] break-all"><a href={app.storeUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-[var(--blue)] underline">{app.storeUrl}</a></div>
         </div>
         {(
 

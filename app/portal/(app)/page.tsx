@@ -22,7 +22,7 @@ export default async function PortalHome({ searchParams }: { searchParams: Promi
     prospectList({ distributor: me.slug, status: status || undefined, period: "todo", page: 1, perPage: shown }),
   ]);
   const link = `${origin}/d/${me.slug}`;
-  const storeLink = distributorStoreUrl(me.slug);
+  const storeLink = distributorStoreUrl(me.slug, me.storeUrl);
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
   const qs = (patch: Record<string, string>) => `/portal?${new URLSearchParams({ ...(status ? { estatus: status } : {}), ...(allTime ? { periodo: "todo" } : {}), ...patch })}`;
 

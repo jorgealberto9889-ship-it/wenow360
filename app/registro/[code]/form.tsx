@@ -22,6 +22,7 @@ export function RegistrationForm({ code }: { code: string }) {
       <label className={labelClass}>Número de distribuidor WeNow<input name="distributorNumber" required maxLength={40} inputMode="numeric" className={inputClass} /></label>
       <label className={labelClass}>WhatsApp<input name="whatsapp" type="tel" autoComplete="tel-national" required placeholder="10 dígitos" className={inputClass} /></label>
       <label className={labelClass}>Correo<input name="email" type="email" autoComplete="email" required className={inputClass} /></label>
+      <label className={labelClass}>Tu enlace de referido de la tienda WeNow<input name="storeUrl" type="url" required placeholder="https://store.wenow.global/…" maxLength={500} className={inputClass} /><span className="mt-1 block text-[11.5px] font-normal text-[#8a8587]">Es el enlace que lleva directo a tu tienda; tus clientes llegarán ahí al comprar.</span></label>
       <input name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
       <label className="flex items-start gap-2.5 text-[12.5px] leading-normal text-[#4a4547]">
         <input name="privacy" type="checkbox" required className="mt-0.5 size-4 shrink-0 accent-[var(--blue)]" />
