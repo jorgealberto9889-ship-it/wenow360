@@ -241,7 +241,7 @@ export function buildAdvisorEmail(ctx: Context, links: { portal: string }): Omit
   );
   const html = layout(
     [
-      card(`<div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:#087748">NUEVO BIOCHECK · PIDIÓ QUE LO ACOMPAÑES</div>
+      card(`<div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:#087748">NUEVA EVALUACIÓN WENOW 360 · PIDIÓ QUE LO ACOMPAÑES</div>
 <div style="font-size:22px;line-height:1.25;font-weight:800;color:#383838;margin-top:6px">${esc(ctx.name)} completó su WeNow 360</div>
 <p style="margin:10px 0 0;font-size:14px;line-height:1.6;color:#4a4547">Te eligió como su asesor y pidió que le acompañes. <strong>Escríbele pronto.</strong> ${esc(summary.kitLine)}</p>
 <p style="margin:12px 0 4px;font-size:13.5px;line-height:1.7;color:#4a4547">📱 ${esc(ctx.phone)}<br>✉️ <a href="mailto:${esc(ctx.email)}" style="color:#a51959">${esc(ctx.email)}</a></p>
@@ -281,7 +281,7 @@ export function buildCorporateEmail(
   const asked = ctx.advisorAccepted;
   const html = layout(
     [
-      card(`<div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:#e6a9c5">NUEVO BIOCHECK · DISTRIBUIDOR</div>
+      card(`<div style="font-size:11px;font-weight:800;letter-spacing:.08em;color:#e6a9c5">NUEVA EVALUACIÓN WENOW 360 · MIEMBRO</div>
 <div style="font-size:22px;line-height:1.25;font-weight:800;color:#ffffff;margin-top:6px">${esc(ctx.distributorName)}${corporate ? " (corporativo)" : ""}</div>
 <p style="margin:10px 0 0;font-size:13.5px;line-height:1.7;color:#ecd0dc">Enlace: <a href="${esc(links.distributorLink)}" style="color:#ffffff">${esc(links.distributorLink.replace(/^https?:\/\//, ""))}</a><br>
 WhatsApp: <a href="https://wa.me/${esc(ctx.distributorWhatsapp)}" style="color:#ffffff">${esc(ctx.distributorWhatsapp)}</a>${ctx.distributorEmail ? `<br>Correo: <a href="mailto:${esc(ctx.distributorEmail)}" style="color:#ffffff">${esc(ctx.distributorEmail)}</a>` : ""}<br>
