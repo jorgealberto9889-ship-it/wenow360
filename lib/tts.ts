@@ -1,5 +1,7 @@
 import "server-only";
 
+import { recordUsage } from "./usage";
+
 export const ttsEnabled = () => Boolean(process.env.GOOGLE_TTS_API_KEY);
 
 export const NARRATOR_VOICE = () => process.env.GOOGLE_TTS_VOICE ?? "es-US-Wavenet-B";
@@ -7,7 +9,7 @@ export const ASSISTANT_VOICE = () => process.env.ASSISTANT_TTS_VOICE ?? "es-US-W
 
 // Google Cloud Text-to-Speech (REST). La clave debe estar restringida a esta API en Google Cloud.
 // Las voces Chirp 3 HD no aceptan SSML: para ellas se envía el texto plano.
-export async function synthesize(input: { ssml: string; text: string }, voice = NARRATOR_VOICE()): Promise<Buffer> {
+export async function synthesize(input: { ssml: string; text: string }, voice = NARRATOR_VOICE(), scope = "narracion"): Promise<Buffer> {
   const chirp = voice.includes("Chirp");
   const res = await fetch("https://texttospeech.googleapis.com/v1/text:synthesize", {
     method: "POST",
@@ -23,6 +25,7 @@ export async function synthesize(input: { ssml: string; text: string }, voice = 
     throw new Error(`Google TTS ${res.status}: ${String(body?.error?.message ?? "").slice(0, 200)}`);
   }
   const { audioContent } = (await res.json()) as { audioContent: string };
+  void recordUsage({ service: "tts", scope, model: voice, inputUnits: input.text.length });
   return Buffer.from(audioContent, "base64");
 }
 

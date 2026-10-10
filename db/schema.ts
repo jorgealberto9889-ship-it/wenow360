@@ -391,6 +391,28 @@ export const emailEvents = sqliteTable("email_events", {
   createdAt: now("created_at"),
 });
 
+// Consumo de servicios con costo variable (Gemini y voz). Los escaneos y los correos se cuentan desde sus propias tablas.
+export const usageEvents = sqliteTable(
+  "usage_events",
+  {
+    id: id(),
+    createdAt: now("created_at"),
+    service: text("service", { enum: ["gemini", "tts"] }).notNull(),
+    scope: text("scope").notNull().default(""), // winnie_publico | winnie_resultado | narracion
+    model: text("model").notNull().default(""),
+    inputUnits: integer("input_units").notNull().default(0), // tokens de entrada | caracteres
+    outputUnits: integer("output_units").notNull().default(0), // tokens de salida
+  },
+  (t) => [index("usage_events_service_idx").on(t.service, t.createdAt)],
+);
+
+// Tarifas, costos fijos y cuota mensual del cliente (solo la ve y edita el dueño del desarrollo).
+export const ownerSettings = sqliteTable("owner_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: now("updated_at"),
+});
+
 // Embudo del enlace de cada distribuidor: visitas e inicios de cuestionario. Sin datos personales.
 export const funnelEvents = sqliteTable(
   "funnel_events",

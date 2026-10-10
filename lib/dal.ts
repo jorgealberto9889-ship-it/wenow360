@@ -19,3 +19,10 @@ export const requireAdmin = cache(async () => {
 
   return admin;
 });
+
+// Solo el dueño del desarrollo (Órbita Digital): costos, tarifas, cuota mensual y margen. El equipo del cliente no lo ve.
+export const requireOwner = cache(async () => {
+  const admin = await requireAdmin();
+  if (admin.role !== "super_admin") redirect("/admin");
+  return admin;
+});

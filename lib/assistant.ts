@@ -3,6 +3,7 @@ import { asc, desc, eq } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { areaStatus, productContent, reasonText } from "@/app/_wenow/copy";
 import type { SubmitResult } from "./assessments";
+import { recordUsage } from "./usage";
 import type { Ficha } from "@/db/schema";
 import { BRAND } from "./brand";
 import { certificationsText } from "./certifications";
@@ -193,7 +194,7 @@ async function callGemini(model: string, system: string, turns: Turn[]) {
 }
 
 // Gemini a veces responde 503 por alta demanda: se reintenta y, si persiste, se usa un modelo de respaldo.
-export async function askGemini(system: string, turns: Turn[]): Promise<string> {
+export async function askGemini(system: string, turns: Turn[], scope = "winnie"): Promise<string> {
   const models = [process.env.GEMINI_MODEL ?? "gemini-3.1-flash-lite", process.env.GEMINI_FALLBACK_MODEL ?? "gemini-flash-lite-latest"];
   let lastError = "";
   for (const model of models) {
@@ -201,9 +202,13 @@ export async function askGemini(system: string, turns: Turn[]): Promise<string> 
       const res = await callGemini(model, system, turns);
       const body = (await res.json().catch(() => null)) as {
         candidates?: { content?: { parts?: { text?: string }[] }; finishReason?: string }[];
+        usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number; thoughtsTokenCount?: number };
         error?: { message?: string };
       } | null;
       if (res.ok) {
+        // Consumo para el control de costos (los tokens de razonamiento se cobran como salida).
+        const um = body?.usageMetadata;
+        if (um) void recordUsage({ service: "gemini", scope, model, inputUnits: um.promptTokenCount ?? 0, outputUnits: (um.candidatesTokenCount ?? 0) + (um.thoughtsTokenCount ?? 0) });
         const text = body?.candidates?.[0]?.content?.parts?.map((p) => p.text ?? "").join("").trim();
         if (text) return text;
         lastError = `sin respuesta (${body?.candidates?.[0]?.finishReason ?? "desconocido"})`;

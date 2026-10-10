@@ -22,7 +22,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
           <div className="text-[10.5px] font-bold tracking-[0.08em] text-[#c58aa5] uppercase lg:mt-2.5 lg:px-1">WeNow 360 · Panel admin</div>
         </div>
-        <AdminNav />
+        <AdminNav owner={admin.role === "super_admin"} />
         <div className="mt-auto hidden items-center gap-2.5 border-t border-white/10 px-2 pt-4 lg:flex">
           <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--blue)] text-[11px] font-bold text-white">
             {initials(name.replace(/[._\d]+/g, " "))}

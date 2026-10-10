@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     else turns.push({ ...t });
   }
   try {
-    const answer = await askGemini(await publicSystemPrompt(distributor.displayName, turns.map((t) => t.content).join(" ")), turns);
+    const answer = await askGemini(await publicSystemPrompt(distributor.displayName, turns.map((t) => t.content).join(" ")), turns, "winnie_publico");
     return Response.json({ answer });
   } catch (e) {
     console.error("winnie_public_failed", { message: (e as Error).message });

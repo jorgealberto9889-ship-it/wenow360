@@ -92,6 +92,13 @@
       "when": 1791646745302,
       "tag": "0012_quitar_historico_v1",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1791647530702,
+      "tag": "0013_consumo_dueno",
+      "breakpoints": true
     }
   ]
 }

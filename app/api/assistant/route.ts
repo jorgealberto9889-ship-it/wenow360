@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
   const turns = [...(await history(assessmentId)), { role: "user" as const, content: parsed.data.message }];
   try {
-    const answer = await askGemini(await systemPrompt(data.saved, data.name, data.distributor.displayName, turns.map((t) => t.content).join(" ")), turns);
+    const answer = await askGemini(await systemPrompt(data.saved, data.name, data.distributor.displayName, turns.map((t) => t.content).join(" ")), turns, "winnie_resultado");
     await db.insert(schema.assistantMessages).values({ assessmentId, role: "user", content: parsed.data.message });
     const [saved] = await db
       .insert(schema.assistantMessages)

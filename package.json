@@ -12,7 +12,7 @@
     "db:seed": "tsx --env-file=.env.local scripts/seed.ts",
     "admin:create": "tsx --env-file=.env.local scripts/create-admin.ts",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test lib/**/*.test.ts",
+    "test": "tsx --test \"lib/**/*.test.ts\"",
     "postinstall": "node scripts/vendor-scan.mjs"
   },
   "dependencies": {
