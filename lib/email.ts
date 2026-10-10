@@ -1,5 +1,5 @@
 import "server-only";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { ResultSnapshot } from "./assessments";
 import { BRAND } from "./brand";
@@ -332,20 +332,6 @@ export async function sendAssessmentEmails(assessmentId: string, origin: string)
     tasks.push(send(assessmentId, "notificacion_asesor", { ...advisor, to: distributorEmail, idempotencyKey: `asesor-${assessmentId}`, tag: "advisor_notification" }));
   }
 
-  // WeNow: copia informativa de cada WeNow 360, con el distribuidor destacado.
-  const [corporate] = await db.select({ email: schema.distributors.email }).from(schema.distributors).where(eq(schema.distributors.slug, CORPORATE_SLUG));
-  const corporateEmail = (process.env.WENOW_CORPORATE_EMAIL ?? corporate?.email)?.toLowerCase();
-  if (corporateEmail) {
-    const distributorTotal = await db.$count(
-      schema.assessments,
-      and(eq(schema.assessments.distributorSlug, ctx.distributorSlug), eq(schema.assessments.status, "completed")),
-    );
-    const copy = buildCorporateEmail(
-      ctx,
-      { admin: `${origin}/admin/prospectos/${ctx.prospectId}`, distributorLink: `${origin}/d/${ctx.distributorSlug}` },
-      distributorTotal,
-    );
-    tasks.push(send(assessmentId, "copia_corporativa", { ...copy, to: corporateEmail, idempotencyKey: `corporativo-${assessmentId}`, tag: "corporate_copy" }));
-  }
+  // La copia informativa para WeNow está inhabilitada por decisión del cliente (existía como `copia_corporativa`).
   await Promise.allSettled(tasks);
 }
