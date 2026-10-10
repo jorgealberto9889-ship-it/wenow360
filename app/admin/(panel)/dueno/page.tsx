@@ -67,7 +67,7 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
         <div>
           <h2 className="text-[14px] font-bold text-[var(--navy)]">Cobro anual · {s.annual.name}</h2>
           <p className="mt-1 text-[12.5px] text-[#4a4547]">
-            {s.annual.freeYears > 0 ? `Gratis los primeros ${s.annual.freeYears} año${s.annual.freeYears > 1 ? "s" : ""} (desde ${s.annual.startDate}). ` : ""}Renovación de <strong>{mxn(s.annual.amountMxn)}</strong> al año, equivalente a {mxn(s.annual.amountMxn / 12)} al mes.
+            {s.annual.freeYears > 0 ? `Gratis los primeros ${s.annual.freeYears} año${s.annual.freeYears > 1 ? "s" : ""} (desde ${s.annual.startDate}). ` : ""}Renovación de <strong>{mxn(s.annual.amountMxn)}</strong> al año. {s.annual.passThrough ? "Lo paga el cliente: no cuenta como ingreso ni como costo tuyo, solo es un recordatorio de cobro." : `Cuenta como ingreso de ${mxn(s.annual.amountMxn / 12)} al mes después del periodo gratis.`}
           </p>
         </div>
         <div className="text-right">
@@ -137,6 +137,7 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
             <label><span className={label}>Renovación anual dominio + hosting (MXN)</span><input name="annualAmount" type="number" step="any" min="0" defaultValue={s.annual.amountMxn} className={fieldClass} /></label>
             <label><span className={label}>Inicio del servicio</span><input name="annualStart" type="date" defaultValue={s.annual.startDate} className={fieldClass} /></label>
             <label><span className={label}>Años gratis</span><input name="annualFree" type="number" min="0" step="1" defaultValue={s.annual.freeYears} className={fieldClass} /></label>
+            <label className="flex items-end gap-2 pb-2.5"><input name="annualPassThrough" type="checkbox" defaultChecked={s.annual.passThrough} className="size-4" /><span className="text-[12px] font-semibold text-[#4a4547]">Lo paga el cliente (no es mi ingreso ni mi costo)</span></label>
           </div>
           <div>
             <div className={label}>Costos fijos mensuales (deja el nombre vacío para quitar una fila)</div>

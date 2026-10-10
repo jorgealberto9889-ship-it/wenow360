@@ -30,7 +30,11 @@ test("renovación anual: gratis el primer año y luego 1/12 al mes de ingreso", 
   const zero: MonthUsage = { scans: 0, emails: 0, geminiIn: 0, geminiOut: 0, ttsChars: 0, assessments: 0, winnieQuestions: 0, conversations: 0 };
   assert.equal(renewalDate(s.annual).toISOString().slice(0, 10), "2027-10-10");
   assert.equal(computeMonthCosts(zero, s, "2026-11-01T00:00:00Z").annualMonthlyMxn, 0);
-  const after = computeMonthCosts(zero, s, "2027-11-01T00:00:00Z");
+  // Por omisión la renovación pasa directo al cliente: no cuenta como ingreso.
+  assert.equal(computeMonthCosts(zero, s, "2027-11-01T00:00:00Z").annualMonthlyMxn, 0);
+  const own = { ...s, annual: { ...s.annual, passThrough: false } };
+  assert.equal(computeMonthCosts(zero, own, "2026-11-01T00:00:00Z").annualMonthlyMxn, 0);
+  const after = computeMonthCosts(zero, own, "2027-11-01T00:00:00Z");
   assert.equal(after.annualMonthlyMxn, Math.round((1780 / 12) * 100) / 100);
   assert.equal(after.revenueMxn, Math.round((20000 + 1780 / 12) * 100) / 100);
 });

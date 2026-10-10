@@ -16,7 +16,8 @@ export type OwnerSettings = {
   tts: { usdPerMChars: number; freeChars: number };
   email: { freePerMonth: number; usdPerEmail: number };
   // Cobro anual al cliente por dominio y hosting: gratis los primeros años y después una renovación fija.
-  annual: { name: string; amountMxn: number; startDate: string; freeYears: number };
+  // `passThrough`: lo paga el cliente (o se cobra y se paga igual a Hostinger), así que no es ingreso ni costo de Órbita.
+  annual: { name: string; amountMxn: number; startDate: string; freeYears: number; passThrough: boolean };
   // Plan que contrata el cliente: precio mensual con IVA y cupos incluidos.
   plan: { priceWithIva: number; ivaPct: number; scans: number; emails: number; conversations: number };
 };
@@ -30,13 +31,12 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   fixed: [
     { name: "Vercel (plan compartido de Órbita, sin costo para este proyecto)", amount: 0, currency: "USD" },
     { name: "Turso (base de datos)", amount: 0, currency: "USD" },
-    { name: "Dominio", amount: 0, currency: "MXN" },
   ],
   shen: { included: 500, extraEur: 0.2, paidByClient: true },
   gemini: { inputUsdPerM: 0.1, outputUsdPerM: 0.4 },
   tts: { usdPerMChars: 16, freeChars: 1_000_000 },
   email: { freePerMonth: 3000, usdPerEmail: 0.0004 },
-  annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-10", freeYears: 1 },
+  annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-10", freeYears: 1, passThrough: true },
   plan: { priceWithIva: 406, ivaPct: 16, scans: 1000, emails: 1500, conversations: 500 },
 };
 
@@ -100,7 +100,7 @@ export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: s
   const fixedMxn = round2(fixedLines.reduce((a, l) => a + l.costMxn, 0));
   const variableMxn = round2(variableLines.reduce((a, l) => a + l.costMxn, 0));
   const totalMxn = round2(fixedMxn + variableMxn);
-  const annualMonthlyMxn = new Date(monthStart) >= renewalDate(s.annual) ? round2(s.annual.amountMxn / 12) : 0;
+  const annualMonthlyMxn = !s.annual.passThrough && new Date(monthStart) >= renewalDate(s.annual) ? round2(s.annual.amountMxn / 12) : 0;
   const feeMxn = netFee(s.plan);
   const revenueMxn = round2(feeMxn + annualMonthlyMxn);
   const marginMxn = round2(revenueMxn - totalMxn);

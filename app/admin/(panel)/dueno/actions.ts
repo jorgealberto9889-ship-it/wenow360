@@ -43,6 +43,7 @@ export async function saveOwnerSettings(formData: FormData) {
       amountMxn: num(formData.get("annualAmount"), cur.annual.amountMxn),
       startDate: /^\d{4}-\d{2}-\d{2}$/.test(String(formData.get("annualStart"))) ? String(formData.get("annualStart")) : cur.annual.startDate,
       freeYears: Math.round(num(formData.get("annualFree"), cur.annual.freeYears)),
+      passThrough: formData.get("annualPassThrough") === "on",
     },
   };
   await saveSettings(next);
