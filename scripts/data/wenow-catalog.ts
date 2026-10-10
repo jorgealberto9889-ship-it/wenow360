@@ -624,7 +624,8 @@ const BASE_PRODUCTS: CatalogProduct[] = [
     ingredients: "Full Spectrum Hemp Extract (2,000 mg en 30 ml). Sabor menta. Gluten Free · Non GMO · GMP Certified.",
     ingredientSupport:
       "Fórmula de espectro completo diseñada para favorecer el equilibrio y el bienestar integral, con respaldo de manufactura GMP.",
-    usage: "Cada porción equivale a 1 ml. Sigue las indicaciones del empaque.",
+    // PENDIENTE: confirmar la dosis y frecuencia con Alejandro (CEO de WeNow). Por ahora: gotero sublingual, porción de 1 ml.
+    usage: "Uso sublingual con el gotero: coloca una porción (1 ml) debajo de la lengua. Sigue las indicaciones del empaque.",
     note: "Suplemento alimenticio. No es un medicamento. No usar en embarazo ni lactancia. Si tomas medicamentos de uso regular o tienes padecimiento hepático, consúltalo con tu profesional de salud.",
     ...ENDO_PRICE,
     imageUrl: img("endo"),

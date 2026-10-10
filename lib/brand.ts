@@ -17,9 +17,10 @@ export const BRAND = {
   // Teléfono corporativo TEMPORAL (WhatsApp, formato wa.me: 52 + 10 dígitos).
   corporatePhone: "+52 55 6397 0355",
   corporateWhatsapp: "525563970355",
-  privacyEmail: "",
+  // Alias de Hostinger que reenvía al equipo de WeNow (crearlo antes de publicar el aviso a clientes reales).
+  privacyEmail: "privacidad@wenowglobal.com",
   // Remitente de los correos (Resend). Sobrescribible con RESEND_FROM_NAME.
-  emailFromName: "WeNow 360 | Club WeNow",
+  emailFromName: "WeNow 360",
   corporateSlug: "wenow",
   // Ejemplo de ahorro de la lista de precios MX 2026 (el mismo para casi todo el catálogo).
   memberExample: { publicPrice: 990, memberPrice: 760 },

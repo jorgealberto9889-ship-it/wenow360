@@ -23,7 +23,7 @@ export default function PrivacyNotice() {
         <Link href="/" className="text-[13px] font-semibold text-[var(--blue)]">Volver</Link>
       </header>
       <article className="prose-privacy mx-auto w-full max-w-[720px] px-5 pt-6 pb-16">
-        <p className="text-[12px] font-bold tracking-[0.06em] text-[var(--blue)] uppercase">Última actualización: 2 de octubre de 2026</p>
+        <p className="text-[12px] font-bold tracking-[0.06em] text-[var(--blue)] uppercase">Última actualización: 10 de octubre de 2026</p>
         <h1>Aviso de Privacidad Integral</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-[#4a4547]">
           Este aviso explica cómo WeNow trata los datos personales que recaba a través de WeNow 360.
@@ -37,7 +37,7 @@ export default function PrivacyNotice() {
           <p>
             <strong>{BRAND.legalName}</strong>, con domicilio en {BRAND.legalAddress || PENDING}.
           </p>
-          <p>Contacto de privacidad: {mailto ? <a href={mailto}>{privacyEmail}</a> : privacyEmail}.</p>
+          <p>Contacto de privacidad: {mailto ? <a href={mailto}>{privacyEmail}</a> : privacyEmail}. También puedes escribirnos por WhatsApp al <a href={`https://wa.me/${BRAND.corporateWhatsapp}`}>{BRAND.corporatePhone}</a>.</p>
         </section>
 
         <section>
@@ -124,6 +124,9 @@ export default function PrivacyNotice() {
           </p>
           <p>
             Incluye tu nombre, un medio para responderte, el derecho que deseas ejercer, la descripción de los datos y los documentos que acrediten tu identidad o, en su caso, la representación. Te comunicaremos nuestra respuesta en un máximo de 20 días hábiles y, si procede, la haremos efectiva dentro de los 15 días hábiles siguientes, salvo las ampliaciones que permita la ley.
+          </p>
+          <p>
+            Si consideras que tu derecho a la protección de datos personales ha sido vulnerado, puedes acudir ante la autoridad competente en la materia.
           </p>
         </section>
 
