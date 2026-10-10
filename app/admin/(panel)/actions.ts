@@ -16,7 +16,8 @@ async function audit(actorId: string, action: string, entity: string, entityId: 
   await db.insert(schema.auditLogs).values({ actorId, actorType: "admin", action, entity, entityId });
 }
 
-export type FormState = { error?: string; ok?: boolean } | undefined;
+// `emailed`: al registrar un distribuidor nuevo, si el correo de acceso a su portal salió bien (false = falló el envío).
+export type FormState = { error?: string; ok?: boolean; emailed?: boolean } | undefined;
 
 // ---------- Prospectos ----------
 
@@ -68,10 +69,13 @@ export async function saveDistributor(_: FormState, formData: FormData): Promise
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Revisa los datos." };
   const id = Number(formData.get("id")) || null;
   const now = new Date().toISOString();
+  // El correo es obligatorio al registrar: ahí le llega el acceso a su portal.
+  if (!id && !parsed.data.email) return { error: "El correo es obligatorio: ahí recibirá el acceso a su portal." };
 
   const [taken] = await db.select({ id: schema.distributors.id }).from(schema.distributors).where(eq(schema.distributors.slug, parsed.data.slug));
   if (taken && taken.id !== id) return { error: "Ese enlace ya lo usa otro distribuidor." };
 
+  let created: { id: number; email: string; name: string; slug: string } | null = null;
   try {
     if (id) {
       await db.update(schema.distributors).set({ ...parsed.data, updatedAt: now }).where(eq(schema.distributors.id, id));
@@ -83,12 +87,22 @@ export async function saveDistributor(_: FormState, formData: FormData): Promise
         .values({ ...parsed.data, storeUrl: "", active: true, createdAt: now, updatedAt: now })
         .returning({ id: schema.distributors.id });
       await audit(admin.id, "distributor_created", "distributors", String(row!.id));
+      created = { id: row!.id, email: parsed.data.email!, name: parsed.data.displayName, slug: parsed.data.slug };
     }
   } catch {
     return { error: "No se pudo guardar. Revisa que el ID de distribuidor no esté repetido." };
   }
   revalidatePath("/admin", "layout");
-  return { ok: true };
+  if (!created) return { ok: true };
+
+  // Distribuidor nuevo: el correo con el acceso a su portal sale siempre, en automático.
+  const origin = await publicOrigin();
+  const r = await sendLaunchEmail(created.email, {
+    name: created.name, origin, distributorLink: `${origin}/d/${created.slug}`,
+    activateUrl: `${origin}/portal/restablecer/${await signPasswordLink(created.id, null, LAUNCH_TTL)}`,
+  });
+  if (r.ok) await audit(admin.id, "portal_invited", "distributors", String(created.id));
+  return { ok: true, emailed: r.ok };
 }
 
 // ---------- Catálogo ----------

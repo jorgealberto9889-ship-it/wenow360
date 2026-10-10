@@ -22,7 +22,8 @@ export function DistributorForm({ initial, origin }: { initial: DistributorValue
   const isNew = !initial.id;
 
   useEffect(() => {
-    if (state?.ok) router.push("/admin/distribuidores");
+    // Si el correo de acceso falló se queda en la pantalla para avisar; en los demás casos regresa a la lista.
+    if (state?.ok && state.emailed !== false) router.push("/admin/distribuidores");
   }, [state, router]);
 
   const field = (label: string, name: keyof DistributorValues, props: React.InputHTMLAttributes<HTMLInputElement> = {}, hint?: string) => (
@@ -61,13 +62,18 @@ export function DistributorForm({ initial, origin }: { initial: DistributorValue
         {!isNew && <span className="text-[11.5px] text-[#916000]">Si cambias el enlace, el anterior dejará de apuntar a este distribuidor.</span>}
       </label>
       {field("WhatsApp", "whatsapp", { required: true, inputMode: "tel", placeholder: "951 123 4567" }, "10 dígitos; agregamos la lada de México automáticamente.")}
-      {field("Correo", "email", { type: "email", placeholder: "Opcional" }, "Recibe el aviso cuando un prospecto lo autoriza.")}
+      {field("Correo", "email", { type: "email", required: isNew, placeholder: isNew ? "Obligatorio" : "Opcional" }, isNew ? "Obligatorio: al registrarlo le llega en automático el correo para crear su contraseña y entrar a su portal. También recibe el aviso cuando un prospecto lo autoriza." : "Recibe el aviso cuando un prospecto lo autoriza.")}
       {field("ID de distribuidor", "distributorId", { placeholder: "Opcional" }, "Su número de distribuidor WeNow.")}
 
+      {state?.ok && state.emailed === false && (
+        <p role="alert" className="rounded-xl bg-[#fff4df] px-3.5 py-2.5 text-[12.5px] font-semibold text-[#7a4f00] sm:col-span-2">
+          Se registró, pero no se pudo enviar el correo de acceso. Entra a su ficha en Distribuidores y usa «Invitar» para reenviarlo.
+        </p>
+      )}
       {state?.error && <p className="rounded-xl bg-[#fdeceb] px-3.5 py-2.5 text-[12.5px] font-semibold text-[#9a1d17] sm:col-span-2">{state.error}</p>}
       <div className="flex gap-2.5 sm:col-span-2">
         <button disabled={pending} className="press rounded-[10px] bg-[var(--blue)] px-5 py-2.5 text-[13px] font-bold text-white disabled:opacity-60">
-          {pending ? "Guardando…" : isNew ? "Agregar distribuidor" : "Guardar cambios"}
+          {pending ? "Guardando…" : isNew ? "Agregar y enviar acceso" : "Guardar cambios"}
         </button>
         <Link href="/admin/distribuidores" className="press rounded-[10px] border border-[var(--line)] px-5 py-2.5 text-[13px] font-bold text-[#4a4547]">Cancelar</Link>
       </div>
