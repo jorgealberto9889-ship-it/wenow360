@@ -36,10 +36,10 @@ export default async function Prospectos({ searchParams }: { searchParams: Promi
       />
 
       <form className="mt-4 flex flex-wrap items-center gap-2.5">
-        <input name="q" defaultValue={sp.q} placeholder="Buscar por nombre, correo o teléfono" className={`${fieldClass} min-w-[220px] flex-1`} aria-label="Buscar" />
+        <input name="q" defaultValue={sp.q} placeholder="Buscar por nombre, correo o teléfono" className={`${fieldClass} w-full min-w-0 sm:w-auto sm:min-w-[220px] sm:flex-1`} aria-label="Buscar" />
         {(
           <>
-            <select name="distribuidor" defaultValue={sp.distribuidor ?? ""} className={fieldClass} aria-label="Distribuidor">
+            <select name="distribuidor" defaultValue={sp.distribuidor ?? ""} className={`${fieldClass} w-full sm:w-auto`} aria-label="Distribuidor">
               <option value="">Todos los distribuidores</option>
               {options.map((d) => <option key={d.slug} value={d.slug}>{d.displayName}</option>)}
             </select>
@@ -62,7 +62,35 @@ async function CurrentTable({ sp, page, period, qs }: { sp: Search; page: number
   const { items, total, perPage } = await prospectList({ q: sp.q, distributor: sp.distribuidor, status: sp.estatus, period, page });
   return (
     <>
-      <Panel className="mt-4 overflow-x-auto">
+      {/* Teléfono: tarjetas (la tabla completa no cabe). */}
+      <Panel className="mt-4 md:hidden">
+        <ul>
+          {items.map((p) => (
+            <li key={p.id} className="border-b border-[#f2efef] last:border-b-0">
+              <Link href={`/admin/prospectos/${p.id}`} className="press flex items-start gap-3 px-4 py-3.5">
+                <Avatar name={p.name} />
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-start justify-between gap-2">
+                    <span className="min-w-0 text-[13.5px] font-bold break-words text-[var(--navy)]">{p.name}</span>
+                    <StatusBadge status={p.status} />
+                  </span>
+                  <span className="mt-0.5 block text-[11.5px] break-all text-[#8a8587]">{p.email}{p.phone ? ` · ${p.phone}` : ""}</span>
+                  <span className="mt-1 block text-[12px] text-[#4a4547]">
+                    {p.distributorName ?? p.distributorSlug} · {shortDate(p.date)} · {p.authorized ? "Autorizó contacto" : "Sin autorización"}
+                  </span>
+                  {p.areas.length > 0 && (
+                    <span className="mt-2 flex flex-wrap gap-1.5">
+                      {p.areas.map((a) => <span key={a} className="rounded-full bg-[#f2efef] px-[9px] py-[3px] text-[10.5px] font-semibold text-[#4a4547]">{a}</span>)}
+                    </span>
+                  )}
+                </span>
+              </Link>
+            </li>
+          ))}
+          {items.length === 0 && <li className="px-5 py-10 text-center text-[13px] text-[var(--muted)]">No hay prospectos con estos filtros.</li>}
+        </ul>
+      </Panel>
+      <Panel className="mt-4 hidden overflow-x-auto md:block">
         <table className="w-full min-w-[860px] border-collapse text-left">
           <thead className="border-b border-[var(--line)] bg-[var(--bg)]">
             <tr className={tableHead}>

@@ -16,6 +16,7 @@ function shift(key: string, delta: number) {
 }
 
 const label = "block text-[11px] font-semibold text-[var(--muted)]";
+const field = `${fieldClass} mt-1 w-full min-w-0`;
 
 export default async function Dueno({ searchParams }: { searchParams: Promise<{ mes?: string }> }) {
   await requireOwner();
@@ -138,14 +139,14 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
         <h2 className="text-[14px] font-bold text-[var(--navy)]">Pagos del cliente</h2>
         <p className="mt-1 text-[12px] text-[var(--muted)]">Regístralos cuando los recibas; el administrador del cliente los ve en su sección «Pagos». Montos con IVA.</p>
         <form action={recordPayment} className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
-          <label className="col-span-2"><span className={label}>Concepto</span><input name="concept" required maxLength={120} defaultValue={`Plan mensual ${range.key}`} className={fieldClass} /></label>
-          <label><span className={label}>Periodo (2026-11 o 2027-anual)</span><input name="periodKey" required defaultValue={range.key} className={fieldClass} /></label>
-          <label><span className={label}>Monto con IVA (MXN)</span><input name="amount" type="number" step="any" min="0" required defaultValue={s.plan.priceWithIva} className={fieldClass} /></label>
-          <label><span className={label}>Estado</span><select name="status" defaultValue="pagado" className={fieldClass}><option value="pagado">Pagado</option><option value="pendiente">Pendiente</option><option value="vencido">Vencido</option></select></label>
-          <label><span className={label}>Fecha de pago</span><input name="paidAt" type="date" className={fieldClass} /></label>
-          <label><span className={label}>Método</span><input name="method" maxLength={40} placeholder="Tarjeta, transferencia…" className={fieldClass} /></label>
-          <label><span className={label}>Referencia</span><input name="reference" maxLength={80} className={fieldClass} /></label>
-          <label className="col-span-2 md:col-span-3"><span className={label}>Enlace de la factura (https, opcional)</span><input name="invoiceUrl" type="url" placeholder="https://…" className={fieldClass} /></label>
+          <label className="col-span-2"><span className={label}>Concepto</span><input name="concept" required maxLength={120} defaultValue={`Plan mensual ${range.key}`} className={field} /></label>
+          <label><span className={label}>Periodo (2026-11 o 2027-anual)</span><input name="periodKey" required defaultValue={range.key} className={field} /></label>
+          <label><span className={label}>Monto con IVA (MXN)</span><input name="amount" type="number" step="any" min="0" required defaultValue={s.plan.priceWithIva} className={field} /></label>
+          <label><span className={label}>Estado</span><select name="status" defaultValue="pagado" className={field}><option value="pagado">Pagado</option><option value="pendiente">Pendiente</option><option value="vencido">Vencido</option></select></label>
+          <label><span className={label}>Fecha de pago</span><input name="paidAt" type="date" className={field} /></label>
+          <label><span className={label}>Método</span><input name="method" maxLength={40} placeholder="Tarjeta, transferencia…" className={field} /></label>
+          <label><span className={label}>Referencia</span><input name="reference" maxLength={80} className={field} /></label>
+          <label className="col-span-2 md:col-span-3"><span className={label}>Enlace de la factura (https, opcional)</span><input name="invoiceUrl" type="url" placeholder="https://…" className={field} /></label>
           <div className="flex items-end"><button className="press rounded-[10px] bg-[var(--blue)] px-5 py-2.5 text-[13px] font-bold text-white">Registrar pago</button></div>
         </form>
         {payments.length > 0 && (
@@ -167,32 +168,32 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
         <p className="mt-1 text-[12px] text-[var(--muted)]">Las tarifas son estimadas: verifícalas en las páginas de precios de cada proveedor y ajústalas aquí. Cambian el cálculo de todos los meses.</p>
         <form action={saveOwnerSettings} className="mt-4 grid gap-4">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <label><span className={label}>Precio mensual del plan con IVA (MXN)</span><input name="planPrice" type="number" step="any" min="0" defaultValue={s.plan.priceWithIva} className={fieldClass} /></label>
-            <label><span className={label}>IVA (%)</span><input name="planIva" type="number" step="any" min="0" defaultValue={s.plan.ivaPct} className={fieldClass} /></label>
-            <label><span className={label}>Cupo: escaneos faciales al mes</span><input name="planScans" type="number" min="0" defaultValue={s.plan.scans} className={fieldClass} /></label>
-            <label><span className={label}>Cupo: correos automáticos al mes</span><input name="planEmails" type="number" min="0" defaultValue={s.plan.emails} className={fieldClass} /></label>
-            <label><span className={label}>Referencia: respuestas de Winnie al mes (no es tope)</span><input name="planWinnie" type="number" min="0" defaultValue={s.plan.winnieReference} className={fieldClass} /></label>
-            <label><span className={label}>USD → MXN</span><input name="usdMxn" type="number" step="any" min="0" defaultValue={s.usdMxn} className={fieldClass} /></label>
-            <label><span className={label}>EUR → MXN</span><input name="eurMxn" type="number" step="any" min="0" defaultValue={s.eurMxn} className={fieldClass} /></label>
-            <label><span className={label}>Escaneos incluidos en su plan de Shen.AI</span><input name="shenIncluded" type="number" min="0" defaultValue={s.shen.included} className={fieldClass} /></label>
-            <label><span className={label}>Escaneo extra de Shen.AI (EUR)</span><input name="shenExtraEur" type="number" step="any" min="0" defaultValue={s.shen.extraEur} className={fieldClass} /></label>
+            <label><span className={label}>Precio mensual del plan con IVA (MXN)</span><input name="planPrice" type="number" step="any" min="0" defaultValue={s.plan.priceWithIva} className={field} /></label>
+            <label><span className={label}>IVA (%)</span><input name="planIva" type="number" step="any" min="0" defaultValue={s.plan.ivaPct} className={field} /></label>
+            <label><span className={label}>Cupo: escaneos faciales al mes</span><input name="planScans" type="number" min="0" defaultValue={s.plan.scans} className={field} /></label>
+            <label><span className={label}>Cupo: correos automáticos al mes</span><input name="planEmails" type="number" min="0" defaultValue={s.plan.emails} className={field} /></label>
+            <label><span className={label}>Referencia: respuestas de Winnie al mes (no es tope)</span><input name="planWinnie" type="number" min="0" defaultValue={s.plan.winnieReference} className={field} /></label>
+            <label><span className={label}>USD → MXN</span><input name="usdMxn" type="number" step="any" min="0" defaultValue={s.usdMxn} className={field} /></label>
+            <label><span className={label}>EUR → MXN</span><input name="eurMxn" type="number" step="any" min="0" defaultValue={s.eurMxn} className={field} /></label>
+            <label><span className={label}>Escaneos incluidos en su plan de Shen.AI</span><input name="shenIncluded" type="number" min="0" defaultValue={s.shen.included} className={field} /></label>
+            <label><span className={label}>Escaneo extra de Shen.AI (EUR)</span><input name="shenExtraEur" type="number" step="any" min="0" defaultValue={s.shen.extraEur} className={field} /></label>
             <label className="flex items-end gap-2 pb-2.5"><input name="shenPaidByClient" type="checkbox" defaultChecked={s.shen.paidByClient} className="size-4" /><span className="text-[12px] font-semibold text-[#4a4547]">Shen.AI lo paga el cliente (no es mi costo)</span></label>
-            <label><span className={label}>Primer mes con cobro</span><input name="billingStart" type="month" defaultValue={s.billing.startMonth} className={fieldClass} /></label>
-            <label><span className={label}>Día límite de pago (1-28)</span><input name="dueDay" type="number" min="1" max="28" defaultValue={s.billing.dueDay} className={fieldClass} /></label>
-            <label><span className={label}>Recordatorio: días antes del límite</span><input name="reminderDays" type="number" min="0" max="15" defaultValue={s.billing.reminderDays} className={fieldClass} /></label>
-            <label className="md:col-span-2"><span className={label}>Enlace de pago (https) de Mercado Pago o Conekta</span><input name="paymentLink" type="url" defaultValue={s.billing.paymentLink} placeholder="https://…" className={fieldClass} /></label>
-            <label><span className={label}>Presupuesto de IA (% de la cuota neta)</span><input name="aiBudgetPct" type="number" step="any" min="0" max="100" defaultValue={s.aiBudgetPct} className={fieldClass} /></label>
-            <label><span className={label}>Gemini entrada (USD / 1M tokens)</span><input name="geminiIn" type="number" step="any" min="0" defaultValue={s.gemini.inputUsdPerM} className={fieldClass} /></label>
-            <label><span className={label}>Gemini salida (USD / 1M tokens)</span><input name="geminiOut" type="number" step="any" min="0" defaultValue={s.gemini.outputUsdPerM} className={fieldClass} /></label>
-            <label><span className={label}>Voz (USD / 1M caracteres)</span><input name="ttsRate" type="number" step="any" min="0" defaultValue={s.tts.usdPerMChars} className={fieldClass} /></label>
-            <label><span className={label}>Voz: caracteres gratis al mes</span><input name="ttsFree" type="number" min="0" defaultValue={s.tts.freeChars} className={fieldClass} /></label>
-            <label><span className={label}>Correos gratis al mes</span><input name="emailFree" type="number" min="0" defaultValue={s.email.freePerMonth} className={fieldClass} /></label>
-            <label><span className={label}>Correo extra (USD c/u)</span><input name="emailRate" type="number" step="any" min="0" defaultValue={s.email.usdPerEmail} className={fieldClass} /></label>
+            <label><span className={label}>Primer mes con cobro</span><input name="billingStart" type="month" defaultValue={s.billing.startMonth} className={field} /></label>
+            <label><span className={label}>Día límite de pago (1-28)</span><input name="dueDay" type="number" min="1" max="28" defaultValue={s.billing.dueDay} className={field} /></label>
+            <label><span className={label}>Recordatorio: días antes del límite</span><input name="reminderDays" type="number" min="0" max="15" defaultValue={s.billing.reminderDays} className={field} /></label>
+            <label className="md:col-span-2"><span className={label}>Enlace de pago (https) de Mercado Pago o Conekta</span><input name="paymentLink" type="url" defaultValue={s.billing.paymentLink} placeholder="https://…" className={field} /></label>
+            <label><span className={label}>Presupuesto de IA (% de la cuota neta)</span><input name="aiBudgetPct" type="number" step="any" min="0" max="100" defaultValue={s.aiBudgetPct} className={field} /></label>
+            <label><span className={label}>Gemini entrada (USD / 1M tokens)</span><input name="geminiIn" type="number" step="any" min="0" defaultValue={s.gemini.inputUsdPerM} className={field} /></label>
+            <label><span className={label}>Gemini salida (USD / 1M tokens)</span><input name="geminiOut" type="number" step="any" min="0" defaultValue={s.gemini.outputUsdPerM} className={field} /></label>
+            <label><span className={label}>Voz (USD / 1M caracteres)</span><input name="ttsRate" type="number" step="any" min="0" defaultValue={s.tts.usdPerMChars} className={field} /></label>
+            <label><span className={label}>Voz: caracteres gratis al mes</span><input name="ttsFree" type="number" min="0" defaultValue={s.tts.freeChars} className={field} /></label>
+            <label><span className={label}>Correos gratis al mes</span><input name="emailFree" type="number" min="0" defaultValue={s.email.freePerMonth} className={field} /></label>
+            <label><span className={label}>Correo extra (USD c/u)</span><input name="emailRate" type="number" step="any" min="0" defaultValue={s.email.usdPerEmail} className={field} /></label>
           </div>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <label><span className={label}>Renovación anual dominio + hosting (MXN)</span><input name="annualAmount" type="number" step="any" min="0" defaultValue={s.annual.amountMxn} className={fieldClass} /></label>
-            <label><span className={label}>Inicio del servicio</span><input name="annualStart" type="date" defaultValue={s.annual.startDate} className={fieldClass} /></label>
-            <label><span className={label}>Años gratis</span><input name="annualFree" type="number" min="0" step="1" defaultValue={s.annual.freeYears} className={fieldClass} /></label>
+            <label><span className={label}>Renovación anual dominio + hosting (MXN)</span><input name="annualAmount" type="number" step="any" min="0" defaultValue={s.annual.amountMxn} className={field} /></label>
+            <label><span className={label}>Inicio del servicio</span><input name="annualStart" type="date" defaultValue={s.annual.startDate} className={field} /></label>
+            <label><span className={label}>Años gratis</span><input name="annualFree" type="number" min="0" step="1" defaultValue={s.annual.freeYears} className={field} /></label>
             <label className="flex items-end gap-2 pb-2.5"><input name="annualPassThrough" type="checkbox" defaultChecked={s.annual.passThrough} className="size-4" /><span className="text-[12px] font-semibold text-[#4a4547]">Lo paga el cliente (no es mi ingreso ni mi costo)</span></label>
           </div>
           <div>
@@ -201,10 +202,10 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
               {Array.from({ length: 8 }, (_, i) => {
                 const f = s.fixed[i];
                 return (
-                  <div key={i} className="grid grid-cols-[1fr_110px_90px] gap-2">
-                    <input name={`fixed_name_${i}`} defaultValue={f?.name ?? ""} placeholder="Nombre del costo" className={fieldClass} aria-label={`Costo fijo ${i + 1}`} />
-                    <input name={`fixed_amount_${i}`} type="number" step="any" min="0" defaultValue={f?.amount ?? ""} placeholder="Monto" className={fieldClass} aria-label="Monto" />
-                    <select name={`fixed_cur_${i}`} defaultValue={f?.currency ?? "USD"} className={fieldClass} aria-label="Moneda"><option>USD</option><option>EUR</option><option>MXN</option></select>
+                  <div key={i} className="grid grid-cols-[minmax(0,1fr)_96px_84px] gap-2">
+                    <input name={`fixed_name_${i}`} defaultValue={f?.name ?? ""} placeholder="Nombre del costo" className={field} aria-label={`Costo fijo ${i + 1}`} />
+                    <input name={`fixed_amount_${i}`} type="number" step="any" min="0" defaultValue={f?.amount ?? ""} placeholder="Monto" className={field} aria-label="Monto" />
+                    <select name={`fixed_cur_${i}`} defaultValue={f?.currency ?? "USD"} className={field} aria-label="Moneda"><option>USD</option><option>EUR</option><option>MXN</option></select>
                   </div>
                 );
               })}

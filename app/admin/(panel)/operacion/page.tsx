@@ -104,7 +104,7 @@ export default async function Operacion() {
         <Stat label="Correos enviados" value={sent} />
         <Stat label="Correos con error" value={failed} tone={failed ? "bad" : "good"} note={failed ? "Revisa la ficha del prospecto" : "Sin errores"} />
         <Stat label="Escaneos completados" value={scans.finished} note={`${scans.sessions} iniciados · últimos 30 días`} />
-                <Stat label="Conversaciones con Winnie" value={celia.conversations} note={`${celia.questions} preguntas`} />
+                <Stat label="Conversaciones con Winnie" value={celia.conversations} note={`${celia.questions} ${celia.questions === 1 ? "pregunta" : "preguntas"}`} />
       </div>
 
       <Panel className="mt-4 p-5">

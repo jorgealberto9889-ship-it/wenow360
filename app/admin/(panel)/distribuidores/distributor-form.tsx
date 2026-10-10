@@ -29,18 +29,18 @@ export function DistributorForm({ initial, origin }: { initial: DistributorValue
   const field = (label: string, name: keyof DistributorValues, props: React.InputHTMLAttributes<HTMLInputElement> = {}, hint?: string) => (
     <label className="flex flex-col gap-1.5">
       <span className="text-[12.5px] font-bold text-[var(--navy)]">{label}</span>
-      <input name={name} defaultValue={String(initial[name] ?? "")} className={fieldClass} {...props} />
+      <input name={name} defaultValue={String(initial[name] ?? "")} className={`${fieldClass} w-full min-w-0`} {...props} />
       {hint && <span className="text-[11.5px] text-[#8a8587]">{hint}</span>}
     </label>
   );
 
   return (
-    <form action={action} className="mt-5 grid max-w-[720px] gap-4 rounded-2xl border border-[var(--line)] bg-white p-6 sm:grid-cols-2">
+    <form action={action} className="mt-5 grid max-w-[720px] grid-cols-1 gap-4 rounded-2xl border border-[var(--line)] bg-white p-4 sm:grid-cols-2 sm:p-6">
       {initial.id && <input type="hidden" name="id" value={initial.id} />}
       <label className="flex flex-col gap-1.5 sm:col-span-2">
         <span className="text-[12.5px] font-bold text-[var(--navy)]">Nombre como lo verá el prospecto</span>
         <input
-          name="displayName" required value={name} className={fieldClass}
+          name="displayName" required value={name} className={`${fieldClass} w-full min-w-0`}
           onChange={(e) => {
             setName(e.target.value);
             if (!slugTouched) setSlug(slugify(e.target.value));
@@ -50,7 +50,7 @@ export function DistributorForm({ initial, origin }: { initial: DistributorValue
       <label className="flex flex-col gap-1.5 sm:col-span-2">
         <span className="text-[12.5px] font-bold text-[var(--navy)]">Enlace personal</span>
         <div className="flex items-center overflow-hidden rounded-[10px] border border-[var(--line)] focus-within:border-[var(--blue)]">
-          <span className="bg-[var(--bg)] px-3 py-2.5 font-mono text-[12px] text-[var(--muted)]">{origin.replace(/^https?:\/\//, "")}/d/</span>
+          <span className="shrink-0 bg-[var(--bg)] px-3 py-2.5 font-mono text-[12px] text-[var(--muted)]">{origin.replace(/^https?:\/\//, "")}/d/</span>
           <input
             name="slug" required value={slug} className="min-w-0 flex-1 px-2 py-2.5 font-mono text-[13px] outline-none"
             onChange={(e) => {

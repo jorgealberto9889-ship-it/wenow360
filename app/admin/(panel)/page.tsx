@@ -59,7 +59,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
       <Panel className="mt-5 p-5">
         <div className="flex items-center justify-between">
           <h2 className="text-[14px] font-bold text-[var(--navy)]">Prospectos recientes</h2>
-          <Link href="/admin/prospectos" className="text-[12.5px] font-semibold text-[var(--blue)]">Ver todos →</Link>
+          <Link href="/admin/prospectos" className="-my-2 py-2.5 text-[12.5px] font-semibold text-[var(--blue)]">Ver todos →</Link>
         </div>
         {recent.length === 0 ? (
           <p className="mt-4 text-[12.5px] text-[var(--muted)]">Aún no hay prospectos en este periodo.</p>

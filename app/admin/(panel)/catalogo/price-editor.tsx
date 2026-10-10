@@ -19,7 +19,7 @@ export function PriceEditor({ id, publicPrice, distributorPrice }: { id: string;
           <div className="text-[11px] text-[var(--muted)]">Público <span className="line-through">{money(publicPrice)}</span></div>
           <div className="text-[17px] font-extrabold text-[var(--navy)]">{money(distributorPrice)} <span className="text-[10.5px] font-bold text-[#087748]">miembro</span></div>
         </div>
-        <button type="button" onClick={() => setEditing(true)} className="press text-[12px] font-bold text-[var(--blue)]">Editar precios</button>
+        <button type="button" onClick={() => setEditing(true)} className="press -my-2 -mr-2 px-2 py-2.5 text-[12px] font-bold text-[var(--blue)]">Editar precios</button>
       </div>
     );
   }

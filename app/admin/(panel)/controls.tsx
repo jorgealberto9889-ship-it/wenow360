@@ -18,7 +18,7 @@ export function Toggle({ on, label, disabled, action }: { on: boolean; label: st
         setOptimistic(!value);
         start(() => action(!value));
       }}
-      className="press relative h-6 w-[42px] shrink-0 rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+      className="press relative h-6 w-[42px] shrink-0 rounded-full transition-colors before:absolute before:-inset-2.5 before:content-[''] disabled:cursor-not-allowed disabled:opacity-50"
       style={{ background: value ? "#19b96f" : "#e6e0e3" }}
     >
       <span className="absolute top-[3px] size-[18px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.2)] transition-[left] duration-[180ms]" style={{ left: value ? 21 : 3 }} />

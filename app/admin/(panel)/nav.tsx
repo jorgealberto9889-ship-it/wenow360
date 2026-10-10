@@ -25,22 +25,29 @@ const ITEMS = [
 export function AdminNav({ owner }: { owner?: boolean }) {
   const pathname = usePathname();
   return (
-    <nav className="flex gap-1 overflow-x-auto lg:mt-7 lg:flex-col lg:gap-[3px] lg:overflow-visible">
-      {(owner ? [...ITEMS, { href: "/admin/dueno", label: "Dueño · Consumo", icon: ICONS.dueno }] : ITEMS).map((item) => {
+    <nav aria-label="Secciones del panel" className="flex flex-wrap gap-1 lg:mt-7 lg:flex-col lg:flex-nowrap lg:gap-[3px]">
+      {(owner ? [...ITEMS, { href: "/admin/dueno", label: "Dueño · Consumo", short: "Dueño", icon: ICONS.dueno }] : ITEMS).map((item) => {
         const active = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
         return (
           <Link
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`press flex shrink-0 items-center gap-[11px] rounded-[10px] px-3 py-2.5 text-[13px] font-semibold transition-colors ${
+            className={`press flex shrink-0 items-center gap-2 rounded-[10px] px-3 py-2.5 text-[13px] font-semibold transition-colors lg:gap-[11px] ${
               active ? "bg-white/10 text-white" : "text-[#eeb5cd] hover:bg-white/5 hover:text-white"
             }`}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} aria-hidden>
               {item.icon}
             </svg>
-            {item.label}
+            {"short" in item ? (
+              <>
+                <span className="lg:hidden">{item.short}</span>
+                <span className="hidden lg:inline">{item.label}</span>
+              </>
+            ) : (
+              item.label
+            )}
           </Link>
         );
       })}

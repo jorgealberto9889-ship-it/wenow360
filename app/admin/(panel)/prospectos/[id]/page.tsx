@@ -42,7 +42,7 @@ export default async function ProspectoDetalle({ params }: { params: Promise<{ i
 
   return (
     <>
-      <Link href="/admin/prospectos" className="text-[12.5px] font-semibold text-[var(--blue)]">← Prospectos</Link>
+      <Link href="/admin/prospectos" className="-my-2 inline-flex py-2.5 text-[12.5px] font-semibold text-[var(--blue)]">← Prospectos</Link>
       <div className="mt-3 flex flex-wrap items-center gap-3.5">
         <Avatar name={p.name} />
         <div className="min-w-0 flex-1">

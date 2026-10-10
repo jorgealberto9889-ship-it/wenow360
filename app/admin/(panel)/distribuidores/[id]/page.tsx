@@ -18,7 +18,7 @@ export default async function EditarDistribuidor({ params }: { params: Promise<{
   const origin = await publicOrigin();
   return (
     <>
-      <Link href="/admin/distribuidores" className="text-[12.5px] font-semibold text-[var(--blue)]">← Distribuidores</Link>
+      <Link href="/admin/distribuidores" className="-my-2 inline-flex py-2.5 text-[12.5px] font-semibold text-[var(--blue)]">← Distribuidores</Link>
       <div className="mt-3"><PageHeader title={d.displayName} subtitle={d.active ? "Activo" : `Inactivo${d.deactivatedReason ? ` · ${d.deactivatedReason}` : ""}`} /></div>
       <DistributorForm
         origin={origin}
