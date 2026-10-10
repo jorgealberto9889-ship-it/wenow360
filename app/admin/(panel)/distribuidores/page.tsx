@@ -13,7 +13,7 @@ import { registrationCode } from "@/lib/registration";
 import { Avatar, fieldClass, PageHeader, Panel, tableHead } from "../ui";
 
 // Columnas de la vista de tabla (xl en adelante); abajo de xl cada fila es una tarjeta.
-const ROW = "px-4 sm:px-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1.3fr)_72px_72px_44px_92px_52px_32px] xl:items-center xl:gap-3";
+const ROW = "px-4 sm:px-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1.3fr)_84px_72px_92px_52px_32px] xl:items-center xl:gap-3";
 const AVATAR = ["#a51959", "#d93025", "#19b96f", "#d3427e", "#0d9a56", "#916000"];
 
 export default async function Distribuidores({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
