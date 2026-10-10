@@ -4,15 +4,18 @@ import { requireAdmin } from "@/lib/dal";
 import { scanProvider } from "@/lib/scan-provider";
 import { PageHeader, Panel, Stat } from "../ui";
 
-const shenai = () => process.env.SCAN_PROVIDER === "shenai";
-const SERVICES = () => [
-  { name: "Base de datos", detail: "Turso", env: "TURSO_DATABASE_URL" },
-  { name: "Correos", detail: "Resend", env: "RESEND_API_KEY" },
-  shenai()
-    ? { name: "Escaneo facial", detail: "Shen.AI", env: "SHENAI_ADMIN_KEY" }
-    : { name: "Escaneo facial", detail: "VitalLens", env: "VITALLENS_API_KEY" },
-  { name: "Narración con voz", detail: "Google Text-to-Speech", env: "GOOGLE_TTS_API_KEY" },
-  { name: "Winnie", detail: "Google Gemini", env: "GEMINI_API_KEY" },
+// Servicios que hacen funcionar WeNow 360. Se muestran con su función y su proveedor para que se vea el valor de la
+// plataforma; la configuración (claves, variables, cuentas) nunca se expone en pantalla.
+type Service = { name: string; provider: string; value: string; active: boolean };
+const SERVICES = (): Service[] => [
+  { name: "Alojamiento y entrega", provider: "Vercel", value: "La plataforma está en línea 24/7, con entrega rápida y actualizaciones sin interrupciones.", active: true },
+  { name: "Dominio y seguridad HTTPS", provider: "360.wenowglobal.com", value: "Dirección propia con certificado de seguridad que protege los datos de cada persona.", active: true },
+  { name: "Base de datos", provider: "Turso", value: "Resguarda evaluaciones, prospectos y resultados de forma segura y con alta disponibilidad.", active: Boolean(process.env.TURSO_DATABASE_URL) },
+  { name: "Escaneo facial con la cámara (rPPG)", provider: process.env.SCAN_PROVIDER === "shenai" ? "Shen.AI" : "VitalLens", value: "Mide pulso, variabilidad, respiración, estrés y actividad parasimpática sin sensores ni contacto.", active: scanProvider() !== null },
+  { name: "Winnie, asistente con IA", provider: "Google Gemini", value: "Resuelve dudas sobre productos, ingredientes y hábitos, a cualquier hora.", active: Boolean(process.env.GEMINI_API_KEY) },
+  { name: "Narración del resultado con voz", provider: "Google Cloud Text-to-Speech", value: "Explica el resultado en voz alta, sección por sección, para una experiencia más cercana.", active: Boolean(process.env.GOOGLE_TTS_API_KEY) },
+  { name: "Correos automáticos", provider: "Resend", value: "Envía el resultado a cada persona, avisa a los asesores y programa recordatorios.", active: Boolean(process.env.RESEND_API_KEY) },
+  { name: "Respaldo del código", provider: "GitHub (repositorio privado)", value: "Cada versión del sistema queda guardada y se puede restaurar.", active: true },
 ];
 
 const ACTIONS: Record<string, string> = {
@@ -59,30 +62,30 @@ export default async function Operacion() {
       <PageHeader title="Operación" subtitle="Estado de los servicios, consumo y registro de cambios · últimos 30 días" />
 
       <Panel className="mt-6 p-5">
-        <h2 className="text-[14px] font-bold text-[var(--navy)]">Servicios conectados</h2>
-        <ul className="mt-3.5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-          {SERVICES().map((s) => {
-            const ok = Boolean(process.env[s.env]);
-            return (
-              <li key={s.name} className="flex items-center gap-3 rounded-xl border border-[#f2efef] p-3">
-                <span className={`size-2.5 shrink-0 rounded-full ${ok ? "bg-[var(--green)]" : "bg-[var(--red)]"}`} aria-hidden />
-                <span>
-                  <span className="block text-[13px] font-bold text-[var(--navy)]">{s.name}</span>
-                  <span className="block text-[11.5px] text-[var(--muted)]">{s.detail} · {ok ? "configurado" : "sin configurar"}</span>
+        <h2 className="text-[14px] font-bold text-[var(--navy)]">Servicios incluidos en tu plan</h2>
+        <p className="mt-1 text-[12.5px] text-[var(--muted)]">Tecnología que opera WeNow 360 todos los días, mantenida y monitoreada por Órbita Digital.</p>
+        <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+          {SERVICES().map((s) => (
+            <li key={s.name} className="flex items-start gap-3 rounded-xl border border-[#f2efef] p-3.5">
+              <span className={`mt-1.5 size-2.5 shrink-0 rounded-full ${s.active ? "bg-[var(--green)]" : "bg-[#e0a100]"}`} aria-hidden />
+              <span className="min-w-0">
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                  <span className="text-[13px] font-bold text-[var(--navy)]">{s.name}</span>
+                  <span className={`rounded-full px-2 py-0.5 text-[10.5px] font-bold ${s.active ? "bg-[#e5f8ef] text-[#087748]" : "bg-[#fff3d6] text-[#8a5a00]"}`}>{s.active ? "Activo" : "En activación"}</span>
                 </span>
-              </li>
-            );
-          })}
+                <span className="mt-0.5 block text-[11.5px] font-semibold text-[#8a8587]">{s.provider}</span>
+                <span className="mt-1 block text-[12px] leading-snug text-[#4a4547]">{s.value}</span>
+              </span>
+            </li>
+          ))}
         </ul>
       </Panel>
 
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
         <Stat label="Correos enviados" value={sent} />
         <Stat label="Correos con error" value={failed} tone={failed ? "bad" : "good"} note={failed ? "Revisa la ficha del prospecto" : "Sin errores"} />
-        <Stat label="Escaneos completados" value={scans.finished} note={scanProvider() === "shenai" ? `${scans.sessions} iniciados · Shen.AI` : `${scans.sessions} iniciados · ${scans.requests} llamadas a VitalLens`} />
-        {scanProvider() === "shenai" && (
-          <Stat label="Escaneos del mes (plan Shen.AI)" value={`${monthScans} / 500`} tone={monthScans >= 500 ? "bad" : "good"} note={monthScans >= 500 ? "Plan agotado: cada escaneo extra se cobra (0,20 €)" : monthScans >= 400 ? "Cerca del límite del plan" : "Mediciones iniciadas este mes"} />
-        )}
+        <Stat label="Escaneos completados" value={scans.finished} note={`${scans.sessions} iniciados · últimos 30 días`} />
+        <Stat label="Escaneos del mes" value={monthScans} note="Mediciones iniciadas este mes" />
         <Stat label="Conversaciones con Winnie" value={celia.conversations} note={`${celia.questions} preguntas`} />
       </div>
 
