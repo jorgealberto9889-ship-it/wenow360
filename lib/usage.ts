@@ -45,7 +45,7 @@ export function monthRange(month?: string) {
 
 export async function monthUsage(start: string, end: string): Promise<MonthUsage> {
   const n = async (q: ReturnType<typeof db.$count>) => Number(await q);
-  const [scans, emails, assessments, questions, gem, tts] = await Promise.all([
+  const [scans, emails, assessments, questions, gem, tts, convResult, convPublic] = await Promise.all([
     n(db.$count(schema.scanSessions, and(gte(schema.scanSessions.createdAt, start), lt(schema.scanSessions.createdAt, end)))),
     n(db.$count(schema.emailEvents, and(eq(schema.emailEvents.status, "sent"), gte(schema.emailEvents.createdAt, start), lt(schema.emailEvents.createdAt, end)))),
     n(db.$count(schema.assessments, and(eq(schema.assessments.status, "completed"), gte(schema.assessments.completedAt, start), lt(schema.assessments.completedAt, end)))),
@@ -58,9 +58,19 @@ export async function monthUsage(start: string, end: string): Promise<MonthUsage
       .select({ i: sql<number>`coalesce(sum(${schema.usageEvents.inputUnits}), 0)` })
       .from(schema.usageEvents)
       .where(and(eq(schema.usageEvents.service, "tts"), gte(schema.usageEvents.createdAt, start), lt(schema.usageEvents.createdAt, end))),
+    // Conversaciones en el resultado: una por evaluación con mensajes en el mes.
+    db
+      .select({ n: sql<number>`count(distinct ${schema.assistantMessages.assessmentId})` })
+      .from(schema.assistantMessages)
+      .where(and(gte(schema.assistantMessages.createdAt, start), lt(schema.assistantMessages.createdAt, end))),
+    // Conversaciones de la portada: un visitante por día (la llave guarda día y huella).
+    db
+      .select({ n: sql<number>`count(*)` })
+      .from(schema.winnieUsage)
+      .where(and(sql`${schema.winnieUsage.key} like 'v:%'`, gte(schema.winnieUsage.updatedAt, start), lt(schema.winnieUsage.updatedAt, end))),
   ]);
   return {
-    scans, emails, assessments, winnieQuestions: questions,
+    scans, emails, assessments, winnieQuestions: questions, conversations: Number(convResult[0]?.n ?? 0) + Number(convPublic[0]?.n ?? 0),
     geminiIn: Number(gem[0]?.i ?? 0), geminiOut: Number(gem[0]?.o ?? 0), ttsChars: Number(tts[0]?.i ?? 0),
   };
 }

@@ -5,7 +5,7 @@
 export type FixedCost = { name: string; amount: number; currency: "USD" | "EUR" | "MXN" };
 
 export type OwnerSettings = {
-  feeMxn: number; // cuota mensual que paga el cliente (sin IVA)
+  feeMxn: number; // cuota mensual neta (sin IVA); se calcula desde plan.priceWithIva
   usdMxn: number;
   eurMxn: number;
   fixed: FixedCost[]; // Vercel, dominio, Turso, plan de Shen.AI…
@@ -15,10 +15,14 @@ export type OwnerSettings = {
   email: { freePerMonth: number; usdPerEmail: number };
   // Cobro anual al cliente por dominio y hosting: gratis los primeros años y después una renovación fija.
   annual: { name: string; amountMxn: number; startDate: string; freeYears: number };
+  // Plan que contrata el cliente: precio mensual con IVA y cupos incluidos.
+  plan: { priceWithIva: number; ivaPct: number; scans: number; emails: number; conversations: number };
 };
 
+export const netFee = (p: OwnerSettings["plan"]) => Math.round((p.priceWithIva / (1 + p.ivaPct / 100)) * 100) / 100;
+
 export const DEFAULT_SETTINGS: OwnerSettings = {
-  feeMxn: 0,
+  feeMxn: 350,
   usdMxn: 18.5,
   eurMxn: 21.5,
   fixed: [
@@ -32,10 +36,12 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   tts: { usdPerMChars: 16, freeChars: 1_000_000 },
   email: { freePerMonth: 3000, usdPerEmail: 0.0004 },
   annual: { name: "Dominio y hosting", amountMxn: 1780, startDate: "2026-10-10", freeYears: 1 },
+  plan: { priceWithIva: 406, ivaPct: 16, scans: 1000, emails: 1500, conversations: 500 },
 };
 
 export type MonthUsage = {
   scans: number; emails: number; geminiIn: number; geminiOut: number; ttsChars: number; assessments: number; winnieQuestions: number;
+  conversations: number; // conversaciones activas con Winnie (en el resultado + visitantes de la portada)
 };
 
 export type CostLine = { service: string; usage: string; costMxn: number; note?: string };
@@ -52,6 +58,9 @@ export type MonthCosts = {
   marginMxn: number;
   marginPct: number | null; // null si no hay cuota registrada
   shenQuotaUsedPct: number;
+  planUsage: { label: string; used: number; limit: number; pct: number }[];
+  // Cuota mensual mínima (con IVA) para no perder dinero con todo el cupo del plan usado.
+  breakEvenWithIva: number;
 };
 
 const toMxn = (amount: number, currency: FixedCost["currency"], s: OwnerSettings) =>
@@ -87,12 +96,21 @@ export function computeMonthCosts(u: MonthUsage, s: OwnerSettings, monthStart: s
   const variableMxn = round2(variableLines.reduce((a, l) => a + l.costMxn, 0));
   const totalMxn = round2(fixedMxn + variableMxn);
   const annualMonthlyMxn = new Date(monthStart) >= renewalDate(s.annual) ? round2(s.annual.amountMxn / 12) : 0;
-  const revenueMxn = round2(s.feeMxn + annualMonthlyMxn);
+  const feeMxn = netFee(s.plan);
+  const revenueMxn = round2(feeMxn + annualMonthlyMxn);
   const marginMxn = round2(revenueMxn - totalMxn);
   return {
-    fixedLines, variableLines, fixedMxn, variableMxn, totalMxn, feeMxn: s.feeMxn, annualMonthlyMxn, revenueMxn, marginMxn,
+    fixedLines, variableLines, fixedMxn, variableMxn, totalMxn, feeMxn, annualMonthlyMxn, revenueMxn, marginMxn,
     marginPct: revenueMxn > 0 ? Math.round((marginMxn / revenueMxn) * 1000) / 10 : null,
     shenQuotaUsedPct: s.shen.included > 0 ? Math.round((u.scans / s.shen.included) * 100) : 0,
+    planUsage: [
+      { label: "Escaneos faciales", used: u.scans, limit: s.plan.scans },
+      { label: "Correos automáticos", used: u.emails, limit: s.plan.emails },
+      { label: "Conversaciones con IA", used: u.conversations, limit: s.plan.conversations },
+    ].map((x) => ({ ...x, pct: x.limit > 0 ? Math.round((x.used / x.limit) * 100) : 0 })),
+    breakEvenWithIva: Math.ceil(
+      (fixedMxn + Math.max(0, s.plan.scans - s.shen.included) * s.shen.extraEur * s.eurMxn) * (1 + s.plan.ivaPct / 100),
+    ),
   };
 }
 
@@ -106,6 +124,7 @@ export function mergeSettings(saved: Partial<OwnerSettings> | null): OwnerSettin
     tts: { ...d.tts, ...saved?.tts },
     email: { ...d.email, ...saved?.email },
     annual: { ...d.annual, ...saved?.annual },
+    plan: { ...d.plan, ...saved?.plan },
     fixed: saved?.fixed?.length ? saved.fixed : d.fixed,
   };
 }

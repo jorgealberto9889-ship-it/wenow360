@@ -1,7 +1,7 @@
 import { LEAD_STATUS, shortDate } from "@/lib/admin/format";
 import { operations } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/dal";
-import { loadSettings } from "@/lib/usage";
+import { monthReport } from "@/lib/usage";
 import { renewalDate } from "@/lib/usage-costs";
 import { scanProvider } from "@/lib/scan-provider";
 import { PageHeader, Panel, Stat } from "../ui";
@@ -55,7 +55,8 @@ const describe = (action: string, entityId: string | null) => {
 
 export default async function Operacion() {
   await requireAdmin();
-  const [{ emails, scans, audit, celia, monthScans }, settings] = await Promise.all([operations(), loadSettings()]);
+  const [{ emails, scans, audit, celia }, report] = await Promise.all([operations(), monthReport()]);
+  const settings = report.settings;
   const a = settings.annual;
   const domainNote = a.amountMxn > 0 ? `Incluido${a.freeYears > 0 ? ` el primer año; renovación anual de $${a.amountMxn.toLocaleString("es-MX")} MXN a partir del ${renewalDate(a).toLocaleString("es-MX", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}` : ""}.` : "";
   const sent = emails.sent ?? 0;
@@ -85,12 +86,24 @@ export default async function Operacion() {
         </ul>
       </Panel>
 
+      <Panel className="mt-4 p-5">
+        <h2 className="text-[14px] font-bold text-[var(--navy)]">Tu plan este mes</h2>
+        <p className="mt-1 text-[12.5px] text-[var(--muted)]">Consumo de los cupos incluidos. Se reinicia cada mes.</p>
+        <ul className="mt-3.5 grid gap-4 md:grid-cols-3">
+          {report.costs.planUsage.map((x) => (
+            <li key={x.label}>
+              <div className="flex justify-between text-[12.5px]"><span className="font-semibold text-[#4a4547]">{x.label}</span><span className="text-[var(--muted)]">{x.used.toLocaleString("es-MX")} de {x.limit.toLocaleString("es-MX")}</span></div>
+              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-[#f2efef]"><div className="h-full rounded-full" style={{ width: `${Math.min(100, x.pct)}%`, background: x.pct >= 100 ? "var(--red)" : x.pct >= 80 ? "#e0a100" : "var(--blue)" }} /></div>
+            </li>
+          ))}
+        </ul>
+      </Panel>
+
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4">
         <Stat label="Correos enviados" value={sent} />
         <Stat label="Correos con error" value={failed} tone={failed ? "bad" : "good"} note={failed ? "Revisa la ficha del prospecto" : "Sin errores"} />
         <Stat label="Escaneos completados" value={scans.finished} note={`${scans.sessions} iniciados · últimos 30 días`} />
-        <Stat label="Escaneos del mes" value={monthScans} note="Mediciones iniciadas este mes" />
-        <Stat label="Conversaciones con Winnie" value={celia.conversations} note={`${celia.questions} preguntas`} />
+                <Stat label="Conversaciones con Winnie" value={celia.conversations} note={`${celia.questions} preguntas`} />
       </div>
 
       <Panel className="mt-4 p-5">

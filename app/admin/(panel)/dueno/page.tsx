@@ -39,11 +39,29 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
       />
 
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <Stat label="Ingreso del mes" value={c.revenueMxn > 0 ? mxn(c.revenueMxn) : "—"} note={s.feeMxn > 0 ? `Cuota ${mxn(s.feeMxn)}${c.annualMonthlyMxn ? ` + ${mxn(c.annualMonthlyMxn)} de renovación anual (1/12)` : ""} · sin IVA` : "Captura la cuota abajo"} />
+        <Stat label="Ingreso del mes" value={c.revenueMxn > 0 ? mxn(c.revenueMxn) : "—"} note={c.feeMxn > 0 ? `Cuota neta ${mxn(c.feeMxn)}${c.annualMonthlyMxn ? ` + ${mxn(c.annualMonthlyMxn)} de renovación anual (1/12)` : ""} · sin IVA` : "Captura la cuota abajo"} />
         <Stat label="Costo del mes" value={mxn(c.totalMxn)} note={`${mxn(c.fixedMxn)} fijo · ${mxn(c.variableMxn)} variable`} />
         <Stat label="Margen estimado" value={c.revenueMxn > 0 ? mxn(c.marginMxn) : "—"} tone={c.revenueMxn > 0 ? (c.marginMxn >= 0 ? "good" : "bad") : undefined} note={c.marginPct !== null ? `${c.marginPct}% del ingreso` : "Sin cuota registrada"} />
         <Stat label="Cupo de escaneos" value={`${usage.scans} / ${s.shen.included}`} tone={c.shenQuotaUsedPct >= 100 ? "bad" : c.shenQuotaUsedPct >= 80 ? undefined : "good"} note={c.shenQuotaUsedPct >= 100 ? "Cupo agotado: cada extra tiene costo" : `${c.shenQuotaUsedPct}% usado`} />
       </div>
+
+      {c.marginMxn < 0 && (
+        <div role="alert" className="mt-4 rounded-2xl border border-[#f0b8b2] bg-[#fdeceb] p-4 text-[13px] leading-[1.55] text-[#7a1d17]">
+          <strong>Con este plan pierdes {mxn(Math.abs(c.marginMxn))} al mes.</strong> El plan cuesta {mxn(s.plan.priceWithIva)} con IVA ({mxn(c.feeMxn)} netos) y solo los costos fijos de operar son {mxn(c.fixedMxn)}. Para no perder dinero con todo el cupo usado (hasta {s.plan.scans.toLocaleString("es-MX")} escaneos) necesitarías cobrar al menos <strong>{mxn(c.breakEvenWithIva)} al mes con IVA</strong>, sin contar tu margen. Revisa que el precio capturado sea el correcto.
+        </div>
+      )}
+
+      <Panel className="mt-4 p-5">
+        <h2 className="text-[14px] font-bold text-[var(--navy)]">Plan del cliente · {mxn(s.plan.priceWithIva)} al mes con IVA</h2>
+        <ul className="mt-3 grid gap-3 md:grid-cols-3">
+          {c.planUsage.map((x) => (
+            <li key={x.label}>
+              <div className="flex justify-between text-[12.5px]"><span className="font-semibold text-[#4a4547]">{x.label}</span><span className="text-[var(--muted)]">{x.used.toLocaleString("es-MX")} / {x.limit.toLocaleString("es-MX")}</span></div>
+              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-[#f2efef]"><div className="h-full rounded-full" style={{ width: `${Math.min(100, x.pct)}%`, background: x.pct >= 100 ? "var(--red)" : x.pct >= 80 ? "#e0a100" : "var(--blue)" }} /></div>
+            </li>
+          ))}
+        </ul>
+      </Panel>
 
       <Panel className="mt-4 flex flex-wrap items-center justify-between gap-3 p-5">
         <div>
@@ -98,7 +116,11 @@ export default async function Dueno({ searchParams }: { searchParams: Promise<{ 
         <p className="mt-1 text-[12px] text-[var(--muted)]">Las tarifas son estimadas: verifícalas en las páginas de precios de cada proveedor y ajústalas aquí. Cambian el cálculo de todos los meses.</p>
         <form action={saveOwnerSettings} className="mt-4 grid gap-4">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <label><span className={label}>Cuota mensual del cliente (MXN)</span><input name="feeMxn" type="number" step="any" min="0" defaultValue={s.feeMxn} className={fieldClass} /></label>
+            <label><span className={label}>Precio mensual del plan con IVA (MXN)</span><input name="planPrice" type="number" step="any" min="0" defaultValue={s.plan.priceWithIva} className={fieldClass} /></label>
+            <label><span className={label}>IVA (%)</span><input name="planIva" type="number" step="any" min="0" defaultValue={s.plan.ivaPct} className={fieldClass} /></label>
+            <label><span className={label}>Cupo: escaneos faciales al mes</span><input name="planScans" type="number" min="0" defaultValue={s.plan.scans} className={fieldClass} /></label>
+            <label><span className={label}>Cupo: correos automáticos al mes</span><input name="planEmails" type="number" min="0" defaultValue={s.plan.emails} className={fieldClass} /></label>
+            <label><span className={label}>Cupo: conversaciones con IA al mes</span><input name="planConversations" type="number" min="0" defaultValue={s.plan.conversations} className={fieldClass} /></label>
             <label><span className={label}>USD → MXN</span><input name="usdMxn" type="number" step="any" min="0" defaultValue={s.usdMxn} className={fieldClass} /></label>
             <label><span className={label}>EUR → MXN</span><input name="eurMxn" type="number" step="any" min="0" defaultValue={s.eurMxn} className={fieldClass} /></label>
             <label><span className={label}>Escaneos incluidos en el plan</span><input name="shenIncluded" type="number" min="0" defaultValue={s.shen.included} className={fieldClass} /></label>

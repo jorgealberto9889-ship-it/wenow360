@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { db, schema } from "@/db";
 import { requireOwner } from "@/lib/dal";
 import { loadSettings, saveSettings } from "@/lib/usage";
-import type { FixedCost, OwnerSettings } from "@/lib/usage-costs";
+import { netFee, type FixedCost, type OwnerSettings } from "@/lib/usage-costs";
 
 const num = (v: FormDataEntryValue | null, fallback: number) => {
   const n = Number(String(v ?? "").replace(/,/g, "."));
@@ -21,8 +21,16 @@ export async function saveOwnerSettings(formData: FormData) {
     const currency = String(formData.get(`fixed_cur_${i}`));
     fixed.push({ name, amount: num(formData.get(`fixed_amount_${i}`), 0), currency: currency === "EUR" || currency === "MXN" ? currency : "USD" });
   }
+  const plan = {
+    priceWithIva: num(formData.get("planPrice"), cur.plan.priceWithIva),
+    ivaPct: num(formData.get("planIva"), cur.plan.ivaPct),
+    scans: Math.round(num(formData.get("planScans"), cur.plan.scans)),
+    emails: Math.round(num(formData.get("planEmails"), cur.plan.emails)),
+    conversations: Math.round(num(formData.get("planConversations"), cur.plan.conversations)),
+  };
   const next: OwnerSettings = {
-    feeMxn: num(formData.get("feeMxn"), cur.feeMxn),
+    plan,
+    feeMxn: netFee(plan),
     usdMxn: num(formData.get("usdMxn"), cur.usdMxn),
     eurMxn: num(formData.get("eurMxn"), cur.eurMxn),
     fixed,
