@@ -9,8 +9,11 @@ const crossOriginIsolation = [
 
 const nextConfig: NextConfig = {
   async headers() {
-    if (process.env.SCAN_PROVIDER !== "shenai") return [];
+    // El service worker del portal siempre se revisa en cada visita, para que las actualizaciones lleguen.
+    const serviceWorker = { source: "/portal-sw.js", headers: [{ key: "Cache-Control", value: "no-cache, no-store, must-revalidate" }] };
+    if (process.env.SCAN_PROVIDER !== "shenai") return [serviceWorker];
     return [
+      serviceWorker,
       { source: "/", headers: crossOriginIsolation },
       { source: "/d/:slug", headers: crossOriginIsolation },
       // Los workers de la librería también deben declarar el aislamiento.

@@ -474,3 +474,22 @@ export const purchases = sqliteTable(
   },
   (t) => [index("purchases_distributor_idx").on(t.distributorSlug)],
 );
+
+// Suscripciones a notificaciones push del portal del distribuidor (una por navegador o celular donde las activó).
+// Solo guarda lo que el navegador entrega para poder enviarle avisos; se borra sola si el navegador la da de baja.
+export const pushSubscriptions = sqliteTable(
+  "push_subscriptions",
+  {
+    id: id(),
+    distributorId: integer("distributor_id")
+      .notNull()
+      .references(() => distributors.id),
+    endpoint: text("endpoint").notNull().unique(),
+    p256dh: text("p256dh").notNull(),
+    auth: text("auth").notNull(),
+    userAgent: text("user_agent").notNull().default(""),
+    createdAt: now("created_at"),
+    lastSentAt: text("last_sent_at"),
+  },
+  (t) => [index("push_subscriptions_distributor_idx").on(t.distributorId)],
+);

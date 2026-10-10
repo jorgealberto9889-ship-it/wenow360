@@ -2,6 +2,7 @@ import { after } from "next/server";
 import { submitAssessment } from "@/lib/assessments";
 import { sendAssessmentEmails } from "@/lib/email";
 import { scheduleFollowUps } from "@/lib/follow-ups";
+import { notifyNewProspect } from "@/lib/push";
 import { appOrigin, signResultToken } from "@/lib/result-link";
 import { submissionSchema } from "@/lib/submission";
 
@@ -30,6 +31,9 @@ export async function POST(request: Request) {
       );
       await scheduleFollowUps(saved.assessmentId, origin).catch((e) =>
         console.error("follow_up_schedule_failed", { name: (e as Error)?.name }),
+      );
+      await notifyNewProspect(saved.assessmentId).catch((e) =>
+        console.error("push_notify_failed", { name: (e as Error)?.name }),
       );
     });
     return Response.json({ ...saved, resultToken: await signResultToken(saved.assessmentId) }, { status: 201 });

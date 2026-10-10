@@ -40,6 +40,7 @@ const ACTIONS: Record<string, string> = {
   portal_password_created: "Un distribuidor creó su contraseña",
   portal_password_reset: "Un distribuidor restableció su contraseña",
   portal_password_changed: "Un distribuidor cambió su contraseña",
+  portal_push_enabled: "Un distribuidor activó los avisos en su celular",
   portal_reset_requested: "Un distribuidor pidió restablecer su contraseña",
 };
 const describe = (action: string, entityId: string | null) => {

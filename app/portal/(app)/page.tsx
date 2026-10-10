@@ -4,7 +4,9 @@ import { publicOrigin } from "@/lib/admin/origin";
 import { distributorFunnel, prospectList, statusCounts } from "@/lib/admin/queries";
 import { requireDistributor } from "@/lib/portal";
 import { distributorStoreUrl } from "@/lib/store";
+import { vapidPublicKey } from "@/lib/push";
 import { LinkActions, StoreLinkActions } from "./client";
+import { PushCard } from "./push";
 
 const FILTERS: (LeadStatus | "")[] = ["", "nuevo", "contactado", "en_seguimiento", "convertido"];
 const PER_PAGE = 20;
@@ -35,8 +37,11 @@ export default async function PortalHome({ searchParams }: { searchParams: Promi
     { label: "Clics a la tienda", value: funnel.store, base: funnel.completed },
   ];
 
+  const vapidKey = vapidPublicKey();
+
   return (
     <>
+      {vapidKey && <PushCard vapidKey={vapidKey} />}
       <section className="rounded-[22px] bg-[linear-gradient(140deg,#2e2e2e,var(--navy)_65%)] p-5 text-white shadow-[0_18px_40px_rgba(56,56,56,0.25)]">
         <div className="text-[11px] font-bold tracking-[0.08em] text-[#e6a9c5] uppercase">Tu enlace personal</div>
         <div className="mt-1.5 font-mono text-[13.5px] break-all">{link.replace(/^https?:\/\//, "")}</div>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { initials } from "@/lib/admin/format";
 import { requireDistributor } from "@/lib/portal";
@@ -6,7 +6,12 @@ import { requireDistributor } from "@/lib/portal";
 export const metadata: Metadata = {
   title: "Mi portal · WeNow 360",
   robots: { index: false, follow: false },
+  // App instalable del portal (pantalla de inicio) con notificaciones push.
+  manifest: "/portal.webmanifest",
+  appleWebApp: { capable: true, title: "WeNow 360", statusBarStyle: "default" },
 };
+
+export const viewport: Viewport = { themeColor: "#383838" };
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const me = await requireDistributor();

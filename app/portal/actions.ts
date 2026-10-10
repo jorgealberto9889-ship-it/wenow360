@@ -11,6 +11,7 @@ import { publicOrigin } from "@/lib/admin/origin";
 import {
   createPortalSession, deletePortalSession, requireDistributor, RESET_TTL, sendPasswordEmail, signPasswordLink, verifyPasswordLink,
 } from "@/lib/portal";
+import { removeSubscription, saveSubscription, sendPushToDistributor } from "@/lib/push";
 
 export type PortalState = { error?: string; ok?: boolean } | undefined;
 
@@ -134,5 +135,29 @@ export async function addNote(prospectId: string, _: PortalState, formData: Form
   if (!note) return { error: "Escribe tu nota." };
   await db.insert(schema.commercialNotes).values({ prospectId, distributorId: me.id, note });
   revalidatePath(`/portal/prospecto/${prospectId}`);
+  return { ok: true };
+}
+
+// ---------- Notificaciones push ----------
+
+const pushSubscription = z.object({
+  endpoint: z.string().url().max(1000),
+  keys: z.object({ p256dh: z.string().min(10).max(200), auth: z.string().min(8).max(100) }),
+});
+
+export async function subscribePush(sub: unknown, userAgent: string): Promise<PortalState> {
+  const me = await requireDistributor();
+  const parsed = pushSubscription.safeParse(sub);
+  if (!parsed.success) return { error: "Tu navegador no entregó una suscripción válida." };
+  await saveSubscription(me.id, parsed.data, String(userAgent ?? ""));
+  await log("portal_push_enabled", String(me.id), String(me.id), "distributor");
+  // Aviso de prueba para que vea cómo le llegarán.
+  await sendPushToDistributor(me.id, { kind: "prueba" }).catch(() => undefined);
+  return { ok: true };
+}
+
+export async function unsubscribePush(endpoint: string): Promise<PortalState> {
+  const me = await requireDistributor();
+  if (typeof endpoint === "string" && endpoint) await removeSubscription(me.id, endpoint);
   return { ok: true };
 }
