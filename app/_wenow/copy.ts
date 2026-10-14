@@ -6,7 +6,8 @@ import { GOAL_LABELS, type GoalId, type MetricId } from "@/lib/engine/answers";
 import type { BiometricReading } from "@/lib/engine/biometrics";
 import type { Recommendation, WellnessArea } from "@/lib/engine/engine";
 import { BRAND } from "@/lib/brand";
-import { AREA_STATUS, memberDiscountPct } from "@/lib/labels";
+import { KIT_TOTAL, SHIPPING, kitOffer } from "@/lib/kit";
+import { AREA_STATUS } from "@/lib/labels";
 import { METRIC_COPY, type Draft } from "./questions";
 
 export const list = (items: string[]) => (items.length > 1 ? `${items.slice(0, -1).join(", ")} y ${items.at(-1)}` : items[0] ?? "");
@@ -231,19 +232,17 @@ export function productTip(productId: string, draft: Draft) {
 
 export const PRIORITY_WORD = { esencial: "esencial", prioritaria: "prioritaria", complementaria: "complementaria" } as const;
 
-// Kit a precio miembro del Club WeNow: la diferencia entre el precio público y el precio miembro de cada producto.
+// Kit de inscripción del Club WeNow (membresía + 4 productos a elegir): ver lib/kit.ts.
 export function offerNumbers(products: ResultProduct[]) {
-  const pub = products.reduce((s, p) => s + p.publicPrice, 0);
-  const pay = products.reduce((s, p) => s + p.distributorPrice, 0);
-  return { pub, pay, savings: Math.max(0, pub - pay), pct: memberDiscountPct(pub, pay) };
+  return kitOffer(products);
 }
 
 export function offerSpeech(products: ResultProduct[], advisor: string) {
   const o = offerNumbers(products);
   return [
     "Ahora te cuento cómo llevártelo.",
-    `A precio público, tu kit completo costaría ${o.pub} pesos.`,
-    `Con tu precio de miembro del ${BRAND.club} te queda en ${o.pay} pesos: te ahorras ${o.savings} pesos, ${o.pct} por ciento menos, por exactamente los mismos productos.`,
-    `Toca «Comprar ahora» para ir a la tienda, o escríbele por WhatsApp a ${advisor}, que queda registrado como tu asesor.`,
+    `Tu kit de inscripción al ${BRAND.club} cuesta ${KIT_TOTAL} pesos e incluye la membresía y cuatro productos a elegir${o.missing ? `; te sugerí ${products.length}, así que puedes escoger ${o.missing === 1 ? "uno más" : `${o.missing} más`}` : ""}.`,
+    `A precio público, esos cuatro productos costarían ${o.pub} pesos: con tu kit te ahorras ${o.savings} pesos, por exactamente los mismos productos.`,
+    `Se suman ${SHIPPING} pesos de envío, que no pagas si recoges en sucursal. Toca «Comprar ahora» para ir a la tienda, o escríbele por WhatsApp a ${advisor}, que queda registrado como tu asesor.`,
   ];
 }

@@ -6,6 +6,7 @@ import { StatusPicker } from "@/app/_shared/status-picker";
 import { longDate, shortDate } from "@/lib/admin/format";
 import { distributorNotes, prospectDetail } from "@/lib/admin/queries";
 import { money } from "@/lib/labels";
+import { KIT_PRODUCT_PRICE } from "@/lib/kit";
 import { requireDistributor } from "@/lib/portal";
 import { setLeadStatus } from "../../../actions";
 import { NoteForm } from "../../client";
@@ -85,7 +86,7 @@ export default async function PortalProspecto({ params }: { params: Promise<{ id
                       </span>
                       <span className="text-right text-[11.5px]">
                         <span className="block text-[#8a8587] line-through">{money(pr.publicPrice)}</span>
-                        <b className="text-[var(--navy)]">{money(pr.distributorPrice)}</b>
+                        <b className="text-[var(--navy)]">{money(KIT_PRODUCT_PRICE)}</b>
                       </span>
                     </li>
                   );

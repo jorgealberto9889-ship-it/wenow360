@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import type { ResultProduct, SubmitResult } from "@/lib/assessments";
 import { BRAND } from "@/lib/brand";
-import { MEMBERSHIP_PITCH } from "@/lib/labels";
+import { KIT_PRODUCT_PRICE, KIT_SIZE, KIT_TOTAL, MEMBERSHIP_FEE, PUBLIC_REFERENCE, SHIPPING_NOTE } from "@/lib/kit";
 import type { PriorityLabel } from "@/lib/engine/engine";
 import {
   AREAS_INTRO, areaReason, areaStatus, areaWhy, bridgeText, firstName, introText, kitPairs, offerNumbers, productContent, productTip, reasonText, recap,
@@ -333,7 +333,7 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
 
   const kitNames = totals.sel.map((p) => p.name).join(", ");
   const waBuyHref = `https://wa.me/${distributor.whatsapp}?text=${encodeURIComponent(
-    `Hola ${distributor.displayName}, terminé mi evaluación ${BRAND.name} y quiero mi precio de miembro. Mi kit: ${kitNames}. Total miembro: ${money(totals.pay)}.`,
+    `Hola ${distributor.displayName}, terminé mi evaluación ${BRAND.name} y quiero mi kit de inscripción al ${BRAND.club}. Mi kit: ${kitNames}${totals.missing ? ` (me falta elegir ${totals.missing} producto${totals.missing > 1 ? "s" : ""})` : ""}. Total del kit: ${money(totals.pay)}.`,
   )}`;
   // La tienda lleva al asesor que atendió la evaluación. Sin enlace firmado (no debería pasar) se atiende por WhatsApp.
   const buyHref = storeToken ? `/tienda/${storeToken}` : waBuyHref;
@@ -405,7 +405,7 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
                 <div className="shrink-0 text-right">
                   <div className="text-[14px] font-extrabold text-[var(--navy)]">{money(p.publicPrice)}</div>
                   <div className="text-[9.5px] text-[#8a8587]">precio público</div>
-                  <div className="mt-0.5 inline-block rounded-full bg-[#e5f8ef] px-2 py-0.5 text-[10px] font-bold text-[#087748]">{money(p.distributorPrice)} miembro</div>
+                  <div className="mt-0.5 inline-block rounded-full bg-[#e5f8ef] px-2 py-0.5 text-[10px] font-bold text-[#087748]">{money(KIT_PRODUCT_PRICE)} en tu kit</div>
                 </div>
               </div>
 
@@ -521,7 +521,7 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
               <h2 className="text-[21px] leading-tight font-extrabold tracking-[-0.015em] text-[var(--navy)]">Mismo kit, dos precios</h2>
               <ListenButton section="offer" sequence={seq} />
             </div>
-            <p className="mt-1.5 text-[13px] leading-normal text-[var(--muted)]">{MEMBERSHIP_PITCH}. Los productos son exactamente los mismos; lo único que cambia es cuánto pagas.</p>
+            <p className="mt-1.5 text-[13px] leading-normal text-[var(--muted)]">Tu kit de inscripción incluye la membresía y {KIT_SIZE} productos a elegir. Los productos son exactamente los mismos; lo único que cambia es cuánto pagas.</p>
           </div>
 
           <div className="rounded-[22px] border border-[var(--line)] bg-white px-5 py-[18px]">
@@ -531,6 +531,12 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
                 <div key={p.id} className="flex justify-between text-[12.5px]">
                   <span className="text-[var(--muted)]">{p.name}</span>
                   <span className="font-semibold text-[#4a4547]">{money(p.publicPrice)}</span>
+                </div>
+              ))}
+              {Array.from({ length: totals.missing }, (_, i) => (
+                <div key={`m${i}`} className="flex justify-between text-[12.5px]">
+                  <span className="text-[var(--muted)] italic">Producto a tu elección</span>
+                  <span className="font-semibold text-[#4a4547]">{money(PUBLIC_REFERENCE)}</span>
                 </div>
               ))}
             </div>
@@ -548,21 +554,37 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
 
           <div className="relative rounded-[22px] border-2 border-[var(--blue)] bg-[linear-gradient(180deg,var(--blue-soft)_0%,#ffffff_55%)] p-5 shadow-[0_18px_44px_rgba(165,25,89,0.16)]">
             <span className="absolute -top-[11px] right-[18px] rounded-full bg-[var(--blue)] px-2.5 py-1 text-[9.5px] font-extrabold tracking-[0.06em] text-white">LA MEJOR OPCIÓN</span>
-            <div className="text-[10.5px] font-bold tracking-[0.06em] text-[var(--blue)] uppercase">Precio miembro {BRAND.club}</div>
-            <div className="mt-1 text-[16px] leading-snug font-extrabold text-[var(--navy)]">{totals.pct}% menos en tus {totals.sel.length} producto{totals.sel.length > 1 && "s"}</div>
+            <div className="text-[10.5px] font-bold tracking-[0.06em] text-[var(--blue)] uppercase">Kit de inscripción {BRAND.club}</div>
+            <div className="mt-1 text-[16px] leading-snug font-extrabold text-[var(--navy)]">Membresía + {KIT_SIZE} productos a elegir</div>
             <div className="mt-3.5 flex flex-col gap-2.5 text-[12.5px]">
-              {totals.sel.map((p) => (
-                <PriceRow key={p.id} label={p.name} from={p.publicPrice} to={p.distributorPrice} />
+              <div className="flex items-baseline justify-between">
+                <span className="text-[#4a4547]">Membresía {BRAND.club}</span>
+                <b className="text-[var(--navy)]">{money(MEMBERSHIP_FEE)}</b>
+              </div>
+              {totals.inKit.map((p) => (
+                <PriceRow key={p.id} label={p.name} from={p.publicPrice} to={KIT_PRODUCT_PRICE} />
+              ))}
+              {Array.from({ length: totals.missing }, (_, i) => (
+                <PriceRow key={`m${i}`} label={<span className="italic">Producto a tu elección</span>} from={PUBLIC_REFERENCE} to={KIT_PRODUCT_PRICE} />
+              ))}
+              {totals.extras.map((p) => (
+                <PriceRow key={p.id} label={`${p.name} (extra)`} from={p.publicPrice} to={p.distributorPrice} />
               ))}
               <div className="flex items-baseline justify-between border-t border-[var(--line)] pt-2.5">
                 <span className="text-[13px] font-bold text-[var(--navy)]">Tu total</span>
                 <span className="text-[24px] font-extrabold tracking-[-0.01em] text-[var(--navy)]">{money(totals.pay)}</span>
               </div>
+              <p className="-mt-1 text-right text-[11.5px] text-[var(--muted)]">{SHIPPING_NOTE}</p>
             </div>
+            {totals.missing > 0 && (
+              <p className="mt-3 rounded-xl bg-[var(--blue-soft)] px-3 py-2 text-[12px] leading-snug text-[var(--navy)]">
+                Tu kit incluye {KIT_SIZE} productos: te sugerimos {totals.sel.length}. Completa tu kit eligiendo {totals.missing === 1 ? "1 producto más" : `${totals.missing} productos más`} en la tienda o con tu asesor; el total es el mismo ({money(KIT_TOTAL)}).
+              </p>
+            )}
             <div className="mt-3.5 flex flex-col gap-1.5" aria-hidden>
               <div className="flex items-center gap-2"><span className="w-[70px] text-[10px] font-semibold text-[#8a8587]">Público</span><span className="h-2.5 flex-1 rounded-full bg-[var(--line)]" /></div>
               <div className="flex items-center gap-2">
-                <span className="w-[70px] text-[10px] font-bold text-[var(--blue)]">Miembro</span>
+                <span className="w-[70px] text-[10px] font-bold text-[var(--blue)]">Tu kit</span>
                 <span className="relative h-2.5 flex-1 rounded-full bg-[repeating-linear-gradient(135deg,#bfeed6_0_4px,#e5f8ef_4px_8px)]">
                   <span className="absolute inset-y-0 left-0 rounded-full bg-[var(--blue)]" style={{ width: `${pctOfPublic}%` }} />
                 </span>
@@ -571,7 +593,7 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
             <div className="mt-3.5 rounded-2xl bg-[#0b8f55] p-4 text-center">
               <div className="text-[10.5px] font-bold tracking-[0.08em] text-[#bff0d6]">TE AHORRAS</div>
               <div className="mt-0.5 text-[34px] leading-[1.1] font-extrabold tracking-[-0.02em] text-white">{money(totals.savings)}</div>
-              <div className="mt-1 text-[12px] leading-snug text-[#e2f8ec]">{totals.pct}% menos que a precio público, por exactamente los mismos productos.</div>
+              <div className="mt-1 text-[12px] leading-snug text-[#e2f8ec]">{totals.pct}% menos que a precio público, con la membresía incluida y por exactamente los mismos productos.</div>
             </div>
             <a href={buyHref} target="_blank" rel="noopener noreferrer" className="press mt-4 flex items-center justify-center gap-2 rounded-full bg-[var(--blue)] py-4 text-[15.5px] font-extrabold text-white shadow-[0_14px_30px_rgba(165,25,89,0.28)]">
               Comprar ahora <ArrowRight />
@@ -625,7 +647,7 @@ function Faq({ store, advisor }: { store: boolean; advisor: string }) {
     ["¿Cómo hago mi compra?", store
       ? `Toca «Comprar ahora» para ir a la tienda de ${BRAND.shortName}. ${advisor} queda registrado como tu asesor. Si lo prefieres, también te atiende por WhatsApp.`
       : `${advisor} te atiende por WhatsApp: confirma contigo tu kit, tu precio de miembro y la forma de pago.`],
-    ["¿Qué es el precio miembro?", `Es el precio de los integrantes del ${BRAND.club}: pagas menos por exactamente los mismos productos. ${advisor} te explica cómo ser miembro.`],
+    ["¿Qué incluye el kit de inscripción?", `La membresía del ${BRAND.club} (${money(MEMBERSHIP_FEE)}) y ${KIT_SIZE} productos a elegir, por ${money(KIT_TOTAL)} en total. ${SHIPPING_NOTE}. ${advisor} te ayuda a completarlo.`],
   ];
   return (
     <section>

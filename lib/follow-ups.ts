@@ -3,7 +3,8 @@ import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { SignJWT, jwtVerify } from "jose";
 import { db, schema } from "@/db";
 import { card, esc, h2, layout, loadContext, resultUrlFor, send, storeUrlFromResult, type Context } from "./email";
-import { MEMBERSHIP_PITCH, money } from "./labels";
+import { KIT_SIZE, SHIPPING_NOTE, kitOffer } from "./kit";
+import { money } from "./labels";
 
 // Correos comerciales (finalidad secundaria del aviso de privacidad, §4): solo con consentimiento
 // de marketing, siempre con enlace de baja, y programados en Resend para poder cancelarlos.
@@ -35,8 +36,7 @@ const unsubscribeFooter = (url: string) =>
 export function buildKitReminder(ctx: Context, resultUrl: string, unsubscribeUrl: string) {
   const first = ctx.name.trim().split(/\s+/)[0] ?? ctx.name;
   const { products } = ctx.snapshot;
-  const pub = products.reduce((s, p) => s + p.publicPrice, 0);
-  const pay = products.reduce((s, p) => s + p.distributorPrice, 0);
+  const { pub, pay } = kitOffer(products);
   const storeUrl = storeUrlFromResult(resultUrl);
   const wa = `https://wa.me/${ctx.distributorWhatsapp}`;
   const html = layout(
@@ -48,7 +48,7 @@ export function buildKitReminder(ctx: Context, resultUrl: string, unsubscribeUrl
       card(
         h2("Tu kit sugerido") +
           products.map((p) => `<div style="font-size:14px;padding:4px 0">• ${esc(p.name)}</div>`).join("") +
-          `<p style="margin:12px 0 0;font-size:14px;line-height:1.55;color:#4a4547">${esc(MEMBERSHIP_PITCH)}: tu kit te queda en <strong style="color:#383838">${money(pay)}</strong> en lugar de ${money(pub)} a precio público.</p>` +
+          `<p style="margin:12px 0 0;font-size:14px;line-height:1.55;color:#4a4547">Tu kit de inscripción (membresía + ${KIT_SIZE} productos a elegir) te queda en <strong style="color:#383838">${money(pay)}</strong> en lugar de ${money(pub)} a precio público; ${esc(SHIPPING_NOTE)}.</p>` +
           `<a href="${esc(storeUrl)}" style="display:inline-block;margin-top:14px;background:#a51959;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:13px 24px;border-radius:999px">Comprar ahora</a>
 <p style="margin:12px 0 0;font-size:13px;line-height:1.7"><a href="${esc(wa)}" style="color:#0d9a56;font-weight:700">Prefiero hablar con ${esc(ctx.distributorName)} por WhatsApp</a><br><a href="${esc(resultUrl)}" style="color:#a51959">Volver a ver mi resultado</a></p>`,
       ),
@@ -62,7 +62,7 @@ export function buildKitReminder(ctx: Context, resultUrl: string, unsubscribeUrl
     "",
     "Tu kit sugerido:",
     ...products.map((p) => `• ${p.name}`),
-    `${MEMBERSHIP_PITCH}: tu kit te queda en ${money(pay)} en lugar de ${money(pub)}.`,
+    `Tu kit de inscripción (membresía + ${KIT_SIZE} productos a elegir) te queda en ${money(pay)} en lugar de ${money(pub)}; ${SHIPPING_NOTE}.`,
     "",
     `Comprar ahora: ${storeUrl}`,
     `Hablar con ${ctx.distributorName}: ${wa}`,

@@ -5,7 +5,7 @@ import { money } from "./labels";
 export type ClubPackage = { id: string; name: string; products: number; price: number; shipping: number; detail: string };
 
 export const CLUB_PACKAGES: ClubPackage[] = [
-  { id: "inscripcion", name: "Inscripción", products: 4, price: 3200, shipping: 200, detail: "4 nutracéuticos de tu elección; es la forma de hacerte miembro del Club WeNow." },
+  { id: "inscripcion", name: "Inscripción", products: 4, price: 3200, shipping: 200, detail: "Incluye la membresía ($300) y 4 nutracéuticos de tu elección a $725 cada uno; es la forma de hacerte miembro del Club WeNow." },
   { id: "zafiro", name: "Inscripción y recompra Zafiro", products: 15, price: 9800, shipping: 200, detail: "15 nutracéuticos de tu elección." },
   { id: "esmeralda", name: "Inscripción y recompra Esmeralda", products: 30, price: 19900, shipping: 200, detail: "30 nutracéuticos de tu elección." },
   { id: "recompra", name: "Recompra", products: 4, price: 2900, shipping: 200, detail: "4 nutracéuticos de tu elección para miembros que vuelven a comprar." },

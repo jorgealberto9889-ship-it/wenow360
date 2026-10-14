@@ -3,7 +3,8 @@ import { eq } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { ResultSnapshot } from "./assessments";
 import { BRAND } from "./brand";
-import { AREA_STATUS, formatMexicoDateTime, MEMBERSHIP_PITCH, memberDiscountPct, money } from "./labels";
+import { KIT_PRODUCT_PRICE, KIT_SIZE, MEMBERSHIP_FEE, SHIPPING_NOTE, kitOffer } from "./kit";
+import { AREA_STATUS, formatMexicoDateTime, money } from "./labels";
 import { signResultToken } from "./result-link";
 import { CORPORATE_SLUG } from "./submission";
 
@@ -107,10 +108,9 @@ export const h2 = (t: string) => `<div style="font-size:16px;font-weight:800;col
 export function buildResultEmail(ctx: Context, resultUrl: string): Omit<Message, "to" | "idempotencyKey" | "tag"> {
   const { result, products } = ctx.snapshot;
   const first = ctx.name.trim().split(/\s+/)[0] ?? ctx.name;
-  const pub = products.reduce((s, p) => s + p.publicPrice, 0);
-  const pref = products.reduce((s, p) => s + p.distributorPrice, 0);
-  const pay = pref;
-  const discount = memberDiscountPct(pub, pay);
+  const { pub, pay, missing } = kitOffer(products);
+  const fillNote = missing ? ` Faltan ${missing} producto${missing > 1 ? "s" : ""} por elegir para completar los ${KIT_SIZE}.` : "";
+  const { pct: discount } = kitOffer(products);
   const storeUrl = storeUrlFromResult(resultUrl);
   const habits = result.habits.slice(0, 3);
   const wa = `https://wa.me/${ctx.distributorWhatsapp}`;
@@ -137,10 +137,10 @@ export function buildResultEmail(ctx: Context, resultUrl: string): Omit<Message,
         ? card(
             h2("Tu kit sugerido") +
               products
-                .map((p) => `<div style="padding:9px 0;border-top:1px solid #f2efef;font-size:14px"><strong style="color:#383838">${esc(p.name)}</strong><br><span style="color:#6f6a6c;font-size:12.5px">${esc(p.eyebrow)} · <s>${money(p.publicPrice)}</s> <strong style="color:#087748">${money(p.distributorPrice)} miembro</strong></span></div>`)
+                .map((p) => `<div style="padding:9px 0;border-top:1px solid #f2efef;font-size:14px"><strong style="color:#383838">${esc(p.name)}</strong><br><span style="color:#6f6a6c;font-size:12.5px">${esc(p.eyebrow)} · <s>${money(p.publicPrice)}</s> <strong style="color:#087748">${money(KIT_PRODUCT_PRICE)} en tu kit</strong></span></div>`)
                 .join("") +
-              `<div style="margin-top:12px;padding:14px;border-radius:14px;background:#0b8f55;color:#ffffff;text-align:center"><div style="font-size:11px;letter-spacing:.08em;font-weight:700">PRECIO MIEMBRO ${esc(BRAND.club.toUpperCase())}</div><div style="font-size:26px;font-weight:800;margin-top:2px">${money(pay)}</div><div style="font-size:12.5px">en lugar de ${money(pub)} a precio público${discount ? ` (${discount}% menos)` : ""}</div></div>` +
-              `<p style="margin:14px 0 4px;font-size:13px;line-height:1.5;color:#4a4547">${esc(MEMBERSHIP_PITCH)}.</p>` +
+              `<div style="margin-top:12px;padding:14px;border-radius:14px;background:#0b8f55;color:#ffffff;text-align:center"><div style="font-size:11px;letter-spacing:.08em;font-weight:700">KIT DE INSCRIPCIÓN ${esc(BRAND.club.toUpperCase())}</div><div style="font-size:26px;font-weight:800;margin-top:2px">${money(pay)}</div><div style="font-size:12.5px">Membresía (${money(MEMBERSHIP_FEE)}) + ${KIT_SIZE} productos a elegir · ${esc(SHIPPING_NOTE)}</div><div style="font-size:12.5px;margin-top:2px">${money(pub)} a precio público${discount ? ` (${discount}% menos)` : ""}</div></div>` +
+              `<p style="margin:14px 0 4px;font-size:13px;line-height:1.5;color:#4a4547">Tu kit incluye la membresía y ${KIT_SIZE} productos a elegir.${esc(fillNote)}</p>` +
               `<a href="${esc(storeUrl)}" style="display:inline-block;margin-top:8px;background:#a51959;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 26px;border-radius:999px">Comprar ahora</a>`,
           )
         : "",
@@ -160,7 +160,7 @@ export function buildResultEmail(ctx: Context, resultUrl: string): Omit<Message,
     "Para empezar esta semana:",
     ...habits.map((h) => `• ${h.title}. ${h.detail}`),
     ...(products.length
-      ? ["", "Tu kit sugerido:", ...products.map((p) => `• ${p.name} · ${money(p.distributorPrice)} miembro (público ${money(p.publicPrice)})`), `Precio miembro ${BRAND.club}: ${money(pay)} en lugar de ${money(pub)} a precio público.`, `Comprar ahora: ${storeUrl}`]
+      ? ["", "Tu kit sugerido:", ...products.map((p) => `• ${p.name} · ${money(KIT_PRODUCT_PRICE)} en tu kit (público ${money(p.publicPrice)})`), `Kit de inscripción ${BRAND.club}: ${money(pay)} con membresía y ${KIT_SIZE} productos a elegir (${SHIPPING_NOTE}), en lugar de ${money(pub)} a precio público.${fillNote}`, `Comprar ahora: ${storeUrl}`]
       : []),
     "",
     `Tu asesor: ${ctx.distributorName} · ${wa}`,
@@ -185,9 +185,8 @@ const waDigits = (phone: string) => {
 
 function leadSummary(ctx: Context) {
   const { result, products } = ctx.snapshot;
-  const pub = products.reduce((s, p) => s + p.publicPrice, 0);
-  const pref = products.reduce((s, p) => s + p.distributorPrice, 0);
-  const pay = pref;
+  const { pub, pay, missing } = kitOffer(products);
+  const fillNote = missing ? ` Faltan ${missing} producto${missing > 1 ? "s" : ""} por elegir para completar los ${KIT_SIZE}.` : "";
   const areas = result.areas.filter((a) => a.metric);
 
   const areasHtml = card(
@@ -204,16 +203,16 @@ function leadSummary(ctx: Context) {
             products
               .map((p) => {
                 const rec = result.recommendations.find((r) => r.productId === p.id);
-                return `<div style="padding:9px 0;border-top:1px solid #f2efef;font-size:14px"><strong style="color:#383838">${esc(p.name)}</strong> <span style="font-size:11.5px;color:#a51959;font-weight:700">${PRIORITY[rec?.priorityLabel ?? "complementaria"]}</span><br><span style="color:#6f6a6c;font-size:12.5px">${esc(p.eyebrow)} · <s>${money(p.publicPrice)}</s> <strong style="color:#087748">${money(p.distributorPrice)} miembro</strong></span></div>`;
+                return `<div style="padding:9px 0;border-top:1px solid #f2efef;font-size:14px"><strong style="color:#383838">${esc(p.name)}</strong> <span style="font-size:11.5px;color:#a51959;font-weight:700">${PRIORITY[rec?.priorityLabel ?? "complementaria"]}</span><br><span style="color:#6f6a6c;font-size:12.5px">${esc(p.eyebrow)} · <s>${money(p.publicPrice)}</s> <strong style="color:#087748">${money(KIT_PRODUCT_PRICE)} en tu kit</strong></span></div>`;
               })
               .join("") +
             `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px;font-size:13px;color:#4a4547">
 <tr><td style="padding:3px 0">A precio público</td><td align="right"><s>${money(pub)}</s></td></tr>
-<tr><td style="padding:3px 0">Con precio miembro del ${BRAND.club}</td><td align="right" style="font-size:18px;font-weight:800;color:#383838">${money(pay)}</td></tr>
+<tr><td style="padding:3px 0">Kit de inscripción (membresía + ${KIT_SIZE} productos)</td><td align="right" style="font-size:18px;font-weight:800;color:#383838">${money(pay)}</td></tr>
 <tr><td style="padding:3px 0;color:#087748;font-weight:700">Se ahorra</td><td align="right" style="color:#087748;font-weight:800">${money(Math.max(0, pub - pay))}</td></tr></table>`,
         );
   const kitLine = !result.stopped && products.length
-    ? `Su kit suma ${money(pub)} a precio público; con precio miembro le queda en ${money(pay)}.`
+    ? `Su kit suma ${money(pub)} a precio público; con el kit de inscripción (membresía + ${KIT_SIZE} productos) le queda en ${money(pay)}.${fillNote}`
     : "No se le sugirieron productos.";
   const text = [
     "Áreas que más atención le piden:",
@@ -223,8 +222,8 @@ function leadSummary(ctx: Context) {
       ? ["No se le sugirieron productos: su perfil requiere orientación profesional."]
       : [
           "Su kit sugerido:",
-          ...products.map((p) => `• ${p.name} · ${money(p.distributorPrice)} miembro (público ${money(p.publicPrice)})`),
-          `Total miembro: ${money(pay)} (público ${money(pub)}).`,
+          ...products.map((p) => `• ${p.name} · ${money(KIT_PRODUCT_PRICE)} en el kit (público ${money(p.publicPrice)})`),
+          `Total del kit de inscripción: ${money(pay)} (público ${money(pub)}).${fillNote}`,
         ]),
   ];
   return { html: areasHtml + productsHtml, text, kitLine, hasProducts: !result.stopped && products.length > 0 };

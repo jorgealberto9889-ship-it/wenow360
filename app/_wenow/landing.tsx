@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { BRAND } from "@/lib/brand";
-import { memberDiscountPct } from "@/lib/labels";
 import { Ring360 } from "./ring";
 import { OPEN_WINNIE_EVENT, WinnieOrb } from "./winnie-orb";
 import { RppgSection } from "./rppg";
@@ -33,8 +32,6 @@ const SHOWCASE = [
   { src: "/assets/products/endo.webp", alt: "ENDO CBD Oil" },
 ];
 
-const { publicPrice: EXAMPLE_PUBLIC, memberPrice: EXAMPLE_MEMBER } = BRAND.memberExample;
-const EXAMPLE_PCT = memberDiscountPct(EXAMPLE_PUBLIC, EXAMPLE_MEMBER);
 
 const wa = (d: Distributor, text: string) => `https://wa.me/${d.whatsapp}?text=${encodeURIComponent(text)}`;
 
@@ -246,16 +243,16 @@ export function Landing({
           <div className="pointer-events-none absolute -top-20 -right-20 size-[260px] rounded-full bg-[radial-gradient(circle,rgba(165,25,89,0.55),transparent_70%)]" />
           <span className="relative text-[11px] font-bold tracking-[0.1em] text-[#e6a9c5] uppercase">Precio miembro {BRAND.club}</span>
           <h3 className="relative mt-3 text-[28px] leading-[1.1] font-extrabold tracking-[-0.02em] lg:text-[34px]">
-            Los mismos productos, a precio de miembro
+            Tu kit de inscripción: membresía y 4 productos
           </h3>
           <p className="relative mt-3 max-w-[440px] text-[14.5px] leading-[1.6] text-[#ecd0dc]">
-            Cada producto tiene un precio público y un precio menor para los miembros del club. Al final de tu evaluación ves cuánto ahorrarías con tu kit.
+            Tu kit de inscripción incluye la membresía del club y cuatro productos a elegir por $3,200 (+ $200 de envío; gratis en sucursal). Al final de tu evaluación ves cuánto ahorrarías.
           </p>
           <div className="relative mt-6 inline-flex max-w-[420px] flex-wrap items-center gap-x-4 gap-y-1 rounded-2xl border border-white/15 bg-white/10 px-5 py-4 backdrop-blur">
-            <span className="text-[15px] text-[#d7bccb] line-through">${EXAMPLE_PUBLIC.toLocaleString("es-MX")}</span>
-            <span className="text-[32px] leading-none font-extrabold">${EXAMPLE_MEMBER.toLocaleString("es-MX")}</span>
-            <span className="rounded-full bg-[var(--green)] px-2.5 py-1 text-[11px] font-extrabold tracking-[0.04em] text-white">{EXAMPLE_PCT}% MENOS</span>
-            <span className="basis-full text-[12px] leading-snug text-[#f4e5eb]">Ejemplo con un producto de la línea NutriDay Plus.</span>
+            <span className="text-[15px] text-[#d7bccb] line-through">$3,960</span>
+            <span className="text-[32px] leading-none font-extrabold">$3,200</span>
+            <span className="rounded-full bg-[var(--green)] px-2.5 py-1 text-[11px] font-extrabold tracking-[0.04em] text-white">19% MENOS</span>
+            <span className="basis-full text-[12px] leading-snug text-[#f4e5eb]">Membresía $300 + 4 productos a $725 cada uno, frente a 4 productos a precio público.</span>
           </div>
         </div>
       </section>
