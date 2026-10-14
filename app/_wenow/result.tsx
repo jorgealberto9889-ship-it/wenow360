@@ -518,7 +518,7 @@ function ActThree({ saved, draft, name, distributor, seq, celia, storeToken }: {
         <>
           <div id={sectionAnchor("offer")} className="scroll-mt-4 pt-1.5">
             <div className="flex items-start justify-between gap-3">
-              <h2 className="text-[21px] leading-tight font-extrabold tracking-[-0.015em] text-[var(--navy)]">Mismo kit, dos precios</h2>
+              <h2 className="text-[21px] leading-tight font-extrabold tracking-[-0.015em] text-[var(--navy)]">Tu kit de inscripción</h2>
               <ListenButton section="offer" sequence={seq} />
             </div>
             <p className="mt-1.5 text-[13px] leading-normal text-[var(--muted)]">Tu kit de inscripción incluye la membresía y {KIT_SIZE} productos a elegir. Los productos son exactamente los mismos; lo único que cambia es cuánto pagas.</p>
