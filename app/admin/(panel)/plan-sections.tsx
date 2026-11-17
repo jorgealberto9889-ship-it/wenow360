@@ -2,8 +2,10 @@ import Link from "next/link";
 import { operations } from "@/lib/admin/queries";
 import { listPayments } from "@/lib/billing";
 import { nextCharge, type ChargeState } from "@/lib/billing-status";
+import { mercadopagoEnabled } from "@/lib/mercadopago";
 import { monthReport } from "@/lib/usage";
 import { netFee, renewalDate } from "@/lib/usage-costs";
+import { startPayment } from "./pagos/actions";
 import { Panel, Stat } from "./ui";
 
 // Secciones del plan que se repiten en Resumen, Operación y Pagos: consumo del mes, actividad de los servicios y
@@ -93,7 +95,14 @@ export async function PaymentCards({ className = "" }: { className?: string }) {
           Fecha límite: <strong>{longDate(charge.dueDate)}</strong>
           {charge.state === "vencido" ? ` (venció hace ${Math.abs(charge.daysToDue)} días)` : charge.daysToDue >= 0 ? ` (en ${charge.daysToDue} días)` : ""}.
         </p>
-        {link ? (
+        {mercadopagoEnabled() ? (
+          <form action={startPayment}>
+            <button type="submit" className="press mt-4 inline-flex items-center gap-2 rounded-full bg-[var(--blue)] px-5 py-2.5 text-[13px] font-bold text-white">
+              {charge.state === "al_corriente" || charge.state === "sin_cobro" ? "Pagar por adelantado" : "Pagar ahora"} con Mercado Pago →
+            </button>
+            <p className="mt-2 text-[11.5px] text-[var(--muted)]">Tu pago se registra solo en cuanto Mercado Pago lo confirma.</p>
+          </form>
+        ) : link ? (
           <a href={link} target="_blank" rel="noopener noreferrer" className="press mt-4 inline-flex items-center gap-2 rounded-full bg-[var(--blue)] px-5 py-2.5 text-[13px] font-bold text-white">
             {charge.state === "al_corriente" || charge.state === "sin_cobro" ? "Pagar por adelantado" : "Pagar ahora"} →
           </a>

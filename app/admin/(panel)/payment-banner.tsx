@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { listPayments } from "@/lib/billing";
 import { nextCharge } from "@/lib/billing-status";
+import { mercadopagoEnabled } from "@/lib/mercadopago";
 import { loadSettings } from "@/lib/usage";
+import { startPayment } from "./pagos/actions";
 
 const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 const date = (d: Date) => d.toLocaleString("es-MX", { day: "numeric", month: "long", timeZone: "UTC" });
@@ -27,7 +29,9 @@ export async function PaymentBanner() {
       </span>
       <span className="flex items-center gap-2">
         <Link href="/admin/pagos" className="press rounded-full border border-current/30 px-3.5 py-1.5 text-[12px] font-bold">Ver detalle</Link>
-        {link && <a href={link} target="_blank" rel="noopener noreferrer" className="press rounded-full bg-[var(--navy)] px-3.5 py-1.5 text-[12px] font-bold text-white">Pagar ahora</a>}
+        {mercadopagoEnabled() ? (
+          <form action={startPayment}><button type="submit" className="press rounded-full bg-[var(--navy)] px-3.5 py-1.5 text-[12px] font-bold text-white">Pagar ahora</button></form>
+        ) : link && <a href={link} target="_blank" rel="noopener noreferrer" className="press rounded-full bg-[var(--navy)] px-3.5 py-1.5 text-[12px] font-bold text-white">Pagar ahora</a>}
       </span>
     </div>
   );
