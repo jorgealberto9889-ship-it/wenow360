@@ -6,13 +6,26 @@ import { PageHeader, Panel } from "../ui";
 const mxn = (n: number) => `$${n.toLocaleString("es-MX", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
 const PAY_CHIP = { pagado: "bg-[#e5f8ef] text-[#087748]", pendiente: "bg-[#fff3d6] text-[#8a5a00]", vencido: "bg-[#fde8e6] text-[#b42318]" } as const;
 
-export default async function Pagos() {
+const NOTICES: Record<string, { tone: "ok" | "warn"; text: string }> = {
+  ok: { tone: "ok", text: "¡Gracias! Recibimos tu pago. En unos instantes aparecerá en el historial." },
+  pendiente: { tone: "warn", text: "Tu pago está pendiente de confirmación en Mercado Pago. Cuando se apruebe, se registrará solo." },
+  error: { tone: "warn", text: "No se completó el pago. Puedes intentarlo de nuevo cuando quieras." },
+  error_enlace: { tone: "warn", text: "No pudimos generar tu enlace de pago. Inténtalo de nuevo en unos minutos o avisa a Órbita Digital." },
+  sin_configurar: { tone: "warn", text: "El cobro en línea todavía no está activo. Pide tu enlace de pago a Órbita Digital." },
+};
+
+export default async function Pagos({ searchParams }: { searchParams: Promise<{ pago?: string }> }) {
   await requireAdmin();
+  const notice = NOTICES[(await searchParams).pago ?? ""];
   const history = await listPayments();
 
   return (
     <>
       <PageHeader title="Pagos y facturación" subtitle="Tu plan, próximo pago e historial de pagos." />
+
+      {notice && (
+        <div role="status" className={`mt-5 rounded-2xl border px-4 py-3 text-[13px] leading-snug ${notice.tone === "ok" ? "border-[#b7e6cf] bg-[#e5f8ef] text-[#087748]" : "border-[#f1d9a6] bg-[#fff6df] text-[#8a5a00]"}`}>{notice.text}</div>
+      )}
 
       <PaymentCards className="mt-6" />
 
